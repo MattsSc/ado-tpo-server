@@ -1,5 +1,7 @@
 package model;
 
+import dtos.MovimientoCCDto;
+
 import java.util.Date;
 
 public class MovimientoCC {
@@ -12,6 +14,15 @@ public class MovimientoCC {
         this.fecha = fecha;
         this.importe = importe;
         this.tipo = tipo;
+    }
+
+    public MovimientoCCDto toDto(){
+        return new MovimientoCCDto(
+                this.getIdMovimiento(),
+                this.getFecha(),
+                this.getImporte(),
+                this.getTipo()
+        );
     }
 
     public int getIdMovimiento() {

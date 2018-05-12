@@ -14,12 +14,17 @@ public class MovCCEntity {
     private float importe;
     private String tipo;
 
+    @ManyToOne
+    @JoinColumn(name="dni")
+    private ClienteEntity clienteEntity;
+
     public MovCCEntity(){}
 
-    public MovCCEntity(Date fecha, float importe, String tipo) {
+    public MovCCEntity(Date fecha, float importe, String tipo, ClienteEntity clienteEntity) {
         this.fecha = fecha;
         this.importe = importe;
         this.tipo = tipo;
+        this.clienteEntity = clienteEntity;
     }
 
     public int getIdMovimiento() {
@@ -52,5 +57,13 @@ public class MovCCEntity {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public ClienteEntity getClienteEntity() {
+        return clienteEntity;
+    }
+
+    public void setClienteEntity(ClienteEntity clienteEntity) {
+        this.clienteEntity = clienteEntity;
     }
 }
