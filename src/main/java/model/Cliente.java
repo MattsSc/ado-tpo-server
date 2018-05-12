@@ -1,5 +1,7 @@
 package model;
 
+import dtos.ClienteDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,19 @@ public class Cliente {
         this.limiteCredito = limiteCredito;
         this.montoDisponible = montoDisponible;
         this.movimientosCC = movimientosCC;
+    }
+
+    public ClienteDTO toDto(){
+        return new ClienteDTO(
+                this.getDni(),
+                this.getNombre(),
+                this.getApellido(),
+                this.getDomicilio(),
+                this.getCuit(),
+                this.getRazonSocial(),
+                this.getLimiteCredito(),
+                this.getMontoDisponible()
+        );
     }
 
     public int getDni() {

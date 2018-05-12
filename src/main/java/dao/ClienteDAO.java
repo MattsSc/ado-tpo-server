@@ -6,11 +6,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ClienteDAO {
 
     public static void save(Cliente cliente) {
-        ClienteEntity aux = toEntity(cliente);
-        saveTransaction(aux);
+        saveTransaction(toEntity(cliente));
+    }
+
+    public static List<Cliente> getClientes(){
+        SessionFactory sf = HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        List<ClienteEntity> result = s.createQuery("from ClienteEntity").list();
+        s.getTransaction().commit();
+
+        return result.stream().map(ClienteDAO::toNegocio).collect(Collectors.toList());
+
     }
 
     public static Cliente getCliente(Integer dni){ //
@@ -20,8 +33,6 @@ public class ClienteDAO {
         s.beginTransaction();
         ClienteE = (ClienteEntity) s.createQuery("from ClienteEntity c where c.dni=?").setParameter(0, dni).uniqueResult();
         s.getTransaction().commit();
-
-        System.out.println("Tengo item en movimientos? " + ClienteE.getMovimientosCC().size());
 
         return toNegocio(ClienteE);
 
