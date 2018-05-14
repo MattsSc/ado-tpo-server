@@ -15,7 +15,7 @@ public class MovCCEntity {
     private String tipo;
 
     @ManyToOne
-    @JoinColumn(name="dni")
+    @JoinColumn(name="idCliente")
     private ClienteEntity clienteEntity;
 
     public MovCCEntity(){}

@@ -2,6 +2,7 @@ package dao;
 
 import entities.ClienteEntity;
 import model.Cliente;
+import model.MovimientoCC;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtils;
@@ -61,6 +62,17 @@ public class ClienteDAO {
     }
 
     private static Cliente toNegocio(ClienteEntity clienteE) {
+        if(!clienteE.getMovimientosCC().isEmpty()){
+            return new Cliente(clienteE.getDni(),
+                    clienteE.getNombre(),
+                    clienteE.getApellido(),
+                    clienteE.getDomicilio(),
+                    clienteE.getCuit(),
+                    clienteE.getRazonSocial(),
+                    clienteE.getLimiteCredito(),
+                    clienteE.getMontoDisponible(),
+                    clienteE.getMovimientosCC().stream().map(movCC -> new MovimientoCC(movCC.getFecha(),movCC.getImporte(),movCC.getTipo())).collect(Collectors.toList()));
+        }
         return new Cliente(clienteE.getDni(),
                 clienteE.getNombre(),
                 clienteE.getApellido(),
