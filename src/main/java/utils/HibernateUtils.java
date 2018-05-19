@@ -2,6 +2,7 @@ package utils;
 
 import entities.ClienteEntity;
 import entities.MovCCEntity;
+import entities.ProveedorEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -16,6 +17,7 @@ public class HibernateUtils {
             Configuration config = new Configuration();
             config.addAnnotatedClass(ClienteEntity.class);
             config.addAnnotatedClass(MovCCEntity.class);
+            config.addAnnotatedClass(ProveedorEntity.class);
 
             sessionFactory = config.buildSessionFactory();
         }

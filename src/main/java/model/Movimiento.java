@@ -4,7 +4,7 @@ import model.enums.TipoMovimiento;
 
 import java.util.Date;
 
-public class Movimiento {
+public abstract class Movimiento {
     private String id;
     private Date fecha;
     private int cantidad;

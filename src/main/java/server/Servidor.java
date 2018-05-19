@@ -1,6 +1,5 @@
 package server;
 
-import controlador.ControladorCliente;
 import interfaces.SistemaCliente;
 import remoteObjects.ControladorClienteRO;
 import utils.HibernateUtils;
