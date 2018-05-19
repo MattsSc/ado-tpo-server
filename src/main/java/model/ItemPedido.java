@@ -3,13 +3,13 @@ package model;
 public class ItemPedido {
 
 	private Integer id;
-	private int Cantidad;
+	private int cantidad;
 	private Lote lote;
 
 	public ItemPedido(Integer id, int cantidad, Lote lote) {
 		super();
 		this.id = id;
-		Cantidad = cantidad;
+		this.cantidad = cantidad;
 		this.lote = lote;
 	}
 
@@ -31,14 +31,14 @@ public class ItemPedido {
 	 * @return the cantidad
 	 */
 	public int getCantidad() {
-		return Cantidad;
+		return cantidad;
 	}
 
 	/**
 	 * @param cantidad the cantidad to set
 	 */
 	public void setCantidad(int cantidad) {
-		Cantidad = cantidad;
+		cantidad = cantidad;
 	}
 
 	/**
