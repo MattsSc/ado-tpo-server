@@ -21,6 +21,7 @@ public class Main {
                 20,
                 12.30F);
 
+        proovedor.setId(1);
         Lote lote = new Lote(new Date(),20, proovedor);
 
         ProovedorDAO.save(proovedor);

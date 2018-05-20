@@ -14,7 +14,7 @@ public class LoteEntity {
     private Date fechaVencimiento;
     private int cantidad;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="proveedorId")
     private ProveedorEntity proovedor;
 
