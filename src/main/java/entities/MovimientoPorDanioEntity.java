@@ -12,6 +12,10 @@ public class MovimientoPorDanioEntity extends MovimientoEntity{
     private String destino;
     private String auotorizador;
 
+    public MovimientoPorDanioEntity(){
+        super();
+    }
+
     public MovimientoPorDanioEntity(String encargado, String destino, String auotorizador) {
         this.encargado = encargado;
         this.destino = destino;

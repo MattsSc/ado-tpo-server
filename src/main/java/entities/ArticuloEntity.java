@@ -20,8 +20,11 @@ public class ArticuloEntity {
     private List<LoteEntity> lotes;
 
     @OneToMany
-    @JoinColumn(name="articulo")
+    @JoinColumn(name="articuloId")
     private List<MovimientoBasicoEntity> movimientos;
+
+    public ArticuloEntity(){
+    }
 
     public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
         this.codigo = codigo;

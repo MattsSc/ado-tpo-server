@@ -16,8 +16,6 @@ public class ProveedorEntity {
     public ProveedorEntity() {
     }
 
-
-
     public ProveedorEntity(String nombre, int cuit) {
         this.nombre = nombre;
         this.cuit = cuit;

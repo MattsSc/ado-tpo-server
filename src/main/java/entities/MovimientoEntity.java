@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula("case when tipo in ('COMPRA','VENTA') then 1 when 'ROTURA' then 2 else 3 end")
+@DiscriminatorFormula("case when tipo='VENTA' then 1 when tipo='ROTURA' then 2 else 3 end")
 @Table(name="Movimiento")
 public class MovimientoEntity {
 

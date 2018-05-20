@@ -10,6 +10,10 @@ public class MovimientoPorInventarioEntity extends MovimientoEntity {
     private String descripcion;
     private String estado;
 
+    public MovimientoPorInventarioEntity(){
+        super();
+    }
+
     public MovimientoPorInventarioEntity(String descripcion, String estado) {
         this.descripcion = descripcion;
         this.estado = estado;

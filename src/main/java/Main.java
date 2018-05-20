@@ -1,9 +1,12 @@
 import dao.ArticuloDAO;
 import dao.LoteDAO;
+import dao.MovimientoDAO;
 import dao.ProovedorDAO;
 import model.Articulo;
 import model.Lote;
+import model.MovimientoPorInventario;
 import model.Proovedor;
+import model.enums.TipoMovimiento;
 import server.Servidor;
 
 import java.util.Date;
@@ -11,8 +14,6 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-
-        Proovedor proovedor = new Proovedor("Proveedor A", 2055);
         Articulo articulo = new Articulo(
                 111111,
                 "Coca cola 1.5L",
@@ -21,12 +22,12 @@ public class Main {
                 20,
                 12.30F);
 
-        proovedor.setId(1);
-        Lote lote = new Lote(new Date(),20, proovedor);
 
-        ProovedorDAO.save(proovedor);
+        MovimientoPorInventario movimientoPorInventario = new MovimientoPorInventario(new Date(),10,TipoMovimiento.COMPRA,"la pepa","activo");
+
         ArticuloDAO.save(articulo);
-        LoteDAO.save(lote, articulo);
+        MovimientoDAO.save(movimientoPorInventario,articulo);
+
         //new Servidor();
     }
 }

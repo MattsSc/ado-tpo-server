@@ -9,6 +9,10 @@ import java.util.Date;
 public class MovimientoBasicoEntity extends MovimientoEntity {
     private String estado;
 
+    public MovimientoBasicoEntity(){
+        super();
+    }
+
     public MovimientoBasicoEntity(String estado) {
         this.estado = estado;
     }
