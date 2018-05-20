@@ -5,19 +5,19 @@ import java.util.Date;
 public class Lote {
     private Integer id;
     private Date fechaVencimiento;
-    private int cantidad;
+    private int stock;
     private Proovedor proovedor;
 
-    public Lote(Date fechaVencimiento, int cantidad, Proovedor proovedor) {
+    public Lote(Date fechaVencimiento, int stock, Proovedor proovedor) {
         this.fechaVencimiento = fechaVencimiento;
-        this.cantidad = cantidad;
+        this.stock = stock;
         this.proovedor = proovedor;
     }
 
-    public Lote(Integer id, Date fechaVencimiento, int cantidad, Proovedor proovedor) {
+    public Lote(Integer id, Date fechaVencimiento, int stock, Proovedor proovedor) {
         this.id = id;
         this.fechaVencimiento = fechaVencimiento;
-        this.cantidad = cantidad;
+        this.stock = stock;
         this.proovedor = proovedor;
     }
 
@@ -37,12 +37,12 @@ public class Lote {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getStock() {
+        return stock;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public Proovedor getProovedor() {

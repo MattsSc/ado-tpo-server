@@ -4,24 +4,32 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="Cliente")
+@Table(name="Lote")
 public class LoteEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Integer id;
 
     private Date fechaVencimiento;
     private int cantidad;
 
-    @ManyToOne
-    @JoinColumn(name="id")
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name="proveedorId")
     private ProveedorEntity proovedor;
 
-    public LoteEntity(Date fechaVencimiento, int cantidad, ProveedorEntity proovedor) {
+    @ManyToOne
+    @JoinColumn(name="articuloId")
+    private ArticuloEntity articulo;
+
+    public LoteEntity() {
+    }
+
+    public LoteEntity(Date fechaVencimiento, int cantidad, ProveedorEntity proovedor, ArticuloEntity articulo) {
         this.fechaVencimiento = fechaVencimiento;
         this.cantidad = cantidad;
         this.proovedor = proovedor;
+        this.articulo = articulo;
     }
 
     public Integer getId() {
@@ -54,5 +62,13 @@ public class LoteEntity {
 
     public void setProovedor(ProveedorEntity proovedor) {
         this.proovedor = proovedor;
+    }
+
+    public ArticuloEntity getArticulo() {
+        return articulo;
+    }
+
+    public void setArticulo(ArticuloEntity articulo) {
+        this.articulo = articulo;
     }
 }

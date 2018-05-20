@@ -1,25 +1,25 @@
-package model;
+package entities;
 
-import model.enums.TipoMovimiento;
-
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.Date;
 
-public class MovimientoPorDanio extends Movimiento{
+@Entity
+@DiscriminatorValue("2")
+public class MovimientoPorDanioEntity extends MovimientoEntity{
 
     private String encargado;
     private String destino;
     private String auotorizador;
 
-
-    public MovimientoPorDanio(Date fecha, int cantidad, String encargado, String destino, String auotorizador) {
-        super(fecha, cantidad, TipoMovimiento.ROTURA);
+    public MovimientoPorDanioEntity(String encargado, String destino, String auotorizador) {
         this.encargado = encargado;
         this.destino = destino;
         this.auotorizador = auotorizador;
     }
 
-    public MovimientoPorDanio(Integer id, Date fecha, int cantidad, String encargado, String destino, String auotorizador) {
-        super(id, fecha, cantidad, TipoMovimiento.ROTURA);
+    public MovimientoPorDanioEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String encargado, String destino, String auotorizador) {
+        super(fecha, cantidad, tipo, articuloEntity);
         this.encargado = encargado;
         this.destino = destino;
         this.auotorizador = auotorizador;

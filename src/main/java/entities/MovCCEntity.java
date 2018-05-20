@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name="CuentaCorriente")
 public class MovCCEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private int idMovimiento;
 
     private Date fecha;
@@ -16,15 +16,15 @@ public class MovCCEntity {
 
     @ManyToOne
     @JoinColumn(name="idCliente")
-    private ClienteEntity clienteEntity;
+    private ClienteEntity cliente;
 
     public MovCCEntity(){}
 
-    public MovCCEntity(Date fecha, float importe, String tipo, ClienteEntity clienteEntity) {
+    public MovCCEntity(Date fecha, float importe, String tipo, ClienteEntity cliente) {
         this.fecha = fecha;
         this.importe = importe;
         this.tipo = tipo;
-        this.clienteEntity = clienteEntity;
+        this.cliente = cliente;
     }
 
     public int getIdMovimiento() {
@@ -59,11 +59,11 @@ public class MovCCEntity {
         this.tipo = tipo;
     }
 
-    public ClienteEntity getClienteEntity() {
-        return clienteEntity;
+    public ClienteEntity getCliente() {
+        return cliente;
     }
 
-    public void setClienteEntity(ClienteEntity clienteEntity) {
-        this.clienteEntity = clienteEntity;
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
 }

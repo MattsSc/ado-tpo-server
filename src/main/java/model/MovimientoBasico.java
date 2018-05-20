@@ -13,7 +13,7 @@ public class MovimientoBasico extends Movimiento{
         this.estado = estado;
     }
 
-    public MovimientoBasico(String id, Date fecha, int cantidad, TipoMovimiento tipo, String estado) {
+    public MovimientoBasico(Integer id, Date fecha, int cantidad, TipoMovimiento tipo, String estado) {
         super(id, fecha, cantidad, tipo);
         this.estado = estado;
     }

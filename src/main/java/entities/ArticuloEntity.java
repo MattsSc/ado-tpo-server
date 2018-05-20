@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Articulo")
-public class ArituculoEntity {
+public class ArticuloEntity {
     @Id
     private Integer codigo;
 
@@ -16,14 +16,14 @@ public class ArituculoEntity {
     private float precio;
 
     @OneToMany
-    @JoinColumn(name="id")
+    @JoinColumn(name="articuloId")
     private List<LoteEntity> lotes;
 
     @OneToMany
-    @JoinColumn(name="id")
-    private List<MovimientoEntity> movimientos;
+    @JoinColumn(name="articulo")
+    private List<MovimientoBasicoEntity> movimientos;
 
-    public ArituculoEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
+    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
@@ -32,7 +32,7 @@ public class ArituculoEntity {
         this.precio = precio;
     }
 
-    public ArituculoEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, List<LoteEntity> lotes, List<MovimientoEntity> movimientos) {
+    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, List<LoteEntity> lotes, List<MovimientoBasicoEntity> movimientos) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
@@ -99,11 +99,11 @@ public class ArituculoEntity {
         this.lotes = lotes;
     }
 
-    public List<MovimientoEntity> getMovimientos() {
+    public List<MovimientoBasicoEntity> getMovimientos() {
         return movimientos;
     }
 
-    public void setMovimientos(List<MovimientoEntity> movimientos) {
+    public void setMovimientos(List<MovimientoBasicoEntity> movimientos) {
         this.movimientos = movimientos;
     }
 }

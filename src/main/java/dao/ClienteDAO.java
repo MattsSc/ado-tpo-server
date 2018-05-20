@@ -3,8 +3,6 @@ package dao;
 import entities.ClienteEntity;
 import model.Cliente;
 import model.MovimientoCC;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import utils.HibernateUtils;
 
 import java.util.List;
@@ -13,40 +11,21 @@ import java.util.stream.Collectors;
 public class ClienteDAO {
 
     public static void save(Cliente cliente) {
-        saveTransaction(toEntity(cliente));
+        HibernateUtils.saveTransaction(toEntity(cliente));
     }
 
     public static List<Cliente> getClientes(){
-        SessionFactory sf = HibernateUtils.getSessionFactory();
-        Session s = sf.openSession();
-        s.beginTransaction();
-        List<ClienteEntity> result = s.createQuery("from ClienteEntity").list();
-        s.getTransaction().commit();
-
+        List<ClienteEntity> result = HibernateUtils.getResultList("from ClienteEntity");
         return result.stream().map(ClienteDAO::toNegocio).collect(Collectors.toList());
-
     }
 
-    public static Cliente getCliente(Integer dni){ //
-        ClienteEntity ClienteE;
-        SessionFactory sf = HibernateUtils.getSessionFactory();
-        Session s = sf.openSession();
-        s.beginTransaction();
-        ClienteE = (ClienteEntity) s.createQuery("from ClienteEntity c where c.dni=?").setParameter(0, dni).uniqueResult();
-        s.getTransaction().commit();
-
-        return toNegocio(ClienteE);
-
+    public static Cliente getById(Integer dni){
+        return toNegocio(HibernateUtils.getById(ClienteEntity.class, dni));
     }
 
-    private static void saveTransaction(Object e){
-        SessionFactory sf= HibernateUtils.getSessionFactory();
-        Session s = sf.openSession();
-        s.beginTransaction();
-        s.save(e);
-        s.getTransaction().commit();
-        s.close();
-    }
+
+
+    //Converters
 
     private static ClienteEntity toEntity(Cliente cliente) {
         return new ClienteEntity(

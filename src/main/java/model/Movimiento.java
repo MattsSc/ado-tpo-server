@@ -5,7 +5,7 @@ import model.enums.TipoMovimiento;
 import java.util.Date;
 
 public abstract class Movimiento {
-    private String id;
+    private Integer id;
     private Date fecha;
     private int cantidad;
     private TipoMovimiento tipo;
@@ -16,18 +16,18 @@ public abstract class Movimiento {
         this.tipo = tipo;
     }
 
-    public Movimiento(String id, Date fecha, int cantidad, TipoMovimiento tipo) {
+    public Movimiento(Integer id, Date fecha, int cantidad, TipoMovimiento tipo) {
         this.id = id;
         this.fecha = fecha;
         this.cantidad = cantidad;
         this.tipo = tipo;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
