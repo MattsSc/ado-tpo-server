@@ -1,10 +1,29 @@
 package model;
 
+import dtos.ItemPedidoDTO;
+
 public class ItemPedido {
 
     private Integer id;
     private int cantidad;
     private Articulo articulo;
+
+
+    public static ItemPedido dtoToModel(ItemPedidoDTO dto){
+        return new ItemPedido(
+                dto.getCantidad(),
+                Articulo.dtoToModel(dto.getArticulo()));
+    }
+
+    public ItemPedidoDTO toDto(){
+        return new ItemPedidoDTO(
+                this.getId(),
+                this.getCantidad(),
+                this.getArticulo().toDto()
+        );
+    }
+
+
 
     public ItemPedido(int cantidad, Articulo articulo) {
         this.cantidad = cantidad;

@@ -1,5 +1,7 @@
 package model;
 
+import dtos.ArticuloDTO;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +16,25 @@ public class Articulo {
     private float precio;
     private List<Lote> lotes;
     private List<Movimiento> movimientos;
+
+
+
+
+    public static Articulo dtoToModel(ArticuloDTO dto){
+        return new Articulo(
+                dto.getCodigo(),
+                dto.getDescripcion(),
+                dto.getPresentacion(),
+                dto.getTamanio(),
+                dto.getUnidad(),
+                dto.getPrecio()
+        );
+    }
+
+
+
+
+
 
     public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
         this.codigo = codigo;
@@ -103,5 +124,16 @@ public class Articulo {
 
     public void setMovimientos(List<Movimiento> movimientos) {
         this.movimientos = movimientos;
+    }
+
+    public ArticuloDTO toDto() {
+        return new ArticuloDTO(
+                this.getCodigo(),
+                this.getDescripcion(),
+                this.getPresentacion(),
+                this.getTamanio(),
+                this.getUnidad(),
+                this.getPrecio()
+        );
     }
 }

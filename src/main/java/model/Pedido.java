@@ -1,7 +1,10 @@
 package model;
 
+import dtos.PedidoDTO;
+
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pedido {
     private Integer id;
@@ -12,6 +15,27 @@ public class Pedido {
     private String estado;
     private String direccionEntrega;
     private List<ItemPedido> items;
+
+    public PedidoDTO toDto(){
+        return new PedidoDTO(
+                this.getId(),
+                this.getCliente().toDto(),
+                this.getFechaSolicitudOrden(),
+                this.getFechaDespacho(),
+                this.getFechaEntrega(),
+                this.getEstado(),
+                this.getDireccionEntrega(),
+                this.items.stream().map(ItemPedido::toDto).collect(Collectors.toList())
+        );
+    }
+
+    public Pedido(Cliente cliente, String estado, String direccionEntrega, List<ItemPedido> items) {
+        this.cliente = cliente;
+        this.fechaSolicitudOrden = new Date();
+        this.estado = estado;
+        this.direccionEntrega = direccionEntrega;
+        this.items = items;
+    }
 
     public Pedido(Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedido> items) {
         this.cliente = cliente;
