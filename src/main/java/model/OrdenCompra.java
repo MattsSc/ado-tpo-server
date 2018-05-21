@@ -5,18 +5,18 @@ public class OrdenCompra {
 	private Integer id;
 	private Articulo articulo;
 	private Integer cantidad;
-	private OrdenDePedido ordenDePedido;
+	private OrdenPedido ordenPedido;
 	private String estado;
 	private Proovedor proovedor;
 	private Float cortoOrdenDeCompra;
 	
-	public OrdenCompra(Integer id, Articulo articulo, Integer cantidad, OrdenDePedido ordenDePedido, String estado,
+	public OrdenCompra(Integer id, Articulo articulo, Integer cantidad, OrdenPedido ordenDePedido, String estado,
 			Proovedor proovedor, Float cortoOrdenDeCompra) {
 		super();
 		this.id = id;
 		this.articulo = articulo;
 		this.cantidad = cantidad;
-		this.ordenDePedido = ordenDePedido;
+		this.ordenPedido = ordenDePedido;
 		this.estado = estado;
 		this.proovedor = proovedor;
 		this.cortoOrdenDeCompra = cortoOrdenDeCompra;
@@ -67,15 +67,15 @@ public class OrdenCompra {
 	/**
 	 * @return the ordenDePedido
 	 */
-	public OrdenDePedido getOrdenDePedido() {
-		return ordenDePedido;
+	public OrdenPedido getOrdenPedido() {
+		return ordenPedido;
 	}
 
 	/**
 	 * @param ordenDePedido the ordenDePedido to set
 	 */
-	public void setOrdenDePedido(OrdenDePedido ordenDePedido) {
-		this.ordenDePedido = ordenDePedido;
+	public void setOrdenDePedido(OrdenPedido ordenDePedido) {
+		this.ordenPedido = ordenDePedido;
 	}
 
 	/**
