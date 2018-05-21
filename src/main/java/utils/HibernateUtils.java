@@ -16,15 +16,15 @@ public class HibernateUtils {
         {
             System.getProperty("java.security.policy");
             Configuration config = new Configuration();
-
             config.addAnnotatedClass(ArticuloEntity.class);
             config.addAnnotatedClass(ClienteEntity.class);
+            config.addAnnotatedClass(ItemPedidoEntity.class);
             config.addAnnotatedClass(LoteEntity.class);
             config.addAnnotatedClass(MovCCEntity.class);
             config.addAnnotatedClass(MovimientoBasicoEntity.class);
             config.addAnnotatedClass(MovimientoEntity.class);
             config.addAnnotatedClass(MovimientoPorDanioEntity.class);
-            config.addAnnotatedClass(MovimientoPorInventarioEntity.class);
+            config.addAnnotatedClass(PedidoEntity.class);
             config.addAnnotatedClass(ProveedorEntity.class);
 
             sessionFactory = config.buildSessionFactory();
@@ -46,6 +46,15 @@ public class HibernateUtils {
         Session s = sf.openSession();
         s.beginTransaction();
         s.save(e);
+        s.getTransaction().commit();
+        s.close();
+    }
+
+    public static void updateTransaction(Object e){
+        SessionFactory sf= HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        s.update(e);
         s.getTransaction().commit();
         s.close();
     }

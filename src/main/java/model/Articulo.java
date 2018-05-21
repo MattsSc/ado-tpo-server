@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Articulo {
     private Integer codigo;
@@ -33,6 +35,10 @@ public class Articulo {
         this.precio = precio;
         this.lotes = lotes;
         this.movimientos = movimientos;
+    }
+
+    public boolean hayStock(int cantidad){
+        return (lotes.stream().mapToInt(Lote::getStock).sum() > cantidad);
     }
 
     public Integer getCodigo() {
@@ -84,7 +90,7 @@ public class Articulo {
     }
 
     public List<Lote> getLotes() {
-        return lotes;
+        return lotes.stream().sorted(Comparator.comparing(Lote::getFechaVencimiento)).collect(Collectors.toList());
     }
 
     public void setLotes(List<Lote> lotes) {

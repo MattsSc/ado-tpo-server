@@ -1,5 +1,6 @@
 package dao;
 
+import dao.converters.ConverterEntityUtils;
 import entities.ClienteEntity;
 import entities.MovCCEntity;
 import model.Cliente;
@@ -18,16 +19,7 @@ public class MovCCDAO {
                 movimientoCC.getFecha(),
                 movimientoCC.getImporte(),
                 movimientoCC.getTipo(),
-                new ClienteEntity(
-                        cliente.getDni(),
-                        cliente.getNombre(),
-                        cliente.getApellido(),
-                        cliente.getDomicilio(),
-                        cliente.getCuit(),
-                        cliente.getRazonSocial(),
-                        cliente.getLimiteCredito(),
-                        cliente.getMontoDisponible()
-                )
+                ConverterEntityUtils.clienteToEntity(cliente)
         );
     }
 }

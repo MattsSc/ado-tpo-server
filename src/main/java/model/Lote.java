@@ -6,19 +6,19 @@ public class Lote {
     private Integer id;
     private Date fechaVencimiento;
     private int stock;
-    private Proovedor proovedor;
+    private Proveedor proveedor;
 
-    public Lote(Date fechaVencimiento, int stock, Proovedor proovedor) {
+    public Lote(Date fechaVencimiento, int stock, Proveedor proveedor) {
         this.fechaVencimiento = fechaVencimiento;
         this.stock = stock;
-        this.proovedor = proovedor;
+        this.proveedor = proveedor;
     }
 
-    public Lote(Integer id, Date fechaVencimiento, int stock, Proovedor proovedor) {
+    public Lote(Integer id, Date fechaVencimiento, int stock, Proveedor proveedor) {
         this.id = id;
         this.fechaVencimiento = fechaVencimiento;
         this.stock = stock;
-        this.proovedor = proovedor;
+        this.proveedor = proveedor;
     }
 
     public Integer getId() {
@@ -45,11 +45,11 @@ public class Lote {
         this.stock = stock;
     }
 
-    public Proovedor getProovedor() {
-        return proovedor;
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
-    public void setProovedor(Proovedor proovedor) {
-        this.proovedor = proovedor;
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 }

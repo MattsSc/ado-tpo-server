@@ -5,7 +5,7 @@ import dtos.MovimientoCCDto;
 import java.util.Date;
 
 public class MovimientoCC {
-    private int idMovimiento;
+    private Integer id;
     private Date fecha;
     private float importe;
     private String tipo;
@@ -18,19 +18,19 @@ public class MovimientoCC {
 
     public MovimientoCCDto toDto(){
         return new MovimientoCCDto(
-                this.getIdMovimiento(),
+                this.getId(),
                 this.getFecha(),
                 this.getImporte(),
                 this.getTipo()
         );
     }
 
-    public int getIdMovimiento() {
-        return idMovimiento;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdMovimiento(int idMovimiento) {
-        this.idMovimiento = idMovimiento;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getFecha() {

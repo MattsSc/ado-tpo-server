@@ -1,16 +1,16 @@
 package model;
 
-public class Proovedor {
+public class Proveedor {
     private Integer id;
     private String nombre;
     private int cuit;
 
-    public Proovedor(String nombre, int cuit) {
+    public Proveedor(String nombre, int cuit) {
         this.nombre = nombre;
         this.cuit = cuit;
     }
 
-    public Proovedor(Integer id, String nombre, int cuit) {
+    public Proveedor(Integer id, String nombre, int cuit) {
         this.id = id;
         this.nombre = nombre;
         this.cuit = cuit;
