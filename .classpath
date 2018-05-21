@@ -27,5 +27,24 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/tpo-common"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/appengine-sdk-proxy.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/appengine-tools-api.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/rt.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/UADE/UADE - 2018/AD/JARS/slf4j-simple-1.5.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,34 +1,35 @@
 package entities;
 
+import org.hibernate.annotations.DiscriminatorFormula;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="Lote")
-public class LoteEntity {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorFormula("case when tipo='VENTA' then 1 when tipo='ROTURA' then 2 else 3 end")
+@Table(name="Movimiento")
+public class MovimientoEntity {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private Date fechaVencimiento;
+    private Date fecha;
     private int cantidad;
-
-    @ManyToOne
-    @JoinColumn(name="proveedorId")
-    private ProveedorEntity proovedor;
+    private String tipo;
 
     @ManyToOne
     @JoinColumn(name="articuloId")
     private ArticuloEntity articulo;
 
-    public LoteEntity() {
+    public MovimientoEntity() {
     }
 
-    public LoteEntity(Date fechaVencimiento, int cantidad, ProveedorEntity proovedor, ArticuloEntity articulo) {
-        this.fechaVencimiento = fechaVencimiento;
+    public MovimientoEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articulo) {
+        this.fecha = fecha;
         this.cantidad = cantidad;
-        this.proovedor = proovedor;
+        this.tipo = tipo;
         this.articulo = articulo;
     }
 
@@ -40,12 +41,12 @@ public class LoteEntity {
         this.id = id;
     }
 
-    public Date getFechaVencimiento() {
-        return fechaVencimiento;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaVencimiento(Date fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public int getCantidad() {
@@ -56,12 +57,12 @@ public class LoteEntity {
         this.cantidad = cantidad;
     }
 
-    public ProveedorEntity getProovedor() {
-        return proovedor;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setProovedor(ProveedorEntity proovedor) {
-        this.proovedor = proovedor;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public ArticuloEntity getArticulo() {

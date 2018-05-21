@@ -25,7 +25,7 @@ public class Cliente {
         this.razonSocial = razonSocial;
         this.limiteCredito = limiteCredito;
         this.montoDisponible = montoDisponible;
-        this.movimientosCC = new ArrayList<MovimientoCC>();
+        this.movimientosCC = new ArrayList<>();
     }
 
     public Cliente(Integer dni, String nombre, String apellido, String domicilio, String cuit, String razonSocial, float limiteCredito, float montoDisponible, List<MovimientoCC> movimientosCC) {
@@ -38,19 +38,6 @@ public class Cliente {
         this.limiteCredito = limiteCredito;
         this.montoDisponible = montoDisponible;
         this.movimientosCC = movimientosCC;
-    }
-
-    public ClienteDTO toDto(){
-        return new ClienteDTO(
-                this.getDni(),
-                this.getNombre(),
-                this.getApellido(),
-                this.getDomicilio(),
-                this.getCuit(),
-                this.getRazonSocial(),
-                this.getLimiteCredito(),
-                this.getMontoDisponible()
-        );
     }
 
     public int getDni() {
@@ -123,5 +110,18 @@ public class Cliente {
 
     public void setMovimientosCC(List<MovimientoCC> movimientosCC) {
         this.movimientosCC = movimientosCC;
+    }
+
+    public ClienteDTO toDto(){
+        return new ClienteDTO(
+                this.getDni(),
+                this.getNombre(),
+                this.getApellido(),
+                this.getDomicilio(),
+                this.getCuit(),
+                this.getRazonSocial(),
+                this.getLimiteCredito(),
+                this.getMontoDisponible()
+        );
     }
 }

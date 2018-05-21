@@ -34,7 +34,7 @@ public class ControladorCliente implements SistemaCliente{
     }
 
     public void agregarMovimiento(Integer dni, MovimientoCCDto movimientoCCDto) {
-        MovCCDAO.save(ClienteDAO.getCliente(dni), dtoToModel(movimientoCCDto));
+        MovCCDAO.save(ClienteDAO.getById(dni), dtoToModel(movimientoCCDto));
     }
 
     public List<ClienteDTO> listarClientes() {
@@ -42,7 +42,7 @@ public class ControladorCliente implements SistemaCliente{
     }
 
     public ClienteDTO obtenerCliente(Integer dni) {
-        return modelToDto(ClienteDAO.getCliente(dni));
+        return modelToDto(ClienteDAO.getById(dni));
     }
 
     /***************** PRIVATE METHODS **********************/

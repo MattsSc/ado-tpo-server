@@ -1,21 +1,26 @@
-package model;
+package entities;
 
-import model.enums.TipoMovimiento;
-
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.Date;
 
-public class MovimientoPorInventario  extends  Movimiento{
+@Entity
+@DiscriminatorValue("3")
+public class MovimientoPorInventarioEntity extends MovimientoEntity {
     private String descripcion;
     private String estado;
 
-    public MovimientoPorInventario(Date fecha, int cantidad, TipoMovimiento tipo, String descripcion, String estado) {
-        super(fecha, cantidad, tipo);
+    public MovimientoPorInventarioEntity(){
+        super();
+    }
+
+    public MovimientoPorInventarioEntity(String descripcion, String estado) {
         this.descripcion = descripcion;
         this.estado = estado;
     }
 
-    public MovimientoPorInventario(Integer id, Date fecha, int cantidad, TipoMovimiento tipo, String descripcion, String estado) {
-        super(id, fecha, cantidad, tipo);
+    public MovimientoPorInventarioEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String descripcion, String estado) {
+        super(fecha, cantidad, tipo, articuloEntity);
         this.descripcion = descripcion;
         this.estado = estado;
     }

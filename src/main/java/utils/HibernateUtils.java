@@ -1,10 +1,11 @@
 package utils;
 
-import entities.ClienteEntity;
-import entities.MovCCEntity;
-import entities.ProveedorEntity;
+import entities.*;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import java.util.List;
 
 public class HibernateUtils {
     private static final SessionFactory sessionFactory;
@@ -15,8 +16,15 @@ public class HibernateUtils {
         {
             System.getProperty("java.security.policy");
             Configuration config = new Configuration();
+
+            config.addAnnotatedClass(ArticuloEntity.class);
             config.addAnnotatedClass(ClienteEntity.class);
+            config.addAnnotatedClass(LoteEntity.class);
             config.addAnnotatedClass(MovCCEntity.class);
+            config.addAnnotatedClass(MovimientoBasicoEntity.class);
+            config.addAnnotatedClass(MovimientoEntity.class);
+            config.addAnnotatedClass(MovimientoPorDanioEntity.class);
+            config.addAnnotatedClass(MovimientoPorInventarioEntity.class);
             config.addAnnotatedClass(ProveedorEntity.class);
 
             sessionFactory = config.buildSessionFactory();
@@ -31,5 +39,34 @@ public class HibernateUtils {
     public static SessionFactory getSessionFactory()
     {
         return sessionFactory;
+    }
+
+    public static void saveTransaction(Object e){
+        SessionFactory sf= HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        s.save(e);
+        s.getTransaction().commit();
+        s.close();
+    }
+
+    public static <T> List<T> getResultList(String query){
+        SessionFactory sf = HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        List<T> result = s.createQuery(query).list();
+        s.getTransaction().commit();
+
+        return result;
+    }
+
+    public static <T> T  getById(Class<T> E, Integer id){
+        SessionFactory sf = HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        T result= s.get(E, id);
+        s.getTransaction().commit();
+
+        return result;
     }
 }

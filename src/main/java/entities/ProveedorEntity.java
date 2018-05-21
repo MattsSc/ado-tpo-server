@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name="Proveedor")
 public class ProveedorEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Integer id;
 
     private String nombre;
