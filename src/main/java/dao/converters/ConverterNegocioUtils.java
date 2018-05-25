@@ -4,24 +4,9 @@ import entities.*;
 import model.*;
 import model.enums.TipoMovimiento;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class ConverterNegocioUtils {
 
     public static Cliente clienteToNegocio(ClienteEntity clienteE) {
-        if(!clienteE.getMovimientosCC().isEmpty()){
-            return new Cliente(clienteE.getDni(),
-                    clienteE.getNombre(),
-                    clienteE.getApellido(),
-                    clienteE.getDomicilio(),
-                    clienteE.getCuit(),
-                    clienteE.getRazonSocial(),
-                    clienteE.getLimiteCredito(),
-                    clienteE.getMontoDisponible(),
-                    clienteE.getMovimientosCC().stream().map(movCC -> new MovimientoCC(movCC.getFecha(),movCC.getImporte(),movCC.getTipo())).collect(Collectors.toList()));
-        }
         return new Cliente(clienteE.getDni(),
                 clienteE.getNombre(),
                 clienteE.getApellido(),
@@ -29,7 +14,8 @@ public class ConverterNegocioUtils {
                 clienteE.getCuit(),
                 clienteE.getRazonSocial(),
                 clienteE.getLimiteCredito(),
-                clienteE.getMontoDisponible());
+                clienteE.getMontoDisponible(),
+                null);
     }
 
     public static Articulo articuloToNegocio(ArticuloEntity entity){
@@ -39,52 +25,45 @@ public class ConverterNegocioUtils {
                 entity.getPresentacion(),
                 entity.getTamanio(),
                 entity.getUnidad(),
-                entity.getPrecio(),
-                entity.getLotes().isEmpty() ? new ArrayList<>(): lotesToNegocio(entity.getLotes()),
-                entity.getMovimientos().isEmpty() ? new ArrayList<>(): movBasicoToNegocio(entity.getMovimientos())
+                entity.getPrecio()
         );
     }
 
-    public static List<Lote> lotesToNegocio(List<LoteEntity> entities){
-        return entities.stream().map(lote ->
-                new Lote(
-                        lote.getId(),
-                        lote.getFechaVencimiento(),
-                        lote.getCantidad(),
-                        new Proveedor(
-                                lote.getProovedor().getId(),
-                                lote.getProovedor().getNombre(),
-                                lote.getProovedor().getCuit())
-                )).collect(Collectors.toList());
+    public static Lote loteToNegocio(LoteEntity loteEntity){
+        return new Lote(
+                loteEntity.getId(),
+                loteEntity.getFechaVencimiento(),
+                loteEntity.getCantidad(),
+                null
+                );
 
     }
 
-    public static List<Movimiento> movBasicoToNegocio(List<MovimientoBasicoEntity> entities){
-        return entities.stream().map(mov -> new MovimientoBasico(
+    public static Movimiento movBasicoToNegocio(MovimientoBasicoEntity mov){
+        return new MovimientoBasico(
                 mov.getId(),
                 mov.getFecha(),
                 mov.getCantidad(),
                 TipoMovimiento.valueOf(mov.getTipo()),
                 mov.getEstado()
-        )).collect(Collectors.toList());
+        );
+    }
+
+    public static ItemPedido itemPedidoToNegocio(ItemPedidoEntity it){
+        return new ItemPedido(
+                it.getId(),
+                it.getCantidad());
     }
 
     public static Pedido pedidoToNegocio(PedidoEntity entity){
         return new Pedido(
                 entity.getId(),
-                ConverterNegocioUtils.clienteToNegocio(entity.getCliente()),
                 entity.getFechaSolicitudOrden(),
                 entity.getFechaDespacho(),
                 entity.getFechaEntrega(),
                 entity.getEstado(),
-                entity.getDireccionEntrega(),
-                entity.getItems().stream().map(it -> new ItemPedido(
-                        it.getId(),
-                        it.getCantidad(),
-                        articuloToNegocio(it.getArticulo()))
-                ).collect(Collectors.toList())
+                entity.getDireccionEntrega()
         );
     }
-
 
 }

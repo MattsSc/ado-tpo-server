@@ -29,14 +29,7 @@ public class ControladorPedido implements SistemaPedido {
 
     @Override
     public void crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
-        Pedido pedido = new Pedido(
-                ClienteDAO.getById(cliente.getDni()),
-                "EN_ESPERA",
-                direccionEntrega,
-                items.stream().map(ItemPedido::dtoToModel).collect(Collectors.toList())
-        );
 
-        PedidoDAO.save(pedido);
     }
 
     @Override
@@ -46,15 +39,7 @@ public class ControladorPedido implements SistemaPedido {
 
     @Override
     public void aprobarPedido(Integer id) throws RemoteException {
-        Pedido pedido = PedidoDAO.getById(id);
-        Optional<ItemPedido> optional = pedido.getItems().stream().filter(it -> !(it.getArticulo().hayStock(it.getCantidad()))).findFirst();
-        if(optional.isPresent()){
-            //Falta stock de optional
-            PedidoDAO.updateStatus(pedido.getId(),"FALTA_STOCK");
-        }else{
-            //no falta stock
-            PedidoDAO.updateStatus(pedido.getId(),"APROBADO");
-        }
+
     }
 
     @Override

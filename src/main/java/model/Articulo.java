@@ -1,5 +1,6 @@
 package model;
 
+import dao.ArticuloDAO;
 import dtos.ArticuloDTO;
 
 import java.util.ArrayList;
@@ -17,25 +18,7 @@ public class Articulo {
     private List<Lote> lotes;
     private List<Movimiento> movimientos;
 
-
-
-
-    public static Articulo dtoToModel(ArticuloDTO dto){
-        return new Articulo(
-                dto.getCodigo(),
-                dto.getDescripcion(),
-                dto.getPresentacion(),
-                dto.getTamanio(),
-                dto.getUnidad(),
-                dto.getPrecio()
-        );
-    }
-
-
-
-
-
-
+    //Constructor
     public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -58,10 +41,13 @@ public class Articulo {
         this.movimientos = movimientos;
     }
 
+    //Logic
     public boolean hayStock(int cantidad){
-        return (lotes.stream().mapToInt(Lote::getStock).sum() > cantidad);
+        return (getLotes().stream().mapToInt(Lote::getStock).sum() >= cantidad);
     }
 
+
+    //Getter & Setter
     public Integer getCodigo() {
         return codigo;
     }
@@ -111,7 +97,13 @@ public class Articulo {
     }
 
     public List<Lote> getLotes() {
-        return lotes.stream().sorted(Comparator.comparing(Lote::getFechaVencimiento)).collect(Collectors.toList());
+        if(lotes == null){
+            lotes = ArticuloDAO.getLotes(this)
+                    .stream()
+                    .sorted(Comparator.comparing(Lote::getFechaVencimiento))
+                    .collect(Collectors.toList());
+        }
+        return lotes;
     }
 
     public void setLotes(List<Lote> lotes) {

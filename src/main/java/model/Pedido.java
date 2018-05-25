@@ -1,5 +1,6 @@
 package model;
 
+import dao.PedidoDAO;
 import dtos.PedidoDTO;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class Pedido {
     private String direccionEntrega;
     private List<ItemPedido> items;
 
+    //CONVERTER
     public PedidoDTO toDto(){
         return new PedidoDTO(
                 this.getId(),
@@ -29,6 +31,7 @@ public class Pedido {
         );
     }
 
+    //CONSTRUCTORS
     public Pedido(Cliente cliente, String estado, String direccionEntrega, List<ItemPedido> items) {
         this.cliente = cliente;
         this.fechaSolicitudOrden = new Date();
@@ -37,14 +40,13 @@ public class Pedido {
         this.items = items;
     }
 
-    public Pedido(Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedido> items) {
-        this.cliente = cliente;
+    public Pedido(Integer id, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega) {
+        this.id = id;
         this.fechaSolicitudOrden = fechaSolicitudOrden;
         this.fechaDespacho = fechaDespacho;
         this.fechaEntrega = fechaEntrega;
         this.estado = estado;
         this.direccionEntrega = direccionEntrega;
-        this.items = items;
     }
 
     public Pedido(Integer id, Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedido> items) {
@@ -58,6 +60,26 @@ public class Pedido {
         this.items = items;
     }
 
+    //LOGIC
+    public void save(){
+        PedidoDAO.save(this);
+    }
+
+    public void update(){
+        PedidoDAO.update(this);
+    }
+
+    public void aprobar(){
+        this.getItems().stream().forEach(itemPedido -> {
+            if(itemPedido.hayStock()){
+
+            }else{
+
+            }
+        });
+    }
+
+    //GETTERS Y SETTERS
     public Integer getId() {
         return id;
     }
@@ -67,6 +89,7 @@ public class Pedido {
     }
 
     public Cliente getCliente() {
+        if(cliente == null) cliente = PedidoDAO.getCliente(this);
         return cliente;
     }
 
@@ -115,6 +138,7 @@ public class Pedido {
     }
 
     public List<ItemPedido> getItems() {
+        if(items == null) this.items = PedidoDAO.getItemsPedidos(this);
         return items;
     }
 

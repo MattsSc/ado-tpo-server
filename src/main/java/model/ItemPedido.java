@@ -1,5 +1,6 @@
 package model;
 
+import dao.ItemPedidoDAO;
 import dtos.ItemPedidoDTO;
 
 public class ItemPedido {
@@ -9,12 +10,6 @@ public class ItemPedido {
     private Articulo articulo;
 
 
-    public static ItemPedido dtoToModel(ItemPedidoDTO dto){
-        return new ItemPedido(
-                dto.getCantidad(),
-                Articulo.dtoToModel(dto.getArticulo()));
-    }
-
     public ItemPedidoDTO toDto(){
         return new ItemPedidoDTO(
                 this.getId(),
@@ -23,19 +18,23 @@ public class ItemPedido {
         );
     }
 
-
-
     public ItemPedido(int cantidad, Articulo articulo) {
         this.cantidad = cantidad;
         this.articulo = articulo;
     }
 
-    public ItemPedido(Integer id, int cantidad, Articulo articulo) {
+    public ItemPedido(Integer id, int cantidad) {
         this.id = id;
         this.cantidad = cantidad;
-        this.articulo = articulo;
     }
 
+    //LOGIC
+
+    public boolean hayStock(){
+        return this.getArticulo().hayStock(this.getCantidad());
+    }
+
+    //GETTER Y SETTERS
     public Integer getId() {
         return id;
     }
@@ -53,6 +52,7 @@ public class ItemPedido {
     }
 
     public Articulo getArticulo() {
+        if( articulo == null ) articulo = ItemPedidoDAO.getArticulo(this);
         return articulo;
     }
 

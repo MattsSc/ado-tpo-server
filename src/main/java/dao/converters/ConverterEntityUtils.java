@@ -6,7 +6,6 @@ import model.Cliente;
 import model.Lote;
 import model.Pedido;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,17 +35,6 @@ public class ConverterEntityUtils {
         );
     }
 
-    public static ArticuloEntity articuloToEntity(Articulo articulo){
-        return new ArticuloEntity(
-                articulo.getCodigo(),
-                articulo.getDescripcion(),
-                articulo.getPresentacion(),
-                articulo.getTamanio(),
-                articulo.getUnidad(),
-                articulo.getPrecio());
-    }
-
-
     public static LoteEntity loteToEntity(Lote lote, Articulo articulo){
         ProveedorEntity proveedorEntity = new ProveedorEntity(lote.getProveedor().getNombre(), lote.getProveedor().getCuit());
         proveedorEntity.setId(lote.getProveedor().getId());
@@ -58,6 +46,15 @@ public class ConverterEntityUtils {
         );
     }
 
+    public static ArticuloEntity articuloToEntity(Articulo articulo){
+        return new ArticuloEntity(
+                articulo.getCodigo(),
+                articulo.getDescripcion(),
+                articulo.getPresentacion(),
+                articulo.getTamanio(),
+                articulo.getUnidad(),
+                articulo.getPrecio());
+    }
 
     public static PedidoEntity pedidoToEntity(Pedido pedido){
         List<ItemPedidoEntity> itemPedidoEntityList = pedido.getItems().stream().map(item -> {

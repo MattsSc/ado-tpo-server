@@ -6,6 +6,9 @@ import entities.ArticuloEntity;
 import model.*;
 import utils.HibernateUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ArticuloDAO {
 
     public static void save(Articulo articulo){
@@ -14,5 +17,11 @@ public class ArticuloDAO {
 
     public static Articulo getById(Integer id){
         return ConverterNegocioUtils.articuloToNegocio(HibernateUtils.getById(ArticuloEntity.class, id));
+    }
+
+    public static List<Lote> getLotes(Articulo articulo){
+        return  HibernateUtils.getById(ArticuloEntity.class, articulo.getCodigo()).getLotes().stream()
+                .map(ConverterNegocioUtils::loteToNegocio)
+                .collect(Collectors.toList());
     }
 }

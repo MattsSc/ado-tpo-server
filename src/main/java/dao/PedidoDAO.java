@@ -3,6 +3,8 @@ package dao;
 import dao.converters.ConverterEntityUtils;
 import dao.converters.ConverterNegocioUtils;
 import entities.PedidoEntity;
+import model.Cliente;
+import model.ItemPedido;
 import model.Pedido;
 import utils.HibernateUtils;
 
@@ -15,10 +17,8 @@ public class PedidoDAO {
         HibernateUtils.saveTransaction(ConverterEntityUtils.pedidoToEntity(pedido));
     }
 
-    public static void updateStatus(Integer id, String estado){
-        PedidoEntity pedidoEntity = HibernateUtils.getById(PedidoEntity.class, id);
-        pedidoEntity.setEstado(estado);
-        HibernateUtils.updateTransaction(pedidoEntity);
+    public static void update(Pedido pedido){
+        HibernateUtils.updateTransaction(ConverterEntityUtils.pedidoToEntity(pedido));
     }
 
     public static List<Pedido> getAll(){
@@ -31,4 +31,11 @@ public class PedidoDAO {
         return ConverterNegocioUtils.pedidoToNegocio(HibernateUtils.getById(PedidoEntity.class, id));
     }
 
+    public static List<ItemPedido> getItemsPedidos(Pedido pedido){
+        return HibernateUtils.getById(PedidoEntity.class, pedido.getId()).getItems().stream().map(ConverterNegocioUtils::itemPedidoToNegocio).collect(Collectors.toList());
+    }
+
+    public static Cliente getCliente(Pedido pedido){
+        return ConverterNegocioUtils.clienteToNegocio(HibernateUtils.getById(PedidoEntity.class, pedido.getId()).getCliente());
+    }
 }
