@@ -1,4 +1,6 @@
-package model;
+package model.manager;
+
+import model.ReservaArticulo;
 
 import java.util.Arrays;
 import java.util.HashMap;

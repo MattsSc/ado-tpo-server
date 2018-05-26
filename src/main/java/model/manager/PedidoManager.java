@@ -1,6 +1,7 @@
-package model;
+package model.manager;
 
 import dao.PedidoDAO;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class PedidoManager {
             if(articulo.stockRestante() >= item.getCantidad()){
                 generarReservaDeStock(pedido, item, articulo, true);
             }else{
-                generarReservaDeStock(pedido, item, articulo, false);
-
+                OrdenDePedido ordenDePedido = new OrdenDePedido(item.getArticulo(),item.getCantidad(),pedido.getId());
+                ordenDePedido.save();
             }
         });
     }
