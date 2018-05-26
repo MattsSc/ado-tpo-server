@@ -53,6 +53,7 @@ public class ConverterEntityUtils {
                 articulo.getPresentacion(),
                 articulo.getTamanio(),
                 articulo.getUnidad(),
+                articulo.getCantReposicion(),
                 articulo.getPrecio());
     }
 

@@ -3,7 +3,7 @@ package model.enums;
 public enum TipoMovimiento {
     COMPRA,
     VENTA,
-    ROTURA,
-    REPOSICION,
-    PERDIDA
+    ELIMINACION,
+    AJUSTE_POSITIVO,
+    AJUSTE_NEGATIVO
 }

@@ -5,24 +5,24 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
-@DiscriminatorValue("2")
-public class MovimientoPorDanioEntity extends MovimientoEntity{
+@DiscriminatorValue("1")
+public class MovimientoPorEliminacionEntity extends MovimientoEntity{
 
     private String encargado;
     private String destino;
     private String auotorizador;
 
-    public MovimientoPorDanioEntity(){
+    public MovimientoPorEliminacionEntity(){
         super();
     }
 
-    public MovimientoPorDanioEntity(String encargado, String destino, String auotorizador) {
+    public MovimientoPorEliminacionEntity(String encargado, String destino, String auotorizador) {
         this.encargado = encargado;
         this.destino = destino;
         this.auotorizador = auotorizador;
     }
 
-    public MovimientoPorDanioEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String encargado, String destino, String auotorizador) {
+    public MovimientoPorEliminacionEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String encargado, String destino, String auotorizador) {
         super(fecha, cantidad, tipo, articuloEntity);
         this.encargado = encargado;
         this.destino = destino;

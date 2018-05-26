@@ -24,4 +24,11 @@ public class ArticuloDAO {
                 .map(ConverterNegocioUtils::loteToNegocio)
                 .collect(Collectors.toList());
     }
+
+    public static List<Movimiento> getMovimientos(Articulo articulo){
+        return  HibernateUtils.getById(ArticuloEntity.class, articulo.getCodigo()).getMovimientos().stream()
+                .map(ConverterNegocioUtils::movToNegocio)
+                .collect(Collectors.toList());
+    }
+
 }

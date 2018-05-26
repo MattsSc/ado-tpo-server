@@ -69,15 +69,6 @@ public class Pedido {
         PedidoDAO.update(this);
     }
 
-    public void aprobar(){
-        this.getItems().stream().forEach(itemPedido -> {
-            if(itemPedido.hayStock()){
-
-            }else{
-
-            }
-        });
-    }
 
     //GETTERS Y SETTERS
     public Integer getId() {

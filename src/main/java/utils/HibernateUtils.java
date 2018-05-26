@@ -23,7 +23,7 @@ public class HibernateUtils {
             config.addAnnotatedClass(MovCCEntity.class);
             config.addAnnotatedClass(MovimientoBasicoEntity.class);
             config.addAnnotatedClass(MovimientoEntity.class);
-            config.addAnnotatedClass(MovimientoPorDanioEntity.class);
+            config.addAnnotatedClass(MovimientoPorEliminacionEntity.class);
             config.addAnnotatedClass(PedidoEntity.class);
             config.addAnnotatedClass(ProveedorEntity.class);
 

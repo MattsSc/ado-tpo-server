@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
-@DiscriminatorValue("1")
+@DiscriminatorValue("2")
 public class MovimientoBasicoEntity extends MovimientoEntity {
     private String estado;
 

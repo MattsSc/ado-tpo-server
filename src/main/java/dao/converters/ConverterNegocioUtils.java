@@ -25,7 +25,8 @@ public class ConverterNegocioUtils {
                 entity.getPresentacion(),
                 entity.getTamanio(),
                 entity.getUnidad(),
-                entity.getPrecio()
+                entity.getPrecio(),
+                entity.getCantReposicion()
         );
     }
 
@@ -49,6 +50,17 @@ public class ConverterNegocioUtils {
         );
     }
 
+    public static Movimiento movEliminacionToNegocio(MovimientoPorEliminacionEntity mov){
+        return new MovimientoPorEliminacion(
+                mov.getId(),
+                mov.getFecha(),
+                mov.getCantidad(),
+                mov.getEncargado(),
+                mov.getDestino(),
+                mov.getAuotorizador()
+        );
+    }
+
     public static ItemPedido itemPedidoToNegocio(ItemPedidoEntity it){
         return new ItemPedido(
                 it.getId(),
@@ -66,4 +78,10 @@ public class ConverterNegocioUtils {
         );
     }
 
+    public static Movimiento movToNegocio(MovimientoEntity movimiento){
+        if(TipoMovimiento.valueOf(movimiento.getTipo()).equals(TipoMovimiento.ELIMINACION))
+            return movEliminacionToNegocio((MovimientoPorEliminacionEntity) movimiento);
+        else
+            return movBasicoToNegocio((MovimientoBasicoEntity) movimiento);
+    }
 }

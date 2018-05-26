@@ -13,6 +13,7 @@ public class ArticuloEntity {
     private String presentacion;
     private int tamanio;
     private int unidad;
+    private int cantReposicion;
     private float precio;
 
     @OneToMany
@@ -26,21 +27,23 @@ public class ArticuloEntity {
     public ArticuloEntity(){
     }
 
-    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
+    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, int cantReposicion, float precio) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
         this.tamanio = tamanio;
         this.unidad = unidad;
+        this.cantReposicion = cantReposicion;
         this.precio = precio;
     }
 
-    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, List<LoteEntity> lotes, List<MovimientoBasicoEntity> movimientos) {
+    public ArticuloEntity(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, int cantReposicion, float precio, List<LoteEntity> lotes, List<MovimientoBasicoEntity> movimientos) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
         this.tamanio = tamanio;
         this.unidad = unidad;
+        this.cantReposicion = cantReposicion;
         this.precio = precio;
         this.lotes = lotes;
         this.movimientos = movimientos;
@@ -92,6 +95,14 @@ public class ArticuloEntity {
 
     public void setPrecio(float precio) {
         this.precio = precio;
+    }
+
+    public int getCantReposicion() {
+        return cantReposicion;
+    }
+
+    public void setCantReposicion(int cantReposicion) {
+        this.cantReposicion = cantReposicion;
     }
 
     public List<LoteEntity> getLotes() {

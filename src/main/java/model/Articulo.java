@@ -2,10 +2,12 @@ package model;
 
 import dao.ArticuloDAO;
 import dtos.ArticuloDTO;
+import model.enums.TipoMovimiento;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Articulo {
@@ -15,38 +17,41 @@ public class Articulo {
     private int tamanio;
     private int unidad;
     private float precio;
+    private int cantReposicion;
     private List<Lote> lotes;
     private List<Movimiento> movimientos;
 
     //Constructor
-    public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio) {
+    public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, int cantReposicion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
         this.tamanio = tamanio;
         this.unidad = unidad;
         this.precio = precio;
-        this.lotes = new ArrayList<>();
-        this.movimientos = new ArrayList<>();
+        this.cantReposicion = cantReposicion;
     }
 
-    public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, List<Lote> lotes, List<Movimiento> movimientos) {
+    public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, int cantReposicion, List<Lote> lotes, List<Movimiento> movimientos) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.presentacion = presentacion;
         this.tamanio = tamanio;
         this.unidad = unidad;
         this.precio = precio;
+        this.cantReposicion = cantReposicion;
         this.lotes = lotes;
         this.movimientos = movimientos;
     }
 
     //Logic
-    public boolean hayStock(int cantidad){
-        return (getLotes().stream().mapToInt(Lote::getStock).sum() >= cantidad);
+    public int stockRestante(){
+        return getMovimientos().stream().mapToInt(mov -> esMovimientoNegativo(mov) ? -mov.getCantidad(): mov.getCantidad()).sum();
     }
 
-
+    private boolean esMovimientoNegativo(Movimiento mov){
+        return (mov.getTipo().equals(TipoMovimiento.ELIMINACION) || mov.getTipo().equals(TipoMovimiento.AJUSTE_NEGATIVO) || mov.getTipo().equals(TipoMovimiento.VENTA));
+    }
     //Getter & Setter
     public Integer getCodigo() {
         return codigo;
@@ -96,6 +101,14 @@ public class Articulo {
         this.precio = precio;
     }
 
+    public int getCantReposicion() {
+        return cantReposicion;
+    }
+
+    public void setCantReposicion(int cantReposicion) {
+        this.cantReposicion = cantReposicion;
+    }
+
     public List<Lote> getLotes() {
         if(lotes == null){
             lotes = ArticuloDAO.getLotes(this)
@@ -111,6 +124,8 @@ public class Articulo {
     }
 
     public List<Movimiento> getMovimientos() {
+        if(movimientos == null)
+            movimientos = ArticuloDAO.getMovimientos(this);
         return movimientos;
     }
 
@@ -118,6 +133,7 @@ public class Articulo {
         this.movimientos = movimientos;
     }
 
+    //Transformer
     public ArticuloDTO toDto() {
         return new ArticuloDTO(
                 this.getCodigo(),

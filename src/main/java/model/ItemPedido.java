@@ -28,12 +28,6 @@ public class ItemPedido {
         this.cantidad = cantidad;
     }
 
-    //LOGIC
-
-    public boolean hayStock(){
-        return this.getArticulo().hayStock(this.getCantidad());
-    }
-
     //GETTER Y SETTERS
     public Integer getId() {
         return id;
