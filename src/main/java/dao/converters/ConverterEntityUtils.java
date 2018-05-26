@@ -65,7 +65,7 @@ public class ConverterEntityUtils {
                     articuloEntity);
         }).collect(Collectors.toList());
 
-        return new PedidoEntity(
+        PedidoEntity pedidoEntity =  new PedidoEntity(
                 clienteToEntity(pedido.getCliente()),
                 pedido.getFechaSolicitudOrden(),
                 pedido.getFechaDespacho(),
@@ -74,6 +74,11 @@ public class ConverterEntityUtils {
                 pedido.getDireccionEntrega(),
                 itemPedidoEntityList
         );
+
+        if(pedido.getId() != null)
+            pedidoEntity.setId(pedido.getId());
+
+        return pedidoEntity;
     }
 
 }

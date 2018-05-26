@@ -1,21 +1,27 @@
-package model;
+package entities;
 
-public class OrdenDeCompra {
+import javax.persistence.*;
 
+@Entity
+@Table(name="OrdenDeCompra")
+public class OrdenDeCompraEntity {
+
+    @Id
+    @GeneratedValue
     private Integer id;
-    private Articulo articulo;
+
+    @ManyToOne
+    @JoinColumn(name="articuloId")
+    private ArticuloEntity articulo;
+
     private Integer cantidad;
     private boolean resuelto;
-    private Proveedor proovedor;
 
-    public OrdenDeCompra(Articulo articulo, Integer cantidad, boolean resuelto) {
-        this.articulo = articulo;
-        this.cantidad = cantidad;
-        this.resuelto = resuelto;
-    }
+    @ManyToOne
+    @JoinColumn(name="proveedorId")
+    private ProveedorEntity proovedor;
 
-    public OrdenDeCompra(Integer id, Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proovedor) {
-        this.id = id;
+    public OrdenDeCompraEntity(ArticuloEntity articulo, Integer cantidad, boolean resuelto, ProveedorEntity proovedor) {
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
@@ -30,11 +36,11 @@ public class OrdenDeCompra {
         this.id = id;
     }
 
-    public Articulo getArticulo() {
+    public ArticuloEntity getArticulo() {
         return articulo;
     }
 
-    public void setArticulo(Articulo articulo) {
+    public void setArticulo(ArticuloEntity articulo) {
         this.articulo = articulo;
     }
 
@@ -54,11 +60,11 @@ public class OrdenDeCompra {
         this.resuelto = resuelto;
     }
 
-    public Proveedor getProovedor() {
+    public ProveedorEntity getProovedor() {
         return proovedor;
     }
 
-    public void setProovedor(Proveedor proovedor) {
+    public void setProovedor(ProveedorEntity proovedor) {
         this.proovedor = proovedor;
     }
 }

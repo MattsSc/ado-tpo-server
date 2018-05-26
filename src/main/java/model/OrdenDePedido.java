@@ -1,5 +1,7 @@
 package model;
 
+import dao.OrdenDePedidoDAO;
+
 public class OrdenDePedido {
     private Integer id;
     private Articulo articulo;
@@ -7,6 +9,7 @@ public class OrdenDePedido {
     private Integer idPedido;
     private Integer idOrdenCompra;
 
+    //Constructos
     public OrdenDePedido(Integer id, Articulo articulo, Integer cantidad, Integer idPedido) {
         this.id = id;
         this.articulo = articulo;
@@ -20,6 +23,14 @@ public class OrdenDePedido {
         this.idPedido = idPedido;
     }
 
+
+    //Logic
+    public void save(){
+        OrdenDePedidoDAO.save(this);
+    }
+
+
+    //Getter & setters
     public Integer getId() {
         return id;
     }

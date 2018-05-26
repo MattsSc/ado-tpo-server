@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
+import java.util.Optional;
 
 public class HibernateUtils {
     private static final SessionFactory sessionFactory;
@@ -64,6 +65,16 @@ public class HibernateUtils {
         Session s = sf.openSession();
         s.beginTransaction();
         List<T> result = s.createQuery(query).list();
+        s.getTransaction().commit();
+
+        return result;
+    }
+
+    public static  Optional getOneResult(String query){
+        SessionFactory sf = HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        Optional result = s.createQuery(query).uniqueResultOptional();
         s.getTransaction().commit();
 
         return result;

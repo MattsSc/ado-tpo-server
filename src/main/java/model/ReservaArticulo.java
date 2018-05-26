@@ -1,5 +1,7 @@
 package model;
 
+import dao.ReservaArticuloDAO;
+
 public class ReservaArticulo {
 
     private Integer id;
@@ -18,6 +20,11 @@ public class ReservaArticulo {
         this.cantidad = cantidad;
         this.idPedido = idPedido;
         this.esCompleta = esCompleta;
+    }
+
+    //Logic
+    public void save(Integer codigoArticulo){
+        ReservaArticuloDAO.save(this, codigoArticulo);
     }
 
     public Integer getId() {
@@ -42,5 +49,13 @@ public class ReservaArticulo {
 
     public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
+    }
+
+    public boolean isEsCompleta() {
+        return esCompleta;
+    }
+
+    public void setEsCompleta(boolean esCompleta) {
+        this.esCompleta = esCompleta;
     }
 }

@@ -1,7 +1,5 @@
 package entities;
 
-import model.Articulo;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,16 +14,22 @@ public class OrdenDePedidoEntity {
     private ArticuloEntity articulo;
 
     private Integer cantidad;
-    private Integer idPedido;
-    private Integer idOrdenCompra;
+
+    @ManyToOne
+    @JoinColumn(name="pedidoId")
+    private PedidoEntity pedido;
+
+    @ManyToOne
+    @JoinColumn(name="ordenDeCompraId")
+    private OrdenDeCompraEntity ordenCompra;
 
     public OrdenDePedidoEntity() {}
 
-    public OrdenDePedidoEntity(ArticuloEntity articulo, Integer cantidad, Integer idPedido, Integer idOrdenCompra) {
+    public OrdenDePedidoEntity(ArticuloEntity articulo, Integer cantidad, PedidoEntity pedido, OrdenDeCompraEntity ordenCompra) {
         this.articulo = articulo;
         this.cantidad = cantidad;
-        this.idPedido = idPedido;
-        this.idOrdenCompra = idOrdenCompra;
+        this.pedido = pedido;
+        this.ordenCompra = ordenCompra;
     }
 
     public Integer getId() {
@@ -52,19 +56,19 @@ public class OrdenDePedidoEntity {
         this.cantidad = cantidad;
     }
 
-    public Integer getIdPedido() {
-        return idPedido;
+    public PedidoEntity getPedido() {
+        return pedido;
     }
 
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
+    public void setPedido(PedidoEntity pedido) {
+        this.pedido = pedido;
     }
 
-    public Integer getIdOrdenCompra() {
-        return idOrdenCompra;
+    public OrdenDeCompraEntity getOrdenCompra() {
+        return ordenCompra;
     }
 
-    public void setIdOrdenCompra(Integer idOrdenCompra) {
-        this.idOrdenCompra = idOrdenCompra;
+    public void setOrdenCompra(OrdenDeCompraEntity ordenCompra) {
+        this.ordenCompra = ordenCompra;
     }
 }
