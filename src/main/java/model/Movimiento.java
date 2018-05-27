@@ -1,5 +1,6 @@
 package model;
 
+import dao.MovimientoDAO;
 import model.enums.TipoMovimiento;
 
 import java.util.Date;
@@ -21,6 +22,10 @@ public abstract class Movimiento {
         this.fecha = fecha;
         this.cantidad = cantidad;
         this.tipo = tipo;
+    }
+
+    public void save(Articulo articulo){
+        MovimientoDAO.save(this,articulo);
     }
 
     public Integer getId() {

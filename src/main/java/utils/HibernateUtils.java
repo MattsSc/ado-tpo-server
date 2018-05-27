@@ -25,8 +25,12 @@ public class HibernateUtils {
             config.addAnnotatedClass(MovimientoBasicoEntity.class);
             config.addAnnotatedClass(MovimientoEntity.class);
             config.addAnnotatedClass(MovimientoPorEliminacionEntity.class);
+            config.addAnnotatedClass(OrdenDeCompraEntity.class);
+            config.addAnnotatedClass(OrdenDePedidoEntity.class);
             config.addAnnotatedClass(PedidoEntity.class);
             config.addAnnotatedClass(ProveedorEntity.class);
+            config.addAnnotatedClass(ReservaArticuloEntity.class);
+            config.addAnnotatedClass(UbicacionEntity.class);
 
             sessionFactory = config.buildSessionFactory();
         }

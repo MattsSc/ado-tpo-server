@@ -45,6 +45,10 @@ public class Articulo {
     }
 
     //Logic
+    public void save(){
+        ArticuloDAO.save(this);
+    }
+
     public int stockRestante(){
         return getMovimientos().stream().mapToInt(mov -> esMovimientoNegativo(mov) ? -mov.getCantidad(): mov.getCantidad()).sum();
     }

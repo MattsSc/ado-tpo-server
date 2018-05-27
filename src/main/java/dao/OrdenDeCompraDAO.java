@@ -11,12 +11,21 @@ import java.util.Optional;
 public class OrdenDeCompraDAO {
 
     public static void save(OrdenDeCompra ordenDeCompra){
-        HibernateUtils.saveTransaction(ordenDeCompraToEntity(ordenDeCompra));
+        OrdenDeCompraEntity oCEntity = ordenDeCompraToEntity(ordenDeCompra);
+        HibernateUtils.saveTransaction(oCEntity);
+        ordenDeCompra.setId(oCEntity.getId());
+    }
+
+    public static OrdenDeCompra getById(Integer id){
+        return ordenDeCompraToNegocio(HibernateUtils.getById(OrdenDeCompraEntity.class, id));
+    }
+
+    public static void update(OrdenDeCompra or){
+        HibernateUtils.updateTransaction(ordenDeCompraToEntity(or));
     }
 
     public static OrdenDeCompra getUltimaOrdenDeCompra(Integer codigoArticulo){
-        Optional<OrdenDeCompraEntity> result =HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC\n" +
-                "LIMIT 1");
+        Optional<OrdenDeCompraEntity> result =HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
 
         return result.map(OrdenDeCompraDAO::ordenDeCompraToNegocio).orElse(null);
     }
@@ -26,7 +35,7 @@ public class OrdenDeCompraDAO {
                 ConverterEntityUtils.articuloToEntity(ordenDeCompra.getArticulo()),
                 ordenDeCompra.getCantidad(),
                 ordenDeCompra.isResuelto(),
-                null
+                ordenDeCompra.getProovedor() != null ? ConverterEntityUtils.proveedorToEntity(ordenDeCompra.getProovedor()) : null
         );
     }
 
@@ -36,7 +45,7 @@ public class OrdenDeCompraDAO {
                 ConverterNegocioUtils.articuloToNegocio(ordenDeCompra.getArticulo()),
                 ordenDeCompra.getCantidad(),
                 ordenDeCompra.isResuelto(),
-                null
+                ConverterNegocioUtils.proveedorToNegocio(ordenDeCompra.getProovedor())
         );
     }
 

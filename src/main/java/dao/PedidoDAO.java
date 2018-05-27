@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 public class PedidoDAO {
 
     public static void save(Pedido pedido){
-        HibernateUtils.saveTransaction(ConverterEntityUtils.pedidoToEntity(pedido));
+        PedidoEntity pedidoEntity = ConverterEntityUtils.pedidoToEntity(pedido);
+        HibernateUtils.saveTransaction(pedidoEntity);
+        pedido.setId(pedidoEntity.getId());
     }
 
     public static void update(Pedido pedido){

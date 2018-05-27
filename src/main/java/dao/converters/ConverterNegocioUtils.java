@@ -84,4 +84,12 @@ public class ConverterNegocioUtils {
         else
             return movBasicoToNegocio((MovimientoBasicoEntity) movimiento);
     }
+
+    public static Proveedor proveedorToNegocio(ProveedorEntity proovedor) {
+        return  new Proveedor(
+                proovedor.getId(),
+                proovedor.getNombre(),
+                proovedor.getCuit()
+        );
+    }
 }

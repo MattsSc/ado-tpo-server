@@ -1,10 +1,7 @@
 package dao.converters;
 
 import entities.*;
-import model.Articulo;
-import model.Cliente;
-import model.Lote;
-import model.Pedido;
+import model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,6 +76,18 @@ public class ConverterEntityUtils {
             pedidoEntity.setId(pedido.getId());
 
         return pedidoEntity;
+    }
+
+    public static ProveedorEntity proveedorToEntity(Proveedor proveedor){
+        ProveedorEntity proveedorEntity = new ProveedorEntity(
+                proveedor.getNombre(),
+                proveedor.getCuit()
+        );
+
+        if(proveedor.getId() != null)
+            proveedorEntity.setId(proveedor.getId());
+
+        return proveedorEntity;
     }
 
 }

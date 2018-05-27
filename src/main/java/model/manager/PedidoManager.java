@@ -3,9 +3,11 @@ package model.manager;
 import dao.OrdenDeCompraDAO;
 import dao.PedidoDAO;
 import dao.ReservaArticuloDAO;
+import dao.UbicacionDAO;
 import model.*;
 import model.enums.EstadoPedido;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,15 +52,54 @@ public class PedidoManager {
         pedido.update();
     }
 
-    private Integer getCantidadReservadaDeArticulo(Articulo articulo) {
-        List<ReservaArticulo> result = ReservaArticuloDAO.getByArticuloId(articulo.getCodigo());
-        return result.stream().mapToInt(ReservaArticulo::getCantidad).sum();
+    public void despacharPedido(Integer codigoPedido){
+        Pedido pedido = PedidoDAO.getById(codigoPedido);
+        for(ItemPedido item : pedido.getItems()){
+            List<Ubicacion> ubicaciones = this.getLotesAUsar(item);
+
+        }
+    }
+
+    private List<Ubicacion> getLotesAUsar(ItemPedido item) {
+        Integer cantidadTotal = item.getCantidad();
+        int i = 0;
+        int j = 0;
+        List<Ubicacion> ubicacionesAVaciar = new ArrayList<>();
+        List<Lote> lotesARevisar = item.getArticulo().getLotes();
+
+        while(cantidadTotal > 0){
+            Lote lote = lotesARevisar.get(i);
+            if(cantidadTotal - lote.getStock() >= 0){
+                cantidadTotal = cantidadTotal - lote.getStock();
+                ubicacionesAVaciar.addAll(UbicacionDAO.getUbicacionesDeLote(lote.getId()));
+            }else{
+                List<Ubicacion> ub = UbicacionDAO.getUbicacionesDeLote(lote.getId());
+                while(cantidadTotal > 0) {
+                    Ubicacion ubicacion = ub.get(j);
+                    ubicacionesAVaciar.add(ubicacion);
+                    cantidadTotal = cantidadTotal - ubicacion.getCantidad();
+                    j++;
+                }
+                lote.setStock(lote.getStock() - cantidadTotal);
+                cantidadTotal = 0;
+            }
+            i++;
+            j=0;
+        }
+
+
+        return ubicacionesAVaciar;
     }
 
     public void rechazarPedido(Integer codigoPedido){
         Pedido pedido = PedidoDAO.getById(codigoPedido);
         pedido.setEstado(EstadoPedido.RECHAZADO.name());
         pedido.update();
+    }
+
+    private Integer getCantidadReservadaDeArticulo(Articulo articulo) {
+        List<ReservaArticulo> result = ReservaArticuloDAO.getByArticuloId(articulo.getCodigo());
+        return result.stream().mapToInt(ReservaArticulo::getCantidad).sum();
     }
 
 

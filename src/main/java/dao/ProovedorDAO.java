@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 public class ProovedorDAO {
 
     public static void save(Proveedor proveedor){
-        HibernateUtils.saveTransaction(toEntity(proveedor));
+        ProveedorEntity pr = toEntity(proveedor);
+        HibernateUtils.saveTransaction(pr);
+        proveedor.setId(pr.getId());
     }
 
     public static List<Proveedor> getAll(){

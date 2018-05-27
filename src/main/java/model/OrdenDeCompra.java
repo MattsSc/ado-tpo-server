@@ -1,5 +1,7 @@
 package model;
 
+import dao.OrdenDeCompraDAO;
+
 public class OrdenDeCompra {
 
     private Integer id;
@@ -22,6 +24,16 @@ public class OrdenDeCompra {
         this.proovedor = proovedor;
     }
 
+    //Logic
+    public void update() {
+        OrdenDeCompraDAO.update(this);
+    }
+
+    public void save(){
+        OrdenDeCompraDAO.save(this);
+    }
+
+    //Getter & Setters
     public Integer getId() {
         return id;
     }

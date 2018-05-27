@@ -1,5 +1,7 @@
 package model;
 
+import dao.LoteDAO;
+
 import java.util.Date;
 
 public class Lote {
@@ -19,6 +21,10 @@ public class Lote {
         this.fechaVencimiento = fechaVencimiento;
         this.stock = stock;
         this.proveedor = proveedor;
+    }
+
+    public void save(Articulo articulo){
+        LoteDAO.save(this, articulo);
     }
 
     public Integer getId() {

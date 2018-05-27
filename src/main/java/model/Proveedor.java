@@ -1,5 +1,7 @@
 package model;
 
+import dao.ProovedorDAO;
+
 public class Proveedor {
     private Integer id;
     private String nombre;
@@ -14,6 +16,10 @@ public class Proveedor {
         this.id = id;
         this.nombre = nombre;
         this.cuit = cuit;
+    }
+
+    public void save(){
+        ProovedorDAO.save(this);
     }
 
     public Integer getId() {

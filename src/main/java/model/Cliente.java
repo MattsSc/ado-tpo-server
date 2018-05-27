@@ -1,5 +1,6 @@
 package model;
 
+import dao.ClienteDAO;
 import dtos.ClienteDTO;
 
 import java.util.ArrayList;
@@ -38,6 +39,10 @@ public class Cliente {
         this.limiteCredito = limiteCredito;
         this.montoDisponible = montoDisponible;
         this.movimientosCC = movimientosCC;
+    }
+
+    public void save(){
+        ClienteDAO.save(this);
     }
 
     public int getDni() {
