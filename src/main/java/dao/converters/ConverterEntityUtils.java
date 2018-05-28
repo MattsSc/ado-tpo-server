@@ -24,12 +24,17 @@ public class ConverterEntityUtils {
     public static LoteEntity loteToEntity(Lote lote){
         ProveedorEntity proveedorEntity = new ProveedorEntity(lote.getProveedor().getNombre(), lote.getProveedor().getCuit());
         proveedorEntity.setId(lote.getProveedor().getId());
-        return new LoteEntity(
+        LoteEntity loteEntity = new LoteEntity(
                 lote.getFechaVencimiento(),
                 lote.getStock(),
                 proveedorEntity,
-                new ArticuloEntity()
+                null
         );
+
+        if(lote.getId() != null)
+            loteEntity.setId(lote.getId());
+
+        return loteEntity;
     }
 
     public static LoteEntity loteToEntity(Lote lote, Articulo articulo){

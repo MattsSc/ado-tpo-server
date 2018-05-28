@@ -17,18 +17,26 @@ public class UbicacionDAO {
         ubicacion.setIdUbicacion(ub.getIdUbicacion());
     }
 
+    public static void update(Ubicacion ubicacion){
+        HibernateUtils.updateTransaction(ubicacionToEntity(ubicacion));
+    }
+
     public static List<Ubicacion> getUbicacionesDeLote(Integer idLote){
         List<UbicacionEntity> ubicacionEntities = HibernateUtils.getResultList("from UbicacionEntity where loteId = " + idLote);
         return  ubicacionEntities.stream().map(UbicacionDAO::ubicacionToNegocio).collect(Collectors.toList());
     }
 
     private static UbicacionEntity ubicacionToEntity(Ubicacion ubicacion) {
-        return new UbicacionEntity(
-                    ubicacion.getClave(),
-                    ubicacion.getOcupado(),
-                    ConverterEntityUtils.loteToEntity(ubicacion.getLote()),
-                    ubicacion.getCantidad()
-            );
+        UbicacionEntity ubicacionEntity = new UbicacionEntity(
+                ubicacion.getClave(),
+                ubicacion.isOcupado(),
+                ubicacion.getLote() != null ? ConverterEntityUtils.loteToEntity(ubicacion.getLote()) : null,
+                ubicacion.getCantidad()
+        );
+
+        if(ubicacion.getIdUbicacion() != null)
+            ubicacionEntity.setIdUbicacion(ubicacion.getIdUbicacion());
+        return ubicacionEntity;
     }
 
     private static Ubicacion ubicacionToNegocio(UbicacionEntity entity){

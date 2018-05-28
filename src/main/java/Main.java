@@ -1,4 +1,5 @@
 import dao.ClienteDAO;
+import dao.LoteDAO;
 import dao.MovCCDAO;
 import dao.MovimientoDAO;
 import model.*;
@@ -8,6 +9,8 @@ import model.manager.PedidoManager;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -37,15 +40,20 @@ public class Main {
 
         articulo1.save();
 
+        Proveedor proveedor1 = new Proveedor("mama", 123);
+        Proveedor proveedor2 = new Proveedor("papa", 124);
+        proveedor1.save();
+        proveedor2.save();
+
         Lote lote1 = new Lote(
                 new Date(),
                 100,
-                new Proveedor("mama", 123)
+                proveedor1
         );
         Lote lote2 = new Lote(
                 new Date(),
                 100,
-                new Proveedor("papa", 12)
+                proveedor2
         );
 
         lote1.save(articulo1);
@@ -60,12 +68,42 @@ public class Main {
 
         movimientoBasico.save(articulo1);
 
+        Ubicacion ubicacion1 = new Ubicacion(
+                "A010101",
+                true,
+                LoteDAO.getById(1),
+                50
+        );
+        Ubicacion ubicacion2 = new Ubicacion(
+                "A010102",
+                true,
+                LoteDAO.getById(1),
+                50
+        );
+        Ubicacion ubicacion3 = new Ubicacion(
+                "A010103",
+                true,
+                LoteDAO.getById(2),
+                50
+        );
+        Ubicacion ubicacion4 = new Ubicacion(
+                "A010104",
+                true,
+                LoteDAO.getById(2),
+                50
+        );
+
+        ubicacion1.save();
+        ubicacion2.save();
+        ubicacion3.save();
+        ubicacion4.save();
+
         Pedido pedido = new Pedido(
                 cliente,
                 EstadoPedido.RECIBIDO.name(),
                 "calle falsa 123",
                 Arrays.asList(
-                        new ItemPedido(225, articulo1) //CAMBIEN LA CANTIDAD A MAS DE 200 PARA VER SI GENERA ORDEN DE PEDIDO
+                        new ItemPedido(150, articulo1) //CAMBIEN LA CANTIDAD A MAS DE 200 PARA VER SI GENERA ORDEN DE PEDIDO
                 )
         );
 
@@ -73,6 +111,9 @@ public class Main {
 
         PedidoManager pedidoManager = new PedidoManager();
         pedidoManager.aprobarPedido(pedido.getId());
+        Map<ItemPedido, List<Proveedor>> result = pedidoManager.despacharPedido(pedido.getId());
+
+        System.out.println(result.size());
         //new Servidor();
     }
 }

@@ -64,6 +64,15 @@ public class HibernateUtils {
         s.close();
     }
 
+    public static void deleteTransaction(Object e){
+        SessionFactory sf= HibernateUtils.getSessionFactory();
+        Session s = sf.openSession();
+        s.beginTransaction();
+        s.delete(e);
+        s.getTransaction().commit();
+        s.close();
+    }
+
     public static <T> List<T> getResultList(String query){
         SessionFactory sf = HibernateUtils.getSessionFactory();
         Session s = sf.openSession();

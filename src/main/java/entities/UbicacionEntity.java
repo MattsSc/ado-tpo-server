@@ -11,7 +11,7 @@ public class UbicacionEntity {
     private Integer idUbicacion;
 
     private String clave;
-    private String ocupado;
+    private Boolean ocupado;
 
     @ManyToOne
     @JoinColumn(name="loteId")
@@ -19,7 +19,9 @@ public class UbicacionEntity {
 
     private Integer cantidad;
 
-    public UbicacionEntity(String clave, String ocupado, LoteEntity lote, Integer cantidad) {
+    public UbicacionEntity(){}
+
+    public UbicacionEntity(String clave, Boolean ocupado, LoteEntity lote, Integer cantidad) {
         this.clave = clave;
         this.ocupado = ocupado;
         this.lote = lote;
@@ -42,11 +44,11 @@ public class UbicacionEntity {
         this.clave = clave;
     }
 
-    public String getOcupado() {
+    public Boolean getOcupado() {
         return ocupado;
     }
 
-    public void setOcupado(String ocupado) {
+    public void setOcupado(Boolean ocupado) {
         this.ocupado = ocupado;
     }
 

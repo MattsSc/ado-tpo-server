@@ -27,6 +27,14 @@ public class Lote {
         LoteDAO.save(this, articulo);
     }
 
+    public void update(){
+        LoteDAO.update(this);
+    }
+
+    public void delete(){
+        LoteDAO.delete(this);
+    }
+
     public Integer getId() {
         return id;
     }

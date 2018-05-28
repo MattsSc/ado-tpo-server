@@ -7,8 +7,7 @@ import dao.UbicacionDAO;
 import model.*;
 import model.enums.EstadoPedido;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class PedidoManager {
@@ -52,43 +51,16 @@ public class PedidoManager {
         pedido.update();
     }
 
-    public void despacharPedido(Integer codigoPedido){
+    public Map<ItemPedido, List<Proveedor>> despacharPedido(Integer codigoPedido){
         Pedido pedido = PedidoDAO.getById(codigoPedido);
+        pedido.setFechaDespacho(new Date());
+        pedido.setEstado(EstadoPedido.DESPACHO.name());
+        Map<ItemPedido, List<Proveedor>> result = new HashMap<>();
         for(ItemPedido item : pedido.getItems()){
-            List<Ubicacion> ubicaciones = this.getLotesAUsar(item);
-
+            result.put(item,this.llenarPedido(item));
         }
-    }
-
-    private List<Ubicacion> getLotesAUsar(ItemPedido item) {
-        Integer cantidadTotal = item.getCantidad();
-        int i = 0;
-        int j = 0;
-        List<Ubicacion> ubicacionesAVaciar = new ArrayList<>();
-        List<Lote> lotesARevisar = item.getArticulo().getLotes();
-
-        while(cantidadTotal > 0){
-            Lote lote = lotesARevisar.get(i);
-            if(cantidadTotal - lote.getStock() >= 0){
-                cantidadTotal = cantidadTotal - lote.getStock();
-                ubicacionesAVaciar.addAll(UbicacionDAO.getUbicacionesDeLote(lote.getId()));
-            }else{
-                List<Ubicacion> ub = UbicacionDAO.getUbicacionesDeLote(lote.getId());
-                while(cantidadTotal > 0) {
-                    Ubicacion ubicacion = ub.get(j);
-                    ubicacionesAVaciar.add(ubicacion);
-                    cantidadTotal = cantidadTotal - ubicacion.getCantidad();
-                    j++;
-                }
-                lote.setStock(lote.getStock() - cantidadTotal);
-                cantidadTotal = 0;
-            }
-            i++;
-            j=0;
-        }
-
-
-        return ubicacionesAVaciar;
+        pedido.update();
+        return result;
     }
 
     public void rechazarPedido(Integer codigoPedido){
@@ -97,13 +69,9 @@ public class PedidoManager {
         pedido.update();
     }
 
-    private Integer getCantidadReservadaDeArticulo(Articulo articulo) {
-        List<ReservaArticulo> result = ReservaArticuloDAO.getByArticuloId(articulo.getCodigo());
-        return result.stream().mapToInt(ReservaArticulo::getCantidad).sum();
-    }
-
 
     //Private methods
+
     private void generarReservaDeStock(Pedido pedido, Integer cantidad, Articulo articulo, boolean esCompleta) {
         ReservaArticulo reservaArticulo = new ReservaArticulo(cantidad, pedido.getId(), esCompleta);
         reservaArticulo.save(articulo.getCodigo());
@@ -112,5 +80,53 @@ public class PedidoManager {
     private void generarOrdenDePedido(Pedido pedido, Articulo articulo, Integer cantidad) {
         OrdenDePedido ordenDePedido = new OrdenDePedido(articulo,cantidad,pedido.getId());
         ordenDePedido.save();
+    }
+
+    private Integer getCantidadReservadaDeArticulo(Articulo articulo) {
+        List<ReservaArticulo> result = ReservaArticuloDAO.getByArticuloId(articulo.getCodigo());
+        return result.stream().mapToInt(ReservaArticulo::getCantidad).sum();
+    }
+
+    private List<Proveedor> llenarPedido(ItemPedido item) {
+        Integer cantidadTotal = item.getCantidad();
+        int i = 0;
+        List<Proveedor> proveedores = new ArrayList<>();
+        List<Lote> lotesARevisar = item.getArticulo().getLotes();
+
+        while(cantidadTotal > 0){
+            Lote lote = lotesARevisar.get(i);
+            if(cantidadTotal - lote.getStock() >= 0){
+                for(Ubicacion ubicacion : UbicacionDAO.getUbicacionesDeLote(lote.getId())){
+                    ubicacion.setOcupado(false);
+                    ubicacion.update();
+                }
+                proveedores.add(lote.getProveedor());
+                cantidadTotal = cantidadTotal - lote.getStock();
+                lote.delete();
+            }else{
+                List<Ubicacion> ub = UbicacionDAO.getUbicacionesDeLote(lote.getId());
+                int j = 0;
+                int cantidadAReducir = cantidadTotal;
+                while(cantidadAReducir > 0) {
+                    Ubicacion ubicacion = ub.get(j);
+                    if(cantidadAReducir - ubicacion.getCantidad() >= 0){
+                        cantidadAReducir = cantidadAReducir - ubicacion.getCantidad();
+                        ubicacion.setOcupado(false);
+                        ubicacion.update();
+                    }else{
+                        ubicacion.setCantidad(ubicacion.getCantidad() - cantidadAReducir);
+                        ubicacion.update();
+                        cantidadAReducir = 0;
+                    }
+                    j++;
+                }
+                lote.setStock(lote.getStock() - cantidadTotal);
+                lote.update();
+                proveedores.add(lote.getProveedor());
+                cantidadTotal = 0;
+            }
+            i++;
+        }
+        return proveedores;
     }
 }

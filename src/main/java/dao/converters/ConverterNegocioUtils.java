@@ -35,7 +35,11 @@ public class ConverterNegocioUtils {
                 loteEntity.getId(),
                 loteEntity.getFechaVencimiento(),
                 loteEntity.getCantidad(),
-                null
+                new Proveedor(
+                        loteEntity.getProovedor().getId(),
+                        loteEntity.getProovedor().getNombre(),
+                        loteEntity.getProovedor().getCuit()
+                )
                 );
 
     }
