@@ -42,4 +42,13 @@ public class CompraManager {
         }
     }
 
+    public void cerrarOrdenDeCompra(Integer ocId){
+        OrdenDeCompra oc = OrdenDeCompraDAO.getById(ocId);
+        oc.setResuelto(Boolean.TRUE);
+        oc.update();
+
+        //TODO: Eliminar ordenes de pedido afectado y cambiar estado de pedido si es que es necesario a DESPACHABLE. Se hace verificando que no existan otras ordenes de pedido para
+        //TODO: el pedido que se resolvio esta OC.
+    }
+
 }
