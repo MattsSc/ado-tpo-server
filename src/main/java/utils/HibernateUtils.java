@@ -19,6 +19,8 @@ public class HibernateUtils {
             Configuration config = new Configuration();
             config.addAnnotatedClass(ArticuloEntity.class);
             config.addAnnotatedClass(ClienteEntity.class);
+            config.addAnnotatedClass(FacturaEntity.class);
+            config.addAnnotatedClass(ItemFacturaEntity.class);
             config.addAnnotatedClass(ItemPedidoEntity.class);
             config.addAnnotatedClass(LoteEntity.class);
             config.addAnnotatedClass(MovCCEntity.class);

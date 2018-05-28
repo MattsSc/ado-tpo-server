@@ -5,6 +5,7 @@ import dao.MovimientoDAO;
 import model.*;
 import model.enums.EstadoPedido;
 import model.enums.TipoMovimiento;
+import model.manager.DocumentosManager;
 import model.manager.PedidoManager;
 
 import java.util.Arrays;
@@ -110,10 +111,10 @@ public class Main {
         pedido.save();
 
         PedidoManager pedidoManager = new PedidoManager();
+        DocumentosManager documentosManager = new DocumentosManager();
         pedidoManager.aprobarPedido(pedido.getId());
-        Map<ItemPedido, List<Proveedor>> result = pedidoManager.despacharPedido(pedido.getId());
+        documentosManager.crearFactura("A",pedido.getId(), pedidoManager.despacharPedido(pedido.getId()));
 
-        System.out.println(result.size());
         //new Servidor();
     }
 }

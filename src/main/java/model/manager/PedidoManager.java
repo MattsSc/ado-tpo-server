@@ -51,11 +51,11 @@ public class PedidoManager {
         pedido.update();
     }
 
-    public Map<ItemPedido, List<Proveedor>> despacharPedido(Integer codigoPedido){
+    public Map<ItemPedido, List<ItemAProcesar>> despacharPedido(Integer codigoPedido){
         Pedido pedido = PedidoDAO.getById(codigoPedido);
         pedido.setFechaDespacho(new Date());
         pedido.setEstado(EstadoPedido.DESPACHO.name());
-        Map<ItemPedido, List<Proveedor>> result = new HashMap<>();
+        Map<ItemPedido, List<ItemAProcesar>> result = new HashMap<>();
         for(ItemPedido item : pedido.getItems()){
             result.put(item,this.llenarPedido(item));
         }
@@ -87,46 +87,53 @@ public class PedidoManager {
         return result.stream().mapToInt(ReservaArticulo::getCantidad).sum();
     }
 
-    private List<Proveedor> llenarPedido(ItemPedido item) {
+    private List<ItemAProcesar> llenarPedido(ItemPedido item) {
         Integer cantidadTotal = item.getCantidad();
         int i = 0;
-        List<Proveedor> proveedores = new ArrayList<>();
+        List<ItemAProcesar> itemsAProcesar = new ArrayList<>();
         List<Lote> lotesARevisar = item.getArticulo().getLotes();
 
         while(cantidadTotal > 0){
             Lote lote = lotesARevisar.get(i);
             if(cantidadTotal - lote.getStock() >= 0){
+                ItemAProcesar itemAProcesar = new ItemAProcesar(lote.getStock(),lote.getProveedor());
                 for(Ubicacion ubicacion : UbicacionDAO.getUbicacionesDeLote(lote.getId())){
-                    ubicacion.setOcupado(false);
-                    ubicacion.update();
+                    vaciarUbicacion(ubicacion);
+                    itemAProcesar.addUbicacion(ubicacion.getClave());
                 }
-                proveedores.add(lote.getProveedor());
+                itemsAProcesar.add(itemAProcesar);
                 cantidadTotal = cantidadTotal - lote.getStock();
                 lote.delete();
             }else{
                 List<Ubicacion> ub = UbicacionDAO.getUbicacionesDeLote(lote.getId());
                 int j = 0;
-                int cantidadAReducir = cantidadTotal;
-                while(cantidadAReducir > 0) {
+                int cantidadAReducir = lote.getStock() - cantidadTotal;
+                ItemAProcesar itemAProcesar = new ItemAProcesar(cantidadAReducir, lote.getProveedor());
+                while(cantidadTotal > 0) {
                     Ubicacion ubicacion = ub.get(j);
-                    if(cantidadAReducir - ubicacion.getCantidad() >= 0){
-                        cantidadAReducir = cantidadAReducir - ubicacion.getCantidad();
-                        ubicacion.setOcupado(false);
-                        ubicacion.update();
+                    if(cantidadTotal - ubicacion.getCantidad() >= 0){
+                        cantidadTotal = cantidadTotal - ubicacion.getCantidad();
+                        vaciarUbicacion(ubicacion);
                     }else{
-                        ubicacion.setCantidad(ubicacion.getCantidad() - cantidadAReducir);
+                        ubicacion.setCantidad(ubicacion.getCantidad() - cantidadTotal);
                         ubicacion.update();
-                        cantidadAReducir = 0;
+                        cantidadTotal = 0;
                     }
+                    itemAProcesar.addUbicacion(ubicacion.getClave());
                     j++;
                 }
-                lote.setStock(lote.getStock() - cantidadTotal);
+                lote.setStock(cantidadAReducir);
                 lote.update();
-                proveedores.add(lote.getProveedor());
+                itemsAProcesar.add(itemAProcesar);
                 cantidadTotal = 0;
             }
             i++;
         }
-        return proveedores;
+        return itemsAProcesar;
+    }
+
+    private void vaciarUbicacion(Ubicacion ubicacion) {
+        ubicacion.setOcupado(false);
+        ubicacion.update();
     }
 }
