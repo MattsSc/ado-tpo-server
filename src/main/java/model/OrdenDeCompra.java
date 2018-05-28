@@ -10,10 +10,18 @@ public class OrdenDeCompra {
     private boolean resuelto;
     private Proveedor proovedor;
 
-    public OrdenDeCompra(Articulo articulo, Integer cantidad, boolean resuelto) {
+    public OrdenDeCompra(Articulo articulo, Integer cantidad, Proveedor proveedor) {
+        this.articulo = articulo;
+        this.cantidad = cantidad;
+        this.resuelto = Boolean.FALSE;
+        this.proovedor = proveedor;
+    }
+
+    public OrdenDeCompra(Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proveedor) {
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
+        this.proovedor = proveedor;
     }
 
     public OrdenDeCompra(Integer id, Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proovedor) {

@@ -145,7 +145,8 @@ public class Articulo {
                 this.getPresentacion(),
                 this.getTamanio(),
                 this.getUnidad(),
-                this.getPrecio()
+                this.getPrecio(),
+                this.getCantReposicion()
         );
     }
 }

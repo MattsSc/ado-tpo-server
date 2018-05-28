@@ -1,7 +1,9 @@
 package model.manager;
 
+import dao.ArticuloDAO;
 import dao.OrdenDeCompraDAO;
 import dao.OrdenDePedidoDAO;
+import dao.ProovedorDAO;
 import model.Articulo;
 import model.OrdenDeCompra;
 import model.OrdenDePedido;
@@ -13,23 +15,31 @@ import java.util.stream.Collectors;
 
 public class CompraManager {
 
-    public void crearOrdenDeCompra(){
-        List<OrdenDePedido> ordenDePedidos = OrdenDePedidoDAO.obtenerOrdenesDePedido();
-        Map<Articulo, List<OrdenDePedido>> all = ordenDePedidos.stream().collect(Collectors.groupingBy(OrdenDePedido::getArticulo));
-        all.forEach((articulo, ordenes) ->{
-            int reposicion = articulo.getCantReposicion();
-            if(!ordenes.isEmpty()){
-                OrdenDeCompra oc = new OrdenDeCompra(articulo,articulo.getCantReposicion(), false);
-                oc.save();
-                //TODO: terminar logica
+    public void crearOrdenDeCompra(Integer articuloId, Integer proveedorId){
+        Articulo articulo = ArticuloDAO.getById(articuloId);
+        Proveedor proveedor = ProovedorDAO.getById(proveedorId);
+        OrdenDeCompra oc = new OrdenDeCompra(
+                articulo,
+                articulo.getCantReposicion(),
+                proveedor
+        );
+        oc.save();
+
+        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoSinOc(articuloId);
+        Integer cantidad = articulo.getCantReposicion();
+
+        if(!ordenes.isEmpty()){
+            int indice = 0;
+            while(cantidad > 0 && indice < ordenes.size()){
+                OrdenDePedido ordenDePedido = ordenes.get(indice);
+                cantidad = cantidad - ordenDePedido.getCantidad();
+                if(cantidad >= 0){
+                    ordenDePedido.setIdOrdenCompra(oc.getId());
+                    ordenDePedido.update();
+                }
+                indice++;
             }
-        });
-
+        }
     }
 
-    public void asignarProveedorAOrdenCompra(Integer idOC, Proveedor proveedor){
-        OrdenDeCompra oc = OrdenDeCompraDAO.getById(idOC);
-        oc.setProovedor(proveedor);
-        oc.update();
-    }
 }

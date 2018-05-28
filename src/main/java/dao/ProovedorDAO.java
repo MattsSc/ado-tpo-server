@@ -19,6 +19,10 @@ public class ProovedorDAO {
         return HibernateUtils.getResultList("from ProveedorEntity").stream().map(p -> toNegocio((ProveedorEntity)p)).collect(Collectors.toList());
     }
 
+    public static Proveedor getById(Integer id){
+        return toNegocio(HibernateUtils.getById(ProveedorEntity.class,id));
+    }
+
 
     private static ProveedorEntity toEntity(Proveedor proveedor){
         return new ProveedorEntity(proveedor.getNombre(), proveedor.getCuit());

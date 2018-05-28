@@ -10,11 +10,12 @@ public class OrdenDePedido {
     private Integer idOrdenCompra;
 
     //Constructos
-    public OrdenDePedido(Integer id, Articulo articulo, Integer cantidad, Integer idPedido) {
+    public OrdenDePedido(Integer id, Articulo articulo, Integer cantidad, Integer idPedido, Integer idOrdenCompra) {
         this.id = id;
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.idPedido = idPedido;
+        this.idOrdenCompra = idOrdenCompra;
     }
 
     public OrdenDePedido(Articulo articulo, Integer cantidad, Integer idPedido) {
@@ -27,6 +28,10 @@ public class OrdenDePedido {
     //Logic
     public void save(){
         OrdenDePedidoDAO.save(this);
+    }
+
+    public void update(){
+        OrdenDePedidoDAO.update(this);
     }
 
 

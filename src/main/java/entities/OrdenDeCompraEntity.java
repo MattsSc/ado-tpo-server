@@ -21,6 +21,8 @@ public class OrdenDeCompraEntity {
     @JoinColumn(name="proveedorId")
     private ProveedorEntity proovedor;
 
+    public OrdenDeCompraEntity(){}
+
     public OrdenDeCompraEntity(ArticuloEntity articulo, Integer cantidad, boolean resuelto, ProveedorEntity proovedor) {
         this.articulo = articulo;
         this.cantidad = cantidad;

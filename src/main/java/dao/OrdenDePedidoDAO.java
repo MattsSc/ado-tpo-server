@@ -15,18 +15,32 @@ public class OrdenDePedidoDAO {
         HibernateUtils.saveTransaction(ordenPedidoToEntity(ordenDePedido));
     }
 
+    public static void update(OrdenDePedido ordenDePedido){
+        HibernateUtils.updateTransaction(ordenPedidoToEntity(ordenDePedido));
+    }
+
     public static List<OrdenDePedido> obtenerOrdenesDePedido(){
         List<OrdenDePedidoEntity> result = HibernateUtils.getResultList("from OrdenDePedidoEntity");
         return result.stream().map(OrdenDePedidoDAO::ordenPedidoToNegocio).collect(Collectors.toList());
     }
 
+    public static List<OrdenDePedido> obtenerOrdenesDePedidoSinOc(Integer articuloId){
+        List<OrdenDePedidoEntity> result = HibernateUtils.getResultList("from OrdenDePedidoEntity where articuloId = " + articuloId + " and ordenDeCompraId is null");
+        return result.stream().map(OrdenDePedidoDAO::ordenPedidoToNegocio).collect(Collectors.toList());
+    }
+
     private static OrdenDePedidoEntity ordenPedidoToEntity(OrdenDePedido ordenDePedido) {
-        return new OrdenDePedidoEntity(
+        OrdenDePedidoEntity ordenDePedidoEntity =  new OrdenDePedidoEntity(
                 ConverterEntityUtils.articuloToEntity(ordenDePedido.getArticulo()),
                 ordenDePedido.getCantidad(),
                 ConverterEntityUtils.pedidoToEntity(PedidoDAO.getById(ordenDePedido.getIdPedido())),
-                null
+                ordenDePedido.getIdOrdenCompra() != null ? ConverterEntityUtils.ordenDeCompraToEntity(OrdenDeCompraDAO.getById(ordenDePedido.getIdOrdenCompra())) : null
         );
+
+        if(ordenDePedido.getId() != null)
+            ordenDePedidoEntity.setId(ordenDePedido.getId());
+
+        return ordenDePedidoEntity;
     }
 
     private static OrdenDePedido ordenPedidoToNegocio(OrdenDePedidoEntity ordenDePedido) {
@@ -34,6 +48,7 @@ public class OrdenDePedidoDAO {
                 ordenDePedido.getId(),
                 ConverterNegocioUtils.articuloToNegocio(ordenDePedido.getArticulo()),
                 ordenDePedido.getCantidad(),
+                ordenDePedido.getPedido().getId(),
                 ordenDePedido.getOrdenCompra() != null ? ordenDePedido.getOrdenCompra().getId() : null
         );
     }

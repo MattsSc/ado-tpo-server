@@ -95,4 +95,18 @@ public class ConverterEntityUtils {
         return proveedorEntity;
     }
 
+    public static OrdenDeCompraEntity ordenDeCompraToEntity(OrdenDeCompra ordenDeCompra) {
+        OrdenDeCompraEntity ordenDeCompraEntity = new OrdenDeCompraEntity(
+                ConverterEntityUtils.articuloToEntity(ordenDeCompra.getArticulo()),
+                ordenDeCompra.getCantidad(),
+                ordenDeCompra.isResuelto(),
+                ordenDeCompra.getProovedor() != null ? ConverterEntityUtils.proveedorToEntity(ordenDeCompra.getProovedor()) : null
+        );
+
+        if(ordenDeCompra.getId() != null)
+            ordenDeCompraEntity.setId(ordenDeCompra.getId());
+
+        return ordenDeCompraEntity;
+    }
+
 }

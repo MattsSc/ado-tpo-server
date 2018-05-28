@@ -5,6 +5,7 @@ import dao.MovimientoDAO;
 import model.*;
 import model.enums.EstadoPedido;
 import model.enums.TipoMovimiento;
+import model.manager.CompraManager;
 import model.manager.DocumentosManager;
 import model.manager.PedidoManager;
 
@@ -104,7 +105,7 @@ public class Main {
                 EstadoPedido.RECIBIDO.name(),
                 "calle falsa 123",
                 Arrays.asList(
-                        new ItemPedido(150, articulo1) //CAMBIEN LA CANTIDAD A MAS DE 200 PARA VER SI GENERA ORDEN DE PEDIDO
+                        new ItemPedido(250, articulo1) //CAMBIEN LA CANTIDAD A MAS DE 200 PARA VER SI GENERA ORDEN DE PEDIDO
                 )
         );
 
@@ -112,8 +113,11 @@ public class Main {
 
         PedidoManager pedidoManager = new PedidoManager();
         DocumentosManager documentosManager = new DocumentosManager();
+        CompraManager compraManager = new CompraManager();
         pedidoManager.aprobarPedido(pedido.getId());
-        documentosManager.crearFactura("A",pedido.getId(), pedidoManager.despacharPedido(pedido.getId()));
+       // documentosManager.crearFactura("A",pedido.getId(), pedidoManager.despacharPedido(pedido.getId()));
+        compraManager.crearOrdenDeCompra(articulo1.getCodigo(),proveedor1.getId());
+
 
         //new Servidor();
     }
