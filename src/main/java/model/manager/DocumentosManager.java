@@ -35,4 +35,26 @@ public class DocumentosManager {
 
         factura.save();
     }
+
+    public void crearRemito(Integer idPedido, Map<ItemPedido, List<ItemAProcesar>> itemsAProcesar){
+        Pedido pedido = PedidoDAO.getById(idPedido);
+        List<ItemRemito> itemsRemito = new ArrayList<>();
+        itemsAProcesar.forEach((item,aProcesar) ->{
+            aProcesar.stream().forEach(itemAProcesar -> {
+                ItemRemito itemRemito = new ItemRemito(
+                        item.getArticulo(),
+                        itemAProcesar.getCantidad()
+                );
+                itemsRemito.add(itemRemito);
+            });
+        });
+
+        Remito remito = new Remito(
+                new Date(),
+                pedido.getCliente(),
+                itemsRemito
+        );
+
+        remito.save();
+    }
 }

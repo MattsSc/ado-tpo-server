@@ -1,23 +1,26 @@
 package controlador;
 
-import dao.ClienteDAO;
 import dao.PedidoDAO;
+import dtos.ArticuloDTO;
 import dtos.ClienteDTO;
 import dtos.ItemPedidoDTO;
 import dtos.PedidoDTO;
 import interfaces.SistemaPedido;
-import model.Articulo;
-import model.Cliente;
-import model.ItemPedido;
-import model.Pedido;
+import model.*;
+import model.manager.DocumentosManager;
+import model.manager.PedidoManager;
 
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ControladorPedido implements SistemaPedido {
+
+    private PedidoManager pedidoManager;
+    private DocumentosManager documentosManager;
+
     private static ControladorPedido ourInstance = new ControladorPedido();
 
     public static ControladorPedido getInstance() {
@@ -25,11 +28,17 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     private ControladorPedido() {
+        this.pedidoManager = new PedidoManager();
+        this.documentosManager = new DocumentosManager();
     }
 
     @Override
     public void crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
-
+        this.pedidoManager.crearPedido(
+                dtoToCliente(cliente),
+                direccionEntrega,
+                items.stream().map(this::dtoToItemPedido).collect(Collectors.toList())
+        );
     }
 
     @Override
@@ -39,26 +48,68 @@ public class ControladorPedido implements SistemaPedido {
 
     @Override
     public void aprobarPedido(Integer id) throws RemoteException {
+        this.pedidoManager.aprobarPedido(id);
+    }
 
+    @Override
+    public void despacharPedido(Integer id, String tipoFactura) throws RemoteException {
+        Map<ItemPedido, List<ItemAProcesar>> result = this.pedidoManager.despacharPedido(id);
+        this.documentosManager.crearFactura(tipoFactura, id, result);
+        this.documentosManager.crearRemito(id, result);
     }
 
     @Override
     public void rechazarPedido(Integer id) throws RemoteException {
-
+        this.pedidoManager.rechazarPedido(id);
     }
 
     @Override
-    public void actualizarPedido(PedidoDTO pedidoDTO) throws RemoteException {
-
+    public void completarPedido(Integer id, Date fechaEntrega) throws RemoteException {
+        this.pedidoManager.completarPedido(id, fechaEntrega);
     }
 
     @Override
     public List<PedidoDTO> listarPedidos() throws RemoteException {
-        return null;
+        return PedidoDAO.getAll().stream().map(Pedido::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<PedidoDTO> listarPedidos(String estado) throws RemoteException {
-        return null;
+        return PedidoDAO.getAllByEstado(estado).stream().map(Pedido::toDto).collect(Collectors.toList());
+    }
+
+
+    //Private Methods
+
+    private Cliente dtoToCliente(ClienteDTO cliente){
+        return new Cliente(
+                cliente.getDni(),
+                cliente.getNombre(),
+                cliente.getApellido(),
+                cliente.getDomicilio(),
+                cliente.getCuit(),
+                cliente.getRazonSocial(),
+                cliente.getLimiteCredito(),
+                cliente.getMontoDisponible()
+        );
+    }
+
+    private ItemPedido dtoToItemPedido(ItemPedidoDTO item){
+        return new ItemPedido(
+                item.getCantidad(),
+                dtoToArticulo(item.getArticulo())
+        );
+    }
+
+    private Articulo dtoToArticulo(ArticuloDTO articulo){
+        return new Articulo(
+                articulo.getCodigo(),
+                articulo.getDescripcion(),
+                articulo.getPresentacion(),
+                articulo.getTamanio(),
+                articulo.getUnidad(),
+                articulo.getPrecio(),
+                articulo.getCantReposicion()
+        );
     }
 }

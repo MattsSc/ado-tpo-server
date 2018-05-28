@@ -1,6 +1,7 @@
 package utils;
 
 import entities.*;
+import model.ItemRemito;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -22,6 +23,7 @@ public class HibernateUtils {
             config.addAnnotatedClass(FacturaEntity.class);
             config.addAnnotatedClass(ItemFacturaEntity.class);
             config.addAnnotatedClass(ItemPedidoEntity.class);
+            config.addAnnotatedClass(ItemRemitoEntity.class);
             config.addAnnotatedClass(LoteEntity.class);
             config.addAnnotatedClass(MovCCEntity.class);
             config.addAnnotatedClass(MovimientoBasicoEntity.class);
@@ -31,6 +33,7 @@ public class HibernateUtils {
             config.addAnnotatedClass(OrdenDePedidoEntity.class);
             config.addAnnotatedClass(PedidoEntity.class);
             config.addAnnotatedClass(ProveedorEntity.class);
+            config.addAnnotatedClass(RemitoEntity.class);
             config.addAnnotatedClass(ReservaArticuloEntity.class);
             config.addAnnotatedClass(UbicacionEntity.class);
 

@@ -6,6 +6,7 @@ import dao.ReservaArticuloDAO;
 import dao.UbicacionDAO;
 import model.*;
 import model.enums.EstadoPedido;
+import model.enums.TipoMovimiento;
 
 import java.util.*;
 
@@ -15,7 +16,13 @@ public class PedidoManager {
     public PedidoManager(){
     }
 
-    public void agregarPedido(Pedido pedido){
+    public void crearPedido(Cliente cliente, String direccionEntrega, List<ItemPedido> items){
+        Pedido pedido = new Pedido(
+                cliente,
+                EstadoPedido.RECIBIDO.name(),
+                direccionEntrega,
+                items
+        );
         pedido.save();
     }
 
@@ -66,6 +73,13 @@ public class PedidoManager {
     public void rechazarPedido(Integer codigoPedido){
         Pedido pedido = PedidoDAO.getById(codigoPedido);
         pedido.setEstado(EstadoPedido.RECHAZADO.name());
+        pedido.update();
+    }
+
+    public void completarPedido(Integer codigoPedido, Date fechaEntrega){
+        Pedido pedido = PedidoDAO.getById(codigoPedido);
+        pedido.setFechaEntrega(fechaEntrega);
+        pedido.setEstado(EstadoPedido.COMPLETO.name());
         pedido.update();
     }
 
@@ -129,7 +143,18 @@ public class PedidoManager {
             }
             i++;
         }
+        generarMovimientoDeVenta(item);
         return itemsAProcesar;
+    }
+
+    private void generarMovimientoDeVenta(ItemPedido item) {
+        MovimientoBasico movimientoBasico = new MovimientoBasico(
+                new Date(),
+                item.getCantidad(),
+                TipoMovimiento.VENTA,
+                "Resuelto"
+        );
+        movimientoBasico.save(item.getArticulo());
     }
 
     private void vaciarUbicacion(Ubicacion ubicacion) {
