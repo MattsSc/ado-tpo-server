@@ -33,8 +33,8 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
-    public void crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
-        this.pedidoManager.crearPedido(
+    public Integer crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
+        return this.pedidoManager.crearPedido(
                 dtoToCliente(cliente),
                 direccionEntrega,
                 items.stream().map(this::dtoToItemPedido).collect(Collectors.toList())

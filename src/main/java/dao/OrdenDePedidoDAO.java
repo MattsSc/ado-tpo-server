@@ -19,15 +19,32 @@ public class OrdenDePedidoDAO {
         HibernateUtils.updateTransaction(ordenPedidoToEntity(ordenDePedido));
     }
 
+    public static void delete(OrdenDePedido ordenDePedido){
+        HibernateUtils.deleteTransaction(ordenPedidoToEntity(ordenDePedido));
+    }
+
     public static List<OrdenDePedido> obtenerOrdenesDePedido(){
-        List<OrdenDePedidoEntity> result = HibernateUtils.getResultList("from OrdenDePedidoEntity");
-        return result.stream().map(OrdenDePedidoDAO::ordenPedidoToNegocio).collect(Collectors.toList());
+        return obtenerPorQuery("from OrdenDePedidoEntity");
     }
 
     public static List<OrdenDePedido> obtenerOrdenesDePedidoSinOc(Integer articuloId){
-        List<OrdenDePedidoEntity> result = HibernateUtils.getResultList("from OrdenDePedidoEntity where articuloId = " + articuloId + " and ordenDeCompraId is null");
+        return obtenerPorQuery("from OrdenDePedidoEntity where articuloId = " + articuloId + " and ordenDeCompraId is null");
+    }
+
+
+    public static List<OrdenDePedido> obtenerOrdenesDePedidoParaPedido(Integer pedidoId){
+        return obtenerPorQuery("from OrdenDePedidoEntity where pedidoId = " + pedidoId);
+    }
+
+    public static List<OrdenDePedido> obtenerOrdenesDePedidoParaOC(Integer ordenDeCompraId){
+        return obtenerPorQuery("from OrdenDePedidoEntity where ordenDeCompraId = " + ordenDeCompraId);
+    }
+
+    private static List<OrdenDePedido> obtenerPorQuery(String query){
+        List<OrdenDePedidoEntity> result = HibernateUtils.getResultList(query);
         return result.stream().map(OrdenDePedidoDAO::ordenPedidoToNegocio).collect(Collectors.toList());
     }
+
 
     private static OrdenDePedidoEntity ordenPedidoToEntity(OrdenDePedido ordenDePedido) {
         OrdenDePedidoEntity ordenDePedidoEntity =  new OrdenDePedidoEntity(

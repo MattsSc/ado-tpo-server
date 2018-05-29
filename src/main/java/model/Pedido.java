@@ -2,6 +2,7 @@ package model;
 
 import dao.PedidoDAO;
 import dtos.PedidoDTO;
+import model.enums.EstadoPedido;
 
 import java.util.Date;
 import java.util.List;
@@ -67,6 +68,16 @@ public class Pedido {
 
     public void update(){
         PedidoDAO.update(this);
+    }
+
+    public void aprobarPedido(){
+        this.setEstado(EstadoPedido.DESPACHABLE.name());
+        this.update();
+    }
+
+    public void rechazar(String estado){
+        this.setEstado(estado);
+        this.update();
     }
 
 

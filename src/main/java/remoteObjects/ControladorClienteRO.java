@@ -16,8 +16,8 @@ public class ControladorClienteRO extends UnicastRemoteObject implements Sistema
     }
 
     @Override
-    public void crearCliente(Integer dni, String nombre, String apellido, String domicilio, String cuit, String razonSocial, float limiteCredito, float montoDisponible) throws RemoteException{
-        ControladorCliente.getInstance().crearCliente(dni,nombre,apellido,domicilio,cuit,razonSocial,limiteCredito,montoDisponible);
+    public void crearCliente(ClienteDTO cliente) throws RemoteException{
+        ControladorCliente.getInstance().crearCliente(cliente);
     }
 
     @Override

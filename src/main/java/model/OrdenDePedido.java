@@ -34,6 +34,8 @@ public class OrdenDePedido {
         OrdenDePedidoDAO.update(this);
     }
 
+    public void delete(){ OrdenDePedidoDAO.delete(this);}
+
 
     //Getter & setters
     public Integer getId() {

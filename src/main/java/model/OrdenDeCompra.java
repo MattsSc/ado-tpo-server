@@ -41,6 +41,11 @@ public class OrdenDeCompra {
         OrdenDeCompraDAO.save(this);
     }
 
+    public void resolver(){
+        this.setResuelto(Boolean.TRUE);
+        this.update();
+    }
+
     //Getter & Setters
     public Integer getId() {
         return id;

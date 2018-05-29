@@ -15,14 +15,24 @@ public class ControladorCliente implements SistemaCliente{
 
     private static ControladorCliente INSTANCE = new ControladorCliente();
 
-    private ControladorCliente(){};
+    private ControladorCliente(){}
 
     public static ControladorCliente getInstance() {
         return INSTANCE;
     }
 
-    public void crearCliente(Integer dni, String nombre, String apellido, String domicilio, String cuit, String razonSocial, float limiteCredito, float montoDisponible) {
-        ClienteDAO.save(new Cliente(dni,nombre,apellido,domicilio,cuit,razonSocial,limiteCredito,montoDisponible));
+    public void crearCliente(ClienteDTO cliente) {
+        Cliente cli = new Cliente(
+                cliente.getDni(),
+                cliente.getNombre(),
+                cliente.getApellido(),
+                cliente.getDomicilio(),
+                cliente.getCuit(),
+                cliente.getRazonSocial(),
+                cliente.getLimiteCredito(),
+                cliente.getMontoDisponible()
+        );
+        ClienteDAO.save(cli);
     }
 
     public void modificarCliente(Integer dni, String nombre, String apellido, String domicilio, String cuit, String razonSocial, float limiteCredito, float montoDisponible) {

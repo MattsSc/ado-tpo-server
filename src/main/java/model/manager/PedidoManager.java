@@ -16,7 +16,7 @@ public class PedidoManager {
     public PedidoManager(){
     }
 
-    public void crearPedido(Cliente cliente, String direccionEntrega, List<ItemPedido> items){
+    public Integer crearPedido(Cliente cliente, String direccionEntrega, List<ItemPedido> items){
         Pedido pedido = new Pedido(
                 cliente,
                 EstadoPedido.RECIBIDO.name(),
@@ -24,6 +24,7 @@ public class PedidoManager {
                 items
         );
         pedido.save();
+        return pedido.getId();
     }
 
     public void aprobarPedido(Integer codigoPedido){
@@ -51,11 +52,9 @@ public class PedidoManager {
         }
 
         if(estaCompleto)
-            pedido.setEstado(EstadoPedido.DESPACHABLE.name());
+            pedido.aprobarPedido();
         else
-            pedido.setEstado(EstadoPedido.FALTA_STOCK.name());
-
-        pedido.update();
+            pedido.rechazar(EstadoPedido.FALTA_STOCK.name());
     }
 
     public Map<ItemPedido, List<ItemAProcesar>> despacharPedido(Integer codigoPedido){

@@ -1,31 +1,20 @@
 package model.manager;
 
-import dao.ArticuloDAO;
-import dao.OrdenDeCompraDAO;
-import dao.OrdenDePedidoDAO;
-import dao.ProovedorDAO;
-import model.Articulo;
-import model.OrdenDeCompra;
-import model.OrdenDePedido;
-import model.Proveedor;
+import dao.*;
+import model.*;
+import model.enums.TipoMovimiento;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CompraManager {
 
-    public void crearOrdenDeCompra(Integer articuloId, Integer proveedorId){
-        Articulo articulo = ArticuloDAO.getById(articuloId);
-        Proveedor proveedor = ProovedorDAO.getById(proveedorId);
-        OrdenDeCompra oc = new OrdenDeCompra(
-                articulo,
-                articulo.getCantReposicion(),
-                proveedor
-        );
+    public OrdenDeCompra crearOrdenDeCompra(OrdenDeCompra oc){
+        Articulo articulo = oc.getArticulo();
+
         oc.save();
 
-        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoSinOc(articuloId);
+        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoSinOc(articulo.getCodigo());
         Integer cantidad = articulo.getCantReposicion();
 
         if(!ordenes.isEmpty()){
@@ -40,15 +29,53 @@ public class CompraManager {
                 indice++;
             }
         }
+
+        return oc;
     }
 
-    public void cerrarOrdenDeCompra(Integer ocId){
+    public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento){
         OrdenDeCompra oc = OrdenDeCompraDAO.getById(ocId);
-        oc.setResuelto(Boolean.TRUE);
-        oc.update();
+        oc.resolver();
 
-        //TODO: Eliminar ordenes de pedido afectado y cambiar estado de pedido si es que es necesario a DESPACHABLE. Se hace verificando que no existan otras ordenes de pedido para
-        //TODO: el pedido que se resolvio esta OC.
+        generarMovimientoCompra(oc);
+
+        crearLote(fechaVencimiento, oc);
+
+        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(oc.getId());
+        ordenes.stream().forEach(ordenDePedido -> {
+            ReservaArticulo reservaArticulo = new ReservaArticulo(
+                    ordenDePedido.getCantidad(),
+                    ordenDePedido.getIdPedido(),
+                    Boolean.TRUE
+            );
+            reservaArticulo.save(ordenDePedido.getArticulo().getCodigo());
+            ordenDePedido.delete();
+
+            if(OrdenDePedidoDAO.obtenerOrdenesDePedidoParaPedido(ordenDePedido.getIdPedido()).isEmpty()){
+                Pedido pedido = PedidoDAO.getById(ordenDePedido.getIdPedido());
+                pedido.aprobarPedido();
+            }
+        });
     }
 
+    private void crearLote(Date fechaVencimiento, OrdenDeCompra oc) {
+        Lote loteNuevo = new Lote(
+                fechaVencimiento,
+                oc.getCantidad(),
+                oc.getProovedor()
+        );
+
+        loteNuevo.save(oc.getArticulo());
+    }
+
+    private void generarMovimientoCompra(OrdenDeCompra oc) {
+        MovimientoBasico movimientoCompra = new MovimientoBasico(
+                new Date(),
+                oc.getCantidad(),
+                TipoMovimiento.COMPRA,
+                "resuelto"
+        );
+
+        movimientoCompra.save(oc.getArticulo());
+    }
 }
