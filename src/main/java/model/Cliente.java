@@ -4,6 +4,7 @@ import dao.ClienteDAO;
 import dtos.ClienteDTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Cliente {
@@ -41,8 +42,25 @@ public class Cliente {
         this.movimientosCC = movimientosCC;
     }
 
+    //Logic
     public void save(){
         ClienteDAO.save(this);
+    }
+
+    public void descontarMontoDisponible(float montoADescontar){
+        this.montoDisponible = this.montoDisponible - montoADescontar;
+        MovimientoCC movimientoCC = new MovimientoCC(
+                new Date(),
+                montoADescontar,
+                "COMPRA"
+        );
+        movimientoCC.save(this);
+        this.movimientosCC.add(movimientoCC);
+        this.update();
+    }
+
+    public void update(){
+        ClienteDAO.update(this);
     }
 
     public int getDni() {

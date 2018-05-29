@@ -16,6 +16,11 @@ public class ClienteDAO {
         HibernateUtils.saveTransaction(ConverterEntityUtils.clienteToEntity(cliente));
     }
 
+
+    public static void update(Cliente cliente) {
+        HibernateUtils.updateTransaction(ConverterEntityUtils.clienteToEntity(cliente));
+    }
+
     public static List<Cliente> getClientes(){
         List<ClienteEntity> result = HibernateUtils.getResultList("from ClienteEntity");
         return result.stream().map(ConverterNegocioUtils::clienteToNegocio).collect(Collectors.toList());

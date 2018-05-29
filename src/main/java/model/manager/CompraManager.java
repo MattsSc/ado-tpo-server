@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CompraManager {
 
-    public OrdenDeCompra crearOrdenDeCompra(OrdenDeCompra oc){
+    public Integer crearOrdenDeCompra(OrdenDeCompra oc){
         Articulo articulo = oc.getArticulo();
 
         oc.save();
@@ -30,7 +30,7 @@ public class CompraManager {
             }
         }
 
-        return oc;
+        return oc.getId();
     }
 
     public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento){

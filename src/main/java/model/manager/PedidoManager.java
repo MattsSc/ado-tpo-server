@@ -66,6 +66,14 @@ public class PedidoManager {
             result.put(item,this.llenarPedido(item));
         }
         pedido.update();
+
+        float total = 0;
+        for(ItemPedido item : pedido.getItems()){
+            total = total + (item.getCantidad() * item.getArticulo().getPrecio());
+        }
+        pedido.getCliente().descontarMontoDisponible(total);
+
+
         return result;
     }
 

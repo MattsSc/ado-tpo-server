@@ -10,11 +10,12 @@ import utils.HibernateUtils;
 public class MovCCDAO {
 
     public static void save(Cliente cliente, MovimientoCC movimientoCC){
-        HibernateUtils.saveTransaction(toEntity(movimientoCC, cliente));
+        MovCCEntity movCCEntity = toEntity(movimientoCC, cliente);
+        HibernateUtils.saveTransaction(movCCEntity);
+        movimientoCC.setId(movCCEntity.getIdMovimiento());
     }
 
     private static MovCCEntity toEntity(MovimientoCC movimientoCC, Cliente cliente) {
-        ClienteEntity clienteEntity = new ClienteEntity();
         return new MovCCEntity(
                 movimientoCC.getFecha(),
                 movimientoCC.getImporte(),

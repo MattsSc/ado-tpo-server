@@ -1,5 +1,6 @@
 package model;
 
+import dao.MovCCDAO;
 import dtos.MovimientoCCDto;
 
 import java.util.Date;
@@ -23,6 +24,10 @@ public class MovimientoCC {
                 this.getImporte(),
                 this.getTipo()
         );
+    }
+
+    public void save(Cliente cliente){
+        MovCCDAO.save(cliente,this);
     }
 
     public Integer getId() {
