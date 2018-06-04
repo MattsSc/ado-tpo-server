@@ -30,4 +30,8 @@ public class ClienteDAO {
         return ConverterNegocioUtils.clienteToNegocio(HibernateUtils.getById(ClienteEntity.class, dni));
     }
 
+    public static List<MovimientoCC> getMovimientosDeCliente(Integer dni){
+        return (HibernateUtils.getById(ClienteEntity.class, dni)).getMovimientosCC().stream().map(ConverterNegocioUtils::movimientoCCToNegocio).collect(Collectors.toList());
+    }
+
 }

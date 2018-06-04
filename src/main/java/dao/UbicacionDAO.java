@@ -26,6 +26,12 @@ public class UbicacionDAO {
         return  ubicacionEntities.stream().map(UbicacionDAO::ubicacionToNegocio).collect(Collectors.toList());
     }
 
+    public static List<Ubicacion> getUbicacionesVacias(){
+        List<UbicacionEntity> ubicacionEntities = HibernateUtils.getResultList("from UbicacionEntity where ocupado = 0");
+        return  ubicacionEntities.stream().map(UbicacionDAO::ubicacionToNegocio).collect(Collectors.toList());
+    }
+
+
     private static UbicacionEntity ubicacionToEntity(Ubicacion ubicacion) {
         UbicacionEntity ubicacionEntity = new UbicacionEntity(
                 ubicacion.getClave(),
@@ -44,7 +50,7 @@ public class UbicacionDAO {
                 entity.getIdUbicacion(),
                 entity.getClave(),
                 entity.getOcupado(),
-                ConverterNegocioUtils.loteToNegocio(entity.getLote()),
+                entity.getLote() != null ? ConverterNegocioUtils.loteToNegocio(entity.getLote()) : null,
                 entity.getCantidad()
         );
     }

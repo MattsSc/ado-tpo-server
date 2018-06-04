@@ -30,7 +30,7 @@ public class PedidoDAO {
     }
 
     public static List<Pedido> getAllByEstado(String estado){
-        return HibernateUtils.getResultList("from PedidoEntity where estado =  " + estado).stream()
+        return HibernateUtils.getResultList("from PedidoEntity P where P.estado =  '" + estado + "'").stream()
                 .map(pe -> ConverterNegocioUtils.pedidoToNegocio((PedidoEntity)pe))
                 .collect(Collectors.toList());
     }

@@ -22,6 +22,8 @@ public class ReservaArticuloEntity {
 
     private boolean esCompleta;
 
+    public ReservaArticuloEntity(){}
+
     public ReservaArticuloEntity(int cantidad, ArticuloEntity articulo, PedidoEntity pedido, boolean esCompleta) {
         this.cantidad = cantidad;
         this.articulo = articulo;

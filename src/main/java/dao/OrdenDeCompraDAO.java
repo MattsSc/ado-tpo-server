@@ -3,10 +3,14 @@ package dao;
 import dao.converters.ConverterEntityUtils;
 import dao.converters.ConverterNegocioUtils;
 import entities.OrdenDeCompraEntity;
+import model.Articulo;
 import model.OrdenDeCompra;
+import model.Proveedor;
 import utils.HibernateUtils;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OrdenDeCompraDAO {
 
@@ -25,11 +29,15 @@ public class OrdenDeCompraDAO {
     }
 
     public static OrdenDeCompra getUltimaOrdenDeCompra(Integer codigoArticulo){
-        Optional<OrdenDeCompraEntity> result =HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
+        Optional<OrdenDeCompraEntity> result = HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
 
         return result.map(OrdenDeCompraDAO::ordenDeCompraToNegocio).orElse(null);
     }
 
+    public static List<Proveedor> getUltimos3Proveedores(Integer codigoArticulo){
+        List<OrdenDeCompraEntity> result = HibernateUtils.getResultList("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
+        return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList()).subList(0,2);
+    }
 
     private static OrdenDeCompra ordenDeCompraToNegocio(OrdenDeCompraEntity ordenDeCompra) {
         return new OrdenDeCompra(
@@ -40,5 +48,7 @@ public class OrdenDeCompraDAO {
                 ConverterNegocioUtils.proveedorToNegocio(ordenDeCompra.getProovedor())
         );
     }
+
+
 
 }

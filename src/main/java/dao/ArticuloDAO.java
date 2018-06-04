@@ -2,6 +2,7 @@ package dao;
 
 import dao.converters.ConverterEntityUtils;
 import dao.converters.ConverterNegocioUtils;
+import dtos.ArticuloDTO;
 import entities.ArticuloEntity;
 import model.*;
 import utils.HibernateUtils;
@@ -17,6 +18,12 @@ public class ArticuloDAO {
 
     public static Articulo getById(Integer id){
         return ConverterNegocioUtils.articuloToNegocio(HibernateUtils.getById(ArticuloEntity.class, id));
+    }
+
+
+    public static List<Articulo> getAll(){
+        List<ArticuloEntity> articuloDTOS = HibernateUtils.getResultList("from ArticuloEntity");
+        return articuloDTOS.stream().map(ConverterNegocioUtils::articuloToNegocio).collect(Collectors.toList());
     }
 
     public static List<Lote> getLotes(Articulo articulo){

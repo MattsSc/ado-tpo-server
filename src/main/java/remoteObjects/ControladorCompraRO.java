@@ -2,11 +2,13 @@ package remoteObjects;
 
 import controlador.ControladorCompra;
 import dtos.OrdenDeCompraDTO;
+import dtos.ProveedorDTO;
 import interfaces.SistemaCompra;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
+import java.util.List;
 
 public class ControladorCompraRO extends UnicastRemoteObject implements SistemaCompra {
 
@@ -17,6 +19,11 @@ public class ControladorCompraRO extends UnicastRemoteObject implements SistemaC
     @Override
     public Integer crearOrdenDeCompra(OrdenDeCompraDTO ordenDeCompraDTO) throws RemoteException {
         return ControladorCompra.getInstance().crearOrdenDeCompra(ordenDeCompraDTO);
+    }
+
+    @Override
+    public List<ProveedorDTO> obtenerUltimos3Proveedores(Integer idProducto) throws RemoteException {
+        return ControladorCompra.getInstance().obtenerUltimos3Proveedores(idProducto);
     }
 
     @Override

@@ -30,6 +30,8 @@ public class Articulo {
         this.unidad = unidad;
         this.precio = precio;
         this.cantReposicion = cantReposicion;
+        this.lotes = null;
+        this.movimientos = null;
     }
 
     public Articulo(Integer codigo, String descripcion, String presentacion, int tamanio, int unidad, float precio, int cantReposicion, List<Lote> lotes, List<Movimiento> movimientos) {

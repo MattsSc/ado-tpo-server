@@ -1,6 +1,7 @@
 package model;
 
 import dao.ProovedorDAO;
+import dtos.ProveedorDTO;
 
 public class Proveedor {
     private Integer id;
@@ -44,5 +45,13 @@ public class Proveedor {
 
     public void setCuit(int cuit) {
         this.cuit = cuit;
+    }
+
+    public ProveedorDTO toDto(){
+        return new ProveedorDTO(
+                this.getId(),
+                this.getNombre(),
+                this.getCuit()
+        );
     }
 }

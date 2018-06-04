@@ -1,8 +1,10 @@
 package server;
 
+import interfaces.SistemaArticulo;
 import interfaces.SistemaCliente;
 import interfaces.SistemaCompra;
 import interfaces.SistemaPedido;
+import remoteObjects.ControladorArticuloRO;
 import remoteObjects.ControladorClienteRO;
 import remoteObjects.ControladorCompraRO;
 import remoteObjects.ControladorPedidoRO;
@@ -21,10 +23,12 @@ public class Servidor {
             SistemaCliente sistemaCliente = new ControladorClienteRO();
             SistemaPedido sistemaPedido = new ControladorPedidoRO();
             SistemaCompra sistemaCompra = new ControladorCompraRO();
+            SistemaArticulo sistemaArticulo = new ControladorArticuloRO();
             LocateRegistry.createRegistry(1099);
             Naming.rebind("//127.0.0.1:1099/ControladorCliente", sistemaCliente);
             Naming.rebind("//127.0.0.1:1099/ControladorPedido", sistemaPedido);
             Naming.rebind("//127.0.0.1:1099/ControladorCompra", sistemaCompra);
+            Naming.rebind("//127.0.0.1:1099/ControladorArticulo", sistemaArticulo);
             HibernateUtils.getSessionFactory();
         } catch (RemoteException e) {
             e.printStackTrace();

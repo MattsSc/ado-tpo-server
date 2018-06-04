@@ -1,16 +1,14 @@
 package controlador;
 
 import dao.PedidoDAO;
-import dtos.ArticuloDTO;
-import dtos.ClienteDTO;
-import dtos.ItemPedidoDTO;
-import dtos.PedidoDTO;
+import dtos.*;
 import interfaces.SistemaPedido;
 import model.*;
 import model.manager.DocumentosManager;
 import model.manager.PedidoManager;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +50,24 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
-    public void despacharPedido(Integer id, String tipoFactura) throws RemoteException {
+    public List<ItemAProcesarDTO> despacharPedido(Integer id, String tipoFactura) throws RemoteException {
+        List<ItemAProcesarDTO> finalResult = new ArrayList<>();
         Map<ItemPedido, List<ItemAProcesar>> result = this.pedidoManager.despacharPedido(id);
         this.documentosManager.crearFactura(tipoFactura, id, result);
         this.documentosManager.crearRemito(id, result);
+        result.forEach((itemPedido,itemsAProcesar) ->{
+            itemsAProcesar.forEach(it ->{
+                finalResult.add(
+                        new ItemAProcesarDTO(
+                                itemPedido.getArticulo().getDescripcion(),
+                                it.getUbicaciones(),
+                                it.getCantidad()
+                        )
+                );
+            });
+        });
+
+        return finalResult;
     }
 
     @Override

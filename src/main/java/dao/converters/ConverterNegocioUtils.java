@@ -18,6 +18,17 @@ public class ConverterNegocioUtils {
                 null);
     }
 
+    public static MovimientoCC movimientoCCToNegocio(MovCCEntity movCCEntity){
+        MovimientoCC movimientoCC = new MovimientoCC(
+                movCCEntity.getFecha(),
+                movCCEntity.getImporte(),
+                movCCEntity.getTipo()
+        );
+        if(movCCEntity.getIdMovimiento() != null)
+            movimientoCC.setId(movCCEntity.getIdMovimiento());
+        return movimientoCC;
+    }
+
     public static Articulo articuloToNegocio(ArticuloEntity entity){
         return new Articulo(
                 entity.getCodigo(),

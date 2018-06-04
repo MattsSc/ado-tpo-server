@@ -8,6 +8,7 @@ import interfaces.SistemaCliente;
 import model.Cliente;
 import model.MovimientoCC;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,13 +56,15 @@ public class ControladorCliente implements SistemaCliente{
         return modelToDto(ClienteDAO.getById(dni));
     }
 
+    @Override
+    public List<MovimientoCCDto> obtenerMovDeCliente(Integer dni) throws RemoteException {
+        return ClienteDAO.getMovimientosDeCliente(dni).stream().map(MovimientoCC::toDto).collect(Collectors.toList());
+    }
+
     /***************** PRIVATE METHODS **********************/
 
     private ClienteDTO modelToDto(Cliente cliente){
-        List<MovimientoCCDto> movCCDto = cliente.getMovimientosCC().stream().map(MovimientoCC::toDto).collect(Collectors.toList());
-        ClienteDTO clienteDTO = cliente.toDto();
-        clienteDTO.setMovimientosCC(movCCDto);
-
+       ClienteDTO clienteDTO = cliente.toDto();
         return clienteDTO;
     }
 

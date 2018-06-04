@@ -8,7 +8,7 @@ import java.util.Date;
 public class MovCCEntity {
     @Id
     @GeneratedValue
-    private int idMovimiento;
+    private Integer idMovimiento;
 
     private Date fecha;
     private float importe;
@@ -27,11 +27,11 @@ public class MovCCEntity {
         this.cliente = cliente;
     }
 
-    public int getIdMovimiento() {
+    public Integer getIdMovimiento() {
         return idMovimiento;
     }
 
-    public void setIdMovimiento(int idMovimiento) {
+    public void setIdMovimiento(Integer idMovimiento) {
         this.idMovimiento = idMovimiento;
     }
 

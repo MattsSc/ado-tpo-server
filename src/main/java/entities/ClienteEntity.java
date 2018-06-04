@@ -20,7 +20,7 @@ public class ClienteEntity {
     private float montoDisponible;
 
     @OneToMany
-    @JoinColumn(name="cliente")
+    @JoinColumn(name="idCliente")
     private List<MovCCEntity> movimientosCC;
 
     public ClienteEntity(){}

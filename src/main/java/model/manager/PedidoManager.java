@@ -129,7 +129,7 @@ public class PedidoManager {
                 List<Ubicacion> ub = UbicacionDAO.getUbicacionesDeLote(lote.getId());
                 int j = 0;
                 int cantidadAReducir = lote.getStock() - cantidadTotal;
-                ItemAProcesar itemAProcesar = new ItemAProcesar(cantidadAReducir, lote.getProveedor());
+                ItemAProcesar itemAProcesar = new ItemAProcesar(cantidadTotal, lote.getProveedor());
                 while(cantidadTotal > 0) {
                     Ubicacion ubicacion = ub.get(j);
                     if(cantidadTotal - ubicacion.getCantidad() >= 0){

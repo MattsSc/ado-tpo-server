@@ -55,7 +55,6 @@ public class Cliente {
                 "COMPRA"
         );
         movimientoCC.save(this);
-        this.movimientosCC.add(movimientoCC);
         this.update();
     }
 

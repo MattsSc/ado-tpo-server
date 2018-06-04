@@ -28,7 +28,7 @@ public class Pedido {
                 this.getFechaEntrega(),
                 this.getEstado(),
                 this.getDireccionEntrega(),
-                this.items.stream().map(ItemPedido::toDto).collect(Collectors.toList())
+                this.getItems().stream().map(ItemPedido::toDto).collect(Collectors.toList())
         );
     }
 

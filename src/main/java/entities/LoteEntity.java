@@ -14,12 +14,12 @@ public class LoteEntity {
     private Date fechaVencimiento;
     private int cantidad;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="proveedorId")
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinColumn(name="proveedorId", updatable = false)
     private ProveedorEntity proovedor;
 
     @ManyToOne
-    @JoinColumn(name="articuloId")
+    @JoinColumn(name="articuloId", updatable = false)
     private ArticuloEntity articulo;
 
     public LoteEntity() {

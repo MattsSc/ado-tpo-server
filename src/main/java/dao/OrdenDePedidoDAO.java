@@ -2,7 +2,9 @@ package dao;
 
 import dao.converters.ConverterEntityUtils;
 import dao.converters.ConverterNegocioUtils;
+import entities.OrdenDeCompraEntity;
 import entities.OrdenDePedidoEntity;
+import model.Articulo;
 import model.OrdenDePedido;
 import utils.HibernateUtils;
 
@@ -10,6 +12,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrdenDePedidoDAO {
+
+    public static List<Articulo> getArticulosFaltantes(){
+        List<OrdenDePedidoEntity> opList = HibernateUtils.getResultList("from OrdenDePedidoEntity");
+        return opList.stream()
+                .map(op -> op.getArticulo())
+                .distinct()
+                .map(ConverterNegocioUtils::articuloToNegocio)
+                .collect(Collectors.toList());
+    }
 
     public static void save(OrdenDePedido ordenDePedido){
         HibernateUtils.saveTransaction(ordenPedidoToEntity(ordenDePedido));
