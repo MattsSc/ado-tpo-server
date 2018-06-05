@@ -87,11 +87,11 @@ public class HibernateUtils {
         return result;
     }
 
-    public static  Optional getOneResult(String query){
+    public static Object getOneResult(String query){
         SessionFactory sf = HibernateUtils.getSessionFactory();
         Session s = sf.openSession();
         s.beginTransaction();
-        Optional result = s.createQuery(query).uniqueResultOptional();
+        Object result = s.createQuery(query).getSingleResult();
         s.getTransaction().commit();
 
         return result;

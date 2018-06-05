@@ -45,12 +45,12 @@ public class Ubicacion {
 
     public Integer cantidadAGuardar(String tipoProducto){
         if(tipoProducto.equals(TipoProducto.BOTELLA.name()))
-            return 100;
+            return 600;
         if(tipoProducto.equals(TipoProducto.BOLSA.name()))
-            return 150;
+            return 400;
         if(tipoProducto.equals(TipoProducto.CAJA.name()))
-            return 80;
-        return 200;
+            return 300;
+        return 1000;
     }
 
 

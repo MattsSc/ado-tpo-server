@@ -20,6 +20,28 @@ public class ReservaArticuloDAO {
         return result.stream().map(ReservaArticuloDAO::reservaArticuloToNegocio).collect(Collectors.toList());
     }
 
+    public static List<ReservaArticulo> getByPedidoId(Integer pedidoId){
+        List<ReservaArticuloEntity> result = HibernateUtils.getResultList("from ReservaArticuloEntity where pedidoId = " + pedidoId);
+        return result.stream().map(ReservaArticuloDAO::reservaArticuloToNegocio).collect(Collectors.toList());
+    }
+
+    public static void delete(ReservaArticulo reservaArticulo){
+        HibernateUtils.deleteTransaction(reservaArticuloToEntity(reservaArticulo));
+    }
+
+
+    private static ReservaArticuloEntity reservaArticuloToEntity(ReservaArticulo reservaArticulo) {
+        ReservaArticuloEntity reservaArticuloEntity = new ReservaArticuloEntity(
+                reservaArticulo.getCantidad(),
+                null,
+                ConverterEntityUtils.pedidoToEntity(PedidoDAO.getById(reservaArticulo.getIdPedido())),
+                reservaArticulo.isEsCompleta()
+        );
+        if(reservaArticulo.getId() != null)
+            reservaArticuloEntity.setId(reservaArticulo.getId());
+
+        return  reservaArticuloEntity;
+    }
 
     private static ReservaArticuloEntity reservaArticuloToEntity(ReservaArticulo reservaArticulo, Integer codigoArticulo) {
         return  new ReservaArticuloEntity(

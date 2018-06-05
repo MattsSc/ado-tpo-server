@@ -27,6 +27,10 @@ public class ReservaArticulo {
         ReservaArticuloDAO.save(this, codigoArticulo);
     }
 
+    public void delete(){
+        ReservaArticuloDAO.delete(this);
+    }
+
     public Integer getId() {
         return id;
     }

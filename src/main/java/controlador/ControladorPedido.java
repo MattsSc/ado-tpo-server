@@ -4,8 +4,8 @@ import dao.PedidoDAO;
 import dtos.*;
 import interfaces.SistemaPedido;
 import model.*;
+import model.enums.EstadoPedido;
 import model.manager.DocumentosManager;
-import model.manager.PedidoManager;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class ControladorPedido implements SistemaPedido {
 
-    private PedidoManager pedidoManager;
     private DocumentosManager documentosManager;
 
     private static ControladorPedido ourInstance = new ControladorPedido();
@@ -26,17 +25,19 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     private ControladorPedido() {
-        this.pedidoManager = new PedidoManager();
         this.documentosManager = new DocumentosManager();
     }
 
     @Override
     public Integer crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
-        return this.pedidoManager.crearPedido(
+        Pedido pedido = new Pedido(
                 dtoToCliente(cliente),
+                EstadoPedido.RECIBIDO.name(),
                 direccionEntrega,
                 items.stream().map(this::dtoToItemPedido).collect(Collectors.toList())
         );
+        pedido.save();
+        return pedido.getId();
     }
 
     @Override
@@ -46,15 +47,19 @@ public class ControladorPedido implements SistemaPedido {
 
     @Override
     public void aprobarPedido(Integer id) throws RemoteException {
-        this.pedidoManager.aprobarPedido(id);
+        PedidoDAO.getById(id).aprobar();
     }
 
     @Override
     public List<ItemAProcesarDTO> despacharPedido(Integer id, String tipoFactura) throws RemoteException {
         List<ItemAProcesarDTO> finalResult = new ArrayList<>();
-        Map<ItemPedido, List<ItemAProcesar>> result = this.pedidoManager.despacharPedido(id);
+
+        Map<ItemPedido, List<ItemAProcesar>> result = PedidoDAO.getById(id).despachar();
+
+
         this.documentosManager.crearFactura(tipoFactura, id, result);
         this.documentosManager.crearRemito(id, result);
+
         result.forEach((itemPedido,itemsAProcesar) ->{
             itemsAProcesar.forEach(it ->{
                 finalResult.add(
@@ -72,12 +77,12 @@ public class ControladorPedido implements SistemaPedido {
 
     @Override
     public void rechazarPedido(Integer id) throws RemoteException {
-        this.pedidoManager.rechazarPedido(id);
+        PedidoDAO.getById(id).rechazar();
     }
 
     @Override
     public void completarPedido(Integer id, Date fechaEntrega) throws RemoteException {
-        this.pedidoManager.completarPedido(id, fechaEntrega);
+        PedidoDAO.getById(id).completar(fechaEntrega);
     }
 
     @Override
@@ -124,4 +129,6 @@ public class ControladorPedido implements SistemaPedido {
                 articulo.getCantReposicion()
         );
     }
+
+
 }

@@ -13,11 +13,11 @@ public class ReservaArticuloEntity {
     private int cantidad;
 
     @ManyToOne
-    @JoinColumn(name="articuloId")
+    @JoinColumn(name="articuloId", updatable = false)
     private ArticuloEntity articulo;
 
     @ManyToOne
-    @JoinColumn(name="pedidoId")
+    @JoinColumn(name="pedidoId", updatable = false)
     private PedidoEntity pedido;
 
     private boolean esCompleta;

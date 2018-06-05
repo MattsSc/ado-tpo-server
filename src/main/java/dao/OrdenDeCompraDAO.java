@@ -29,9 +29,12 @@ public class OrdenDeCompraDAO {
     }
 
     public static OrdenDeCompra getUltimaOrdenDeCompra(Integer codigoArticulo){
-        Optional<OrdenDeCompraEntity> result = HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
+        OrdenDeCompraEntity result = (OrdenDeCompraEntity) HibernateUtils.getOneResult("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
 
-        return result.map(OrdenDeCompraDAO::ordenDeCompraToNegocio).orElse(null);
+        if(result != null)
+            return  ordenDeCompraToNegocio(result);
+        else
+            return null;
     }
 
     public static List<Proveedor> getUltimos3Proveedores(Integer codigoArticulo){
