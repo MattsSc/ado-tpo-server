@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class DatosUtils {
 
+    private static int INCREMENT = 1;
+
     public static Cliente crearCliente(){
 
         Cliente cliente = new Cliente(
@@ -25,14 +27,14 @@ public class DatosUtils {
         return cliente;
     }
 
-    public static Articulo crearArticulo(int id){
+    public static Articulo crearArticulo(int id, float precio){
         Articulo articulo = new Articulo(
                 id,
                 "Articulo " + id,
                 "BOTELLA",
                 1,
                 1,
-                15F,
+                precio,
                 10000
         );
 
@@ -82,4 +84,44 @@ public class DatosUtils {
                 articulo
         );
     }
+
+    public static Lote crearLote(Articulo articulo, int stock, Proveedor proveedor){
+        Lote lote = new Lote(
+                new Date(),
+                stock,
+                proveedor
+        );
+
+        lote.save(articulo);
+
+        return lote;
+    }
+
+    public static void crearUbicacionLlena(Lote lote){
+        Ubicacion ubicacion = new Ubicacion(
+                "A01010" + INCREMENT,
+                true,
+                lote,
+                lote.getStock()
+        );
+
+        INCREMENT++;
+
+        ubicacion.save();
+
+    }
+
+    public static void crearUbicacion(Lote lote, int cantidad){
+        Ubicacion ubicacion = new Ubicacion(
+                "A01010" + INCREMENT,
+                true,
+                lote,
+                cantidad
+        );
+
+        INCREMENT++;
+
+        ubicacion.save();
+    }
+
 }

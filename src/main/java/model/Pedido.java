@@ -87,7 +87,7 @@ public class Pedido {
             Integer totalStock = articulo.stockRestante() - getCantidadReservadaDeArticulo(articulo);
             OrdenDeCompra ultimaOC = OrdenDeCompraDAO.getUltimaOrdenDeCompra(articulo.getCodigo());
 
-            if(ultimaOC == null || ultimaOC.isResuelto()){
+            if(totalStock > 0 && ( ultimaOC == null || ultimaOC.isResuelto() ) ){
                 if(totalStock >= item.getCantidad()){
                     generarReservaDeStock(this, item.getCantidad(), articulo, true);
                 }else{
@@ -149,7 +149,7 @@ public class Pedido {
 
         //Crear Factura
         Factura factura = new Factura(new Date(), tipoFactura, this.getCliente());
-        factura.asignarItems(result);
+        factura.asignarItems(this,result);
 
         return result;
     }

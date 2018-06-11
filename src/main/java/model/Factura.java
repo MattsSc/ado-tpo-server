@@ -15,17 +15,17 @@ public class Factura {
     private Cliente cliente;
     private List<ItemFactura> items;
 
+    public Factura(Date fechaCreacion, String tipo, Cliente cliente) {
+        this.fechaCreacion = fechaCreacion;
+        this.tipo = tipo;
+        this.cliente = cliente;
+    }
+
     public Factura(Date fechaCreacion, String tipo, Cliente cliente, List<ItemFactura> items) {
         this.fechaCreacion = fechaCreacion;
         this.tipo = tipo;
         this.cliente = cliente;
         this.items = items;
-    }
-
-    public Factura(Date fechaCreacion, String tipo, Cliente cliente) {
-        this.fechaCreacion = fechaCreacion;
-        this.tipo = tipo;
-        this.cliente = cliente;
     }
 
     public Factura(Integer id, Date fechaCreacion, String tipo, Cliente cliente, List<ItemFactura> items) {
@@ -37,11 +37,11 @@ public class Factura {
     }
 
     //Logic
-    public void save(){
-        FacturaDAO.save(this);
+    public void save(Pedido pedido){
+        FacturaDAO.save(this, pedido);
     }
 
-    public void asignarItems(Map<ItemPedido, List<ItemAProcesar>> itemsAProcesar){
+    public void asignarItems(Pedido pedido, Map<ItemPedido, List<ItemAProcesar>> itemsAProcesar){
         List<ItemFactura> itemsFactura = new ArrayList<>();
 
         itemsAProcesar.forEach((item,aProcesar) ->{
@@ -56,7 +56,7 @@ public class Factura {
         });
 
         this.setItems(itemsFactura);
-        this.save();
+        this.save(pedido);
     }
 
     //Getter Y Setter

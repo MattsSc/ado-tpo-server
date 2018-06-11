@@ -19,14 +19,21 @@ public class FacturaEntity {
     @JoinColumn(name="clienteId")
     private ClienteEntity cliente;
 
+    @ManyToOne
+    @JoinColumn(name="pedidoId")
+    private PedidoEntity pedido;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "facturaId")
     private List<ItemFacturaEntity> items;
 
-    public FacturaEntity(Date fechaCreacion, String tipo, ClienteEntity cliente, List<ItemFacturaEntity> items) {
+    public FacturaEntity() { }
+
+    public FacturaEntity(Date fechaCreacion, String tipo, ClienteEntity cliente, PedidoEntity pedido, List<ItemFacturaEntity> items) {
         this.fechaCreacion = fechaCreacion;
         this.tipo = tipo;
         this.cliente = cliente;
+        this.pedido = pedido;
         this.items = items;
     }
 
@@ -68,5 +75,13 @@ public class FacturaEntity {
 
     public void setItems(List<ItemFacturaEntity> items) {
         this.items = items;
+    }
+
+    public PedidoEntity getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(PedidoEntity pedido) {
+        this.pedido = pedido;
     }
 }

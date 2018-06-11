@@ -17,6 +17,13 @@ public class MovimientoCC {
         this.tipo = tipo;
     }
 
+    public MovimientoCC(Integer id, Date fecha, float importe, String tipo) {
+        this.id = id;
+        this.fecha = fecha;
+        this.importe = importe;
+        this.tipo = tipo;
+    }
+
     public MovimientoCCDto toDto(){
         return new MovimientoCCDto(
                 this.getId(),
