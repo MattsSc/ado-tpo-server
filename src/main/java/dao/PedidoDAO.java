@@ -17,6 +17,7 @@ public class PedidoDAO {
         PedidoEntity pedidoEntity = ConverterEntityUtils.pedidoToEntity(pedido);
         HibernateUtils.saveTransaction(pedidoEntity);
         pedido.setId(pedidoEntity.getId());
+        pedido.setItems(PedidoDAO.getItemsPedidos(pedido));
     }
 
     public static void update(Pedido pedido){

@@ -61,10 +61,17 @@ public class ConverterEntityUtils {
 
     public static PedidoEntity pedidoToEntity(Pedido pedido){
         List<ItemPedidoEntity> itemPedidoEntityList = pedido.getItems().stream().map(item -> {
+
             ArticuloEntity articuloEntity = articuloToEntity(item.getArticulo());
-            return new ItemPedidoEntity(
+
+            ItemPedidoEntity itemPedidoEntity = new ItemPedidoEntity(
                     item.getCantidad(),
                     articuloEntity);
+
+            if(item.getId() != null)
+                itemPedidoEntity.setId(item.getId());
+
+            return itemPedidoEntity;
         }).collect(Collectors.toList());
 
         PedidoEntity pedidoEntity =  new PedidoEntity(
