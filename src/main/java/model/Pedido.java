@@ -102,10 +102,18 @@ public class Pedido {
         }
 
         if(estaCompleto)
-            this.setEstado(EstadoPedido.DESPACHABLE.name());
+            this.aprobarCambiandoEstado();
         else
-            this.setEstado(EstadoPedido.FALTA_STOCK.name());
+            this.faltaStockCambiandoEstado();
+    }
 
+    public void aprobarCambiandoEstado(){
+        this.setEstado(EstadoPedido.DESPACHABLE.name());
+        this.update();
+    }
+
+    public void faltaStockCambiandoEstado(){
+        this.setEstado(EstadoPedido.FALTA_STOCK.name());
         this.update();
     }
 
@@ -115,7 +123,7 @@ public class Pedido {
         this.update();
     }
 
-    public Map<ItemPedido, List<ItemAProcesar>> despachar(){
+    public Map<ItemPedido, List<ItemAProcesar>> despachar(String tipoFactura){
         this.setFechaDespacho(new Date());
         this.setEstado(EstadoPedido.DESPACHO.name());
         Map<ItemPedido, List<ItemAProcesar>> result = new HashMap<>();
@@ -124,15 +132,24 @@ public class Pedido {
         }
         this.update();
 
+        //Descontar monto al cliente
         float total = 0;
         for(ItemPedido item : this.getItems()){
             total = total + (item.getCantidad() * item.getArticulo().getPrecio());
         }
         this.getCliente().descontarMontoDisponible(total);
 
+        //Borrar Reserva
         List<ReservaArticulo> reservas = ReservaArticuloDAO.getByPedidoId(this.getId());
         reservas.forEach(ReservaArticulo::delete);
 
+        //Crear Remito
+        Remito remito = new Remito(new Date(),this.getCliente());
+        remito.asignarItems(result);
+
+        //Crear Factura
+        Factura factura = new Factura(new Date(), tipoFactura, this.getCliente());
+        factura.asignarItems(result);
 
         return result;
     }

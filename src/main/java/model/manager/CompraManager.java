@@ -53,7 +53,7 @@ public class CompraManager {
 
             if(OrdenDePedidoDAO.obtenerOrdenesDePedidoParaPedido(ordenDePedido.getIdPedido()).isEmpty()){
                 Pedido pedido = PedidoDAO.getById(ordenDePedido.getIdPedido());
-                pedido.aprobarPedido();
+                pedido.aprobarCambiandoEstado();
             }
         });
     }

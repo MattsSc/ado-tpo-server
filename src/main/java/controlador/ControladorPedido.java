@@ -5,7 +5,6 @@ import dtos.*;
 import interfaces.SistemaPedido;
 import model.*;
 import model.enums.EstadoPedido;
-import model.manager.DocumentosManager;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,17 +15,13 @@ import java.util.stream.Collectors;
 
 public class ControladorPedido implements SistemaPedido {
 
-    private DocumentosManager documentosManager;
-
     private static ControladorPedido ourInstance = new ControladorPedido();
 
     public static ControladorPedido getInstance() {
         return ourInstance;
     }
 
-    private ControladorPedido() {
-        this.documentosManager = new DocumentosManager();
-    }
+    private ControladorPedido() {}
 
     @Override
     public Integer crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
@@ -54,22 +49,12 @@ public class ControladorPedido implements SistemaPedido {
     public List<ItemAProcesarDTO> despacharPedido(Integer id, String tipoFactura) throws RemoteException {
         List<ItemAProcesarDTO> finalResult = new ArrayList<>();
 
-        Map<ItemPedido, List<ItemAProcesar>> result = PedidoDAO.getById(id).despachar();
+        Pedido pedido = PedidoDAO.getById(id);
+        Map<ItemPedido, List<ItemAProcesar>> result =pedido.despachar(tipoFactura);
 
-
-        this.documentosManager.crearFactura(tipoFactura, id, result);
-        this.documentosManager.crearRemito(id, result);
-
+        //Mapea a DTO
         result.forEach((itemPedido,itemsAProcesar) ->{
-            itemsAProcesar.forEach(it ->{
-                finalResult.add(
-                        new ItemAProcesarDTO(
-                                itemPedido.getArticulo().getDescripcion(),
-                                it.getUbicaciones(),
-                                it.getCantidad()
-                        )
-                );
-            });
+            itemsAProcesar.forEach(it -> finalResult.add(it.toDto(itemPedido)));
         });
 
         return finalResult;

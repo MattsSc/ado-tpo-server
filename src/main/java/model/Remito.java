@@ -2,8 +2,10 @@ package model;
 
 import dao.RemitoDAO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Remito {
 
@@ -11,6 +13,11 @@ public class Remito {
     private Date fechaCreacion;
     private Cliente cliente;
     private List<ItemRemito> items;
+
+    public Remito(Date fechaCreacion, Cliente cliente) {
+        this.fechaCreacion = fechaCreacion;
+        this.cliente = cliente;
+    }
 
     public Remito(Date fechaCreacion, Cliente cliente, List<ItemRemito> items) {
         this.fechaCreacion = fechaCreacion;
@@ -30,6 +37,23 @@ public class Remito {
         RemitoDAO.save(this);
     }
 
+    public void asignarItems(Map<ItemPedido, List<ItemAProcesar>> itemsAProcesar){
+        List<ItemRemito> itemsRemito = new ArrayList<>();
+        itemsAProcesar.forEach((item,aProcesar) ->{
+            aProcesar.stream().forEach(itemAProcesar -> {
+                ItemRemito itemRemito = new ItemRemito(
+                        item.getArticulo(),
+                        itemAProcesar.getCantidad()
+                );
+                itemsRemito.add(itemRemito);
+            });
+        });
+
+        this.setItems(itemsRemito);
+        this.save();
+    }
+
+    //Getter & Setter
     public Integer getId() {
         return id;
     }
