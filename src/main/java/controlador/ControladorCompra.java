@@ -34,7 +34,6 @@ public class ControladorCompra implements SistemaCompra {
                 ordenDeCompraDTO.getCantidad(),
                 ProovedorDAO.getById(ordenDeCompraDTO.getProovedor().getId())
         );
-       ;
         return this.compraManager.crearOrdenDeCompra(ordenDeCompra);
     }
 

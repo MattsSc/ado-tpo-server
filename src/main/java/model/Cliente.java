@@ -59,10 +59,25 @@ public class Cliente {
         this.setMovimientosCC(MovCCDAO.getMovsByIdCliente(this.dni));
     }
 
+    public void pagar(float importe) {
+        MovimientoCC movimientoCC = new MovimientoCC(
+                new Date(),
+                importe,
+                "PAGO"
+        );
+        this.montoDisponible = this.montoDisponible + importe ;
+        movimientoCC.save(this);
+
+        this.update();
+        this.setMovimientosCC(MovCCDAO.getMovsByIdCliente(this.dni));
+    }
+
     public void update(){
         ClienteDAO.update(this);
     }
 
+
+    //Getter & Setter
     public int getDni() {
         return dni;
     }

@@ -61,6 +61,12 @@ public class ControladorCliente implements SistemaCliente{
         return ClienteDAO.getMovimientosDeCliente(dni).stream().map(MovimientoCC::toDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void registrarPago(Integer dni, float cantidad) throws RemoteException {
+        Cliente cliente = ClienteDAO.getById(dni);
+        cliente.pagar(cantidad);
+    }
+
     /***************** PRIVATE METHODS **********************/
 
     private ClienteDTO modelToDto(Cliente cliente){

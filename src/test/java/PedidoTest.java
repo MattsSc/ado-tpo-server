@@ -1,45 +1,16 @@
-import com.sun.security.ntlm.Client;
 import dao.*;
 import model.*;
 import model.enums.EstadoPedido;
 import model.enums.TipoMovimiento;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.dialect.H2Dialect;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import utils.DatosUtils;
-import utils.HibernateUtils;
-
-import javax.persistence.Query;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-public class PedidoTest {
-
-    private static List<String> tables= Arrays.asList(
-            "Articulo",
-            "OrdenDePedido",
-            "Pedido",
-            "ReservaArticulo",
-            "Proveedor",
-            "Cliente",
-            "OrdenDeCompra",
-            "Movimiento",
-            "ItemPedido",
-            "CuentaCorriente",
-            "Factura",
-            "ItemFactura",
-            "Remito",
-            "ItemRemito"
-    );
-
-    @Before
-    public void before() {
-        // setup the session factory
-    }
+public class PedidoTest extends GenericTest{
 
     @Test
     public void aprobarPedidoOk() {
@@ -67,18 +38,17 @@ public class PedidoTest {
         pedido.save();
         pedido.aprobar();
 
+        //VALIDAR REERVA ARTICULOS
         List<ReservaArticulo> reservaArticuloList = ReservaArticuloDAO.getByPedidoId(pedido.getId());
-
         Assert.assertEquals(3,reservaArticuloList.size());
-
         Assert.assertEquals(100,reservaArticuloList.get(0).getCantidad());
         Assert.assertEquals(200,reservaArticuloList.get(1).getCantidad());
         Assert.assertEquals(300,reservaArticuloList.get(2).getCantidad());
-
         Assert.assertTrue(reservaArticuloList.get(0).isEsCompleta());
         Assert.assertTrue(reservaArticuloList.get(1).isEsCompleta());
         Assert.assertTrue(reservaArticuloList.get(2).isEsCompleta());
 
+        //VALIDAR PEDIDO
         Assert.assertEquals(EstadoPedido.DESPACHABLE.name(), pedido.getEstado());
         Assert.assertNotNull(pedido.getFechaSolicitudOrden());
     }
@@ -247,19 +217,35 @@ public class PedidoTest {
         Assert.assertNotNull(pedido.getFechaDespacho());
     }
 
-    @After
-    //Clear DB
-    public void after() {
-        SessionFactory sf= HibernateUtils.getSessionFactory();
-        Session s = sf.openSession();
-        s.beginTransaction();
+    @Test
+    public void completarPedido(){
+        Articulo articulo1 = DatosUtils.crearArticulo(1,10);
+        Proveedor proveedor = DatosUtils.crearProveedor(1);
 
-        tables.forEach(table -> {
-            Query query = s.createSQLQuery("truncate table " + table);
-            query.executeUpdate();
-        });
+        DatosUtils.crearUbicacionLlena(DatosUtils.crearLote(articulo1, 100 , proveedor));
 
-        s.getTransaction().commit();
-        s.close();
+        DatosUtils.crearOC(articulo1, 500, proveedor);
+
+        Cliente cliente = DatosUtils.crearCliente();
+
+        Pedido pedido = new Pedido(
+                cliente,
+                EstadoPedido.RECIBIDO.name(),
+                "Calle falsa 123",
+                Arrays.asList(
+                        DatosUtils.crearItem(articulo1, 100)
+                )
+        );
+
+        pedido.save();
+        pedido.aprobar();
+        pedido.despachar("A");
+        Date completo = new Date();
+        pedido.completar(completo);
+
+        Assert.assertEquals(completo, pedido.getFechaEntrega());
+        Assert.assertEquals(EstadoPedido.COMPLETO.name(), pedido.getEstado());
+
     }
+
 }

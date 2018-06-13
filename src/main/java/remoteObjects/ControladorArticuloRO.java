@@ -16,6 +16,11 @@ public class ControladorArticuloRO extends UnicastRemoteObject implements Sistem
     }
 
     @Override
+    public void crearArticulo(ArticuloDTO articuloDTO) throws RemoteException {
+        ControladorArticulo.getInstance().crearArticulo(articuloDTO);
+    }
+
+    @Override
     public ArticuloDTO obtenerArticulo(Integer id) throws RemoteException {
         return ControladorArticulo.getInstance().obtenerArticulo(id);
     }

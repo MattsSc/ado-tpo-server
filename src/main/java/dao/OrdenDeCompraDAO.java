@@ -39,7 +39,9 @@ public class OrdenDeCompraDAO {
 
     public static List<Proveedor> getUltimos3Proveedores(Integer codigoArticulo){
         List<OrdenDeCompraEntity> result = HibernateUtils.getResultList("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
-        return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList()).subList(0,2);
+        if(result.size() > 3)
+            return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList()).subList(0,2);
+        return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList());
     }
 
     private static OrdenDeCompra ordenDeCompraToNegocio(OrdenDeCompraEntity ordenDeCompra) {

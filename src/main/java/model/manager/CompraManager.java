@@ -11,7 +11,7 @@ public class CompraManager {
 
     public Integer crearOrdenDeCompra(OrdenDeCompra oc){
         Articulo articulo = oc.getArticulo();
-
+        oc.setCantidad(articulo.getCantReposicion());
         oc.save();
 
         List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoSinOc(articulo.getCodigo());

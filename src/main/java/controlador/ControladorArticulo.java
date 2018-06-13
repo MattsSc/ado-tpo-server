@@ -21,6 +21,19 @@ public class ControladorArticulo implements SistemaArticulo {
         return INSTANCE;
     }
 
+    @Override
+    public void crearArticulo(ArticuloDTO articuloDTO) throws RemoteException {
+        Articulo articulo = new Articulo(
+                articuloDTO.getCodigo(),
+                articuloDTO.getDescripcion(),
+                articuloDTO.getPresentacion(),
+                articuloDTO.getTamanio(),
+                articuloDTO.getUnidad(),
+                articuloDTO.getPrecio(),
+                articuloDTO.getCantReposicion()
+        );
+        articulo.save();
+    }
 
     @Override
     public ArticuloDTO obtenerArticulo(Integer id) throws RemoteException {
