@@ -33,12 +33,9 @@ public class CompraManager {
         return oc.getId();
     }
 
-    public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento){
+    public OrdenDeCompra cerrarOrdenDeCompra(Integer ocId){
         OrdenDeCompra oc = OrdenDeCompraDAO.getById(ocId);
         oc.resolver();
-
-        Lote lote = crearLote(fechaVencimiento, oc);
-        this.asignarLoteAUbicacion(oc.getArticulo(), lote);
         generarMovimientoCompra(oc);
 
         List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(oc.getId());
@@ -56,36 +53,8 @@ public class CompraManager {
                 pedido.aprobarCambiandoEstado();
             }
         });
-    }
 
-    private void asignarLoteAUbicacion(Articulo articulo, Lote lote){
-        List<Ubicacion> ubicaciones = UbicacionDAO.getUbicacionesVacias();
-        int cantidad = lote.getStock();
-        int indice = 0;
-        while(cantidad > 0){
-            Ubicacion ubicacion = ubicaciones.get(indice);
-            int cantidadPosiblePorUbicacion = ubicacion.cantidadAGuardar(articulo.getPresentacion());
-            if(cantidad - cantidadPosiblePorUbicacion >= 0){
-                ubicacion.guardar(lote, cantidadPosiblePorUbicacion);
-                cantidad = cantidad - cantidadPosiblePorUbicacion;
-            }else{
-                ubicacion.guardar(lote, cantidad);
-                cantidad = 0;
-            }
-            indice++;
-        }
-
-    }
-
-    private Lote crearLote(Date fechaVencimiento, OrdenDeCompra oc) {
-        Lote loteNuevo = new Lote(
-                fechaVencimiento,
-                oc.getCantidad(),
-                oc.getProovedor()
-        );
-
-        loteNuevo.save(oc.getArticulo());
-        return loteNuevo;
+        return oc;
     }
 
     private void generarMovimientoCompra(OrdenDeCompra oc) {

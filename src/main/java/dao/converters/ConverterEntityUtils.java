@@ -81,6 +81,7 @@ public class ConverterEntityUtils {
                 pedido.getFechaEntrega(),
                 pedido.getEstado(),
                 pedido.getDireccionEntrega(),
+                pedido.getAclaracion(),
                 itemPedidoEntityList
         );
 

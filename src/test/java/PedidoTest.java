@@ -3,7 +3,6 @@ import model.*;
 import model.enums.EstadoPedido;
 import model.enums.TipoMovimiento;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import utils.DatosUtils;
 import java.util.Arrays;
@@ -36,7 +35,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar();
+        pedido.aprobar(aclaracion);
 
         //VALIDAR REERVA ARTICULOS
         List<ReservaArticulo> reservaArticuloList = ReservaArticuloDAO.getByPedidoId(pedido.getId());
@@ -77,7 +76,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar();
+        pedido.aprobar(aclaracion);
 
         List<ReservaArticulo> reservaArticuloList = ReservaArticuloDAO.getByPedidoId(pedido.getId());
         List<OrdenDePedido> ordenDePedidoList = OrdenDePedidoDAO.obtenerOrdenesDePedido();
@@ -128,8 +127,8 @@ public class PedidoTest extends GenericTest{
 
         pedido1.save();
         pedido2.save();
-        pedido1.aprobar();
-        pedido2.aprobar();
+        pedido1.aprobar(aclaracion);
+        pedido2.aprobar(aclaracion);
 
         List<ReservaArticulo> reservaArticulo1List = ReservaArticuloDAO.getByPedidoId(pedido1.getId());
         List<ReservaArticulo> reservaArticulo2List = ReservaArticuloDAO.getByPedidoId(pedido2.getId());
@@ -178,7 +177,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar();
+        pedido.aprobar(aclaracion);
         pedido.despachar("A");
 
         //VALIDACION UBICACIONES
@@ -238,7 +237,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar();
+        pedido.aprobar(aclaracion);
         pedido.despachar("A");
         Date completo = new Date();
         pedido.completar(completo);

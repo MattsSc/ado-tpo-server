@@ -2,7 +2,7 @@ package remoteObjects;
 
 import controlador.ControladorCliente;
 import dtos.ClienteDTO;
-import dtos.MovimientoCCDto;
+import dtos.MovimientoCCDTO;
 import interfaces.SistemaCliente;
 
 import java.rmi.RemoteException;
@@ -31,8 +31,13 @@ public class ControladorClienteRO extends UnicastRemoteObject implements Sistema
     }
 
     @Override
-    public void agregarMovimiento(Integer dni, MovimientoCCDto movimientoCCDto)  throws RemoteException{
-        ControladorCliente.getInstance().agregarMovimiento(dni,movimientoCCDto);
+    public void agregarMovimiento(Integer dni, MovimientoCCDTO movimientoCCDTO)  throws RemoteException{
+        ControladorCliente.getInstance().agregarMovimiento(dni, movimientoCCDTO);
+    }
+
+    @Override
+    public void registrarPago(Integer dni, float cantidad) throws RemoteException {
+        ControladorCliente.getInstance().registrarPago(dni, cantidad);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ControladorClienteRO extends UnicastRemoteObject implements Sistema
     }
 
     @Override
-    public List<MovimientoCCDto> obtenerMovDeCliente(Integer dni) throws RemoteException {
+    public List<MovimientoCCDTO> obtenerMovDeCliente(Integer dni) throws RemoteException {
         return ControladorCliente.getInstance().obtenerMovDeCliente(dni);
     }
 }

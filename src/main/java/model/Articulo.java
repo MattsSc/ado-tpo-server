@@ -4,10 +4,7 @@ import dao.ArticuloDAO;
 import dtos.ArticuloDTO;
 import model.enums.TipoMovimiento;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Articulo {
@@ -58,6 +55,8 @@ public class Articulo {
     private boolean esMovimientoNegativo(Movimiento mov){
         return (mov.getTipo().equals(TipoMovimiento.ELIMINACION) || mov.getTipo().equals(TipoMovimiento.AJUSTE_NEGATIVO) || mov.getTipo().equals(TipoMovimiento.VENTA));
     }
+
+
     //Getter & Setter
     public Integer getCodigo() {
         return codigo;
@@ -151,4 +150,5 @@ public class Articulo {
                 this.getCantReposicion()
         );
     }
+
 }

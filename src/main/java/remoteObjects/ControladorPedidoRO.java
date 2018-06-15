@@ -29,8 +29,8 @@ public class ControladorPedidoRO extends UnicastRemoteObject implements SistemaP
     }
 
     @Override
-    public void aprobarPedido(Integer id) throws RemoteException {
-        ControladorPedido.getInstance().aprobarPedido(id);
+    public void aprobarPedido(Integer id, String aclaracion) throws RemoteException {
+        ControladorPedido.getInstance().aprobarPedido(id,aclaracion);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class ControladorPedidoRO extends UnicastRemoteObject implements SistemaP
     }
 
     @Override
-    public void rechazarPedido(Integer id) throws RemoteException {
-        ControladorPedido.getInstance().rechazarPedido(id);
+    public void rechazarPedido(Integer id, String aclaracion) throws RemoteException {
+        ControladorPedido.getInstance().rechazarPedido(id, aclaracion);
     }
 
     @Override

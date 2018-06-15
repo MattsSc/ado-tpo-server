@@ -41,8 +41,8 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
-    public void aprobarPedido(Integer id) throws RemoteException {
-        PedidoDAO.getById(id).aprobar();
+    public void aprobarPedido(Integer id, String aclaracion) throws RemoteException {
+        PedidoDAO.getById(id).aprobar(aclaracion);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
-    public void rechazarPedido(Integer id) throws RemoteException {
-        PedidoDAO.getById(id).rechazar();
+    public void rechazarPedido(Integer id, String aclaracion) throws RemoteException {
+        PedidoDAO.getById(id).rechazar(aclaracion);
     }
 
     @Override

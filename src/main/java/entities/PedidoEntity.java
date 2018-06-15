@@ -20,6 +20,7 @@ public class PedidoEntity {
     private Date fechaEntrega;
     private String estado;
     private String direccionEntrega;
+    private String aclaracion;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pedidoId")
@@ -28,16 +29,16 @@ public class PedidoEntity {
     public PedidoEntity() {
     }
 
-    public PedidoEntity(ClienteEntity cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedidoEntity> items) {
+    public PedidoEntity(ClienteEntity cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, String aclaracion, List<ItemPedidoEntity> items) {
         this.cliente = cliente;
         this.fechaSolicitudOrden = fechaSolicitudOrden;
         this.fechaDespacho = fechaDespacho;
         this.fechaEntrega = fechaEntrega;
         this.estado = estado;
         this.direccionEntrega = direccionEntrega;
+        this.aclaracion = aclaracion;
         this.items = items;
     }
-
 
 
     public Integer getId() {
@@ -94,6 +95,14 @@ public class PedidoEntity {
 
     public void setDireccionEntrega(String direccionEntrega) {
         this.direccionEntrega = direccionEntrega;
+    }
+
+    public String getAclaracion() {
+        return aclaracion;
+    }
+
+    public void setAclaracion(String aclaracion) {
+        this.aclaracion = aclaracion;
     }
 
     public List<ItemPedidoEntity> getItems() {

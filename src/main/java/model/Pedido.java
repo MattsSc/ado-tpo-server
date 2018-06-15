@@ -19,6 +19,7 @@ public class Pedido {
     private Date fechaEntrega;
     private String estado;
     private String direccionEntrega;
+    private String aclaracion;
     private List<ItemPedido> items;
 
     //CONVERTER
@@ -31,6 +32,7 @@ public class Pedido {
                 this.getFechaEntrega(),
                 this.getEstado(),
                 this.getDireccionEntrega(),
+                this.getAclaracion(),
                 this.getItems().stream().map(ItemPedido::toDto).collect(Collectors.toList())
         );
     }
@@ -53,7 +55,7 @@ public class Pedido {
         this.direccionEntrega = direccionEntrega;
     }
 
-    public Pedido(Integer id, Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedido> items) {
+    public Pedido(Integer id, Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, String aclaracion, List<ItemPedido> items) {
         this.id = id;
         this.cliente = cliente;
         this.fechaSolicitudOrden = fechaSolicitudOrden;
@@ -61,6 +63,7 @@ public class Pedido {
         this.fechaEntrega = fechaEntrega;
         this.estado = estado;
         this.direccionEntrega = direccionEntrega;
+        this.aclaracion = aclaracion;
         this.items = items;
     }
 
@@ -73,12 +76,13 @@ public class Pedido {
         PedidoDAO.update(this);
     }
 
-    public void rechazar(){
+    public void rechazar(String aclaracion){
         this.setEstado(EstadoPedido.RECHAZADO.name());
+        this.setAclaracion(aclaracion);
         this.update();
     }
 
-    public void aprobar(){
+    public void aprobar(String aclaracion){
         Boolean estaCompleto = Boolean.TRUE;
 
         for(ItemPedido item: this.getItems()){
@@ -100,6 +104,8 @@ public class Pedido {
                 estaCompleto = Boolean.FALSE;
             }
         }
+
+        this.setAclaracion(aclaracion);
 
         if(estaCompleto)
             this.aprobarCambiandoEstado();
@@ -289,6 +295,14 @@ public class Pedido {
 
     public void setDireccionEntrega(String direccionEntrega) {
         this.direccionEntrega = direccionEntrega;
+    }
+
+    public String getAclaracion() {
+        return aclaracion;
+    }
+
+    public void setAclaracion(String aclaracion) {
+        this.aclaracion = aclaracion;
     }
 
     public List<ItemPedido> getItems() {
