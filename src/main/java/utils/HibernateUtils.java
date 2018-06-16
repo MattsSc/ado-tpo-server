@@ -3,6 +3,7 @@ package utils;
 import entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class HibernateUtils {
         try
         {
             System.getProperty("java.security.policy");
-            Configuration config = new Configuration();
+            AnnotationConfiguration config = new AnnotationConfiguration();
             config.addAnnotatedClass(ArticuloEntity.class);
             config.addAnnotatedClass(ClienteEntity.class);
             config.addAnnotatedClass(FacturaEntity.class);
