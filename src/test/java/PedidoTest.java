@@ -35,7 +35,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar(aclaracion);
+        pedido.aprobar(null);
 
         //VALIDAR REERVA ARTICULOS
         List<ReservaArticulo> reservaArticuloList = ReservaArticuloDAO.getByPedidoId(pedido.getId());
@@ -76,7 +76,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar(aclaracion);
+        pedido.aprobar(null);
 
         List<ReservaArticulo> reservaArticuloList = ReservaArticuloDAO.getByPedidoId(pedido.getId());
         List<OrdenDePedido> ordenDePedidoList = OrdenDePedidoDAO.obtenerOrdenesDePedido();
@@ -127,8 +127,8 @@ public class PedidoTest extends GenericTest{
 
         pedido1.save();
         pedido2.save();
-        pedido1.aprobar(aclaracion);
-        pedido2.aprobar(aclaracion);
+        pedido1.aprobar(null);
+        pedido2.aprobar(null);
 
         List<ReservaArticulo> reservaArticulo1List = ReservaArticuloDAO.getByPedidoId(pedido1.getId());
         List<ReservaArticulo> reservaArticulo2List = ReservaArticuloDAO.getByPedidoId(pedido2.getId());
@@ -177,7 +177,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar(aclaracion);
+        pedido.aprobar(null);
         pedido.despachar("A");
 
         //VALIDACION UBICACIONES
@@ -237,7 +237,7 @@ public class PedidoTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar(aclaracion);
+        pedido.aprobar(null);
         pedido.despachar("A");
         Date completo = new Date();
         pedido.completar(completo);

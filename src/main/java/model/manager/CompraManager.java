@@ -33,9 +33,9 @@ public class CompraManager {
         return oc.getId();
     }
 
-    public OrdenDeCompra cerrarOrdenDeCompra(Integer ocId){
+    public OrdenDeCompra cerrarOrdenDeCompra(Integer ocId, float precioTotal){
         OrdenDeCompra oc = OrdenDeCompraDAO.getById(ocId);
-        oc.resolver();
+        oc.resolver(precioTotal);
         generarMovimientoCompra(oc);
 
         List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(oc.getId());

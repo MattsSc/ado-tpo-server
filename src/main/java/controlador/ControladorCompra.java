@@ -46,8 +46,8 @@ public class ControladorCompra implements SistemaCompra {
     }
 
     @Override
-    public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento) throws RemoteException {
-        OrdenDeCompra ordenDeCompra = this.compraManager.cerrarOrdenDeCompra(ocId);
+    public void cerrarOrdenDeCompra(Integer ocId, float precioTotal, Date fechaVencimiento) throws RemoteException {
+        OrdenDeCompra ordenDeCompra = this.compraManager.cerrarOrdenDeCompra(ocId, precioTotal);
         deposito.crearYGuardarLote( ordenDeCompra.getArticulo(), fechaVencimiento, ordenDeCompra.getProovedor());
     }
 }

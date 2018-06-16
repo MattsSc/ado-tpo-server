@@ -16,6 +16,7 @@ public class OrdenDeCompraEntity {
 
     private Integer cantidad;
     private boolean resuelto;
+    private float precio;
 
     @ManyToOne
     @JoinColumn(name="proveedorId")
@@ -23,10 +24,11 @@ public class OrdenDeCompraEntity {
 
     public OrdenDeCompraEntity(){}
 
-    public OrdenDeCompraEntity(ArticuloEntity articulo, Integer cantidad, boolean resuelto, ProveedorEntity proovedor) {
+    public OrdenDeCompraEntity(ArticuloEntity articulo, Integer cantidad, boolean resuelto, float precio, ProveedorEntity proovedor) {
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
+        this.precio = precio;
         this.proovedor = proovedor;
     }
 
@@ -60,6 +62,14 @@ public class OrdenDeCompraEntity {
 
     public void setResuelto(boolean resuelto) {
         this.resuelto = resuelto;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
 
     public ProveedorEntity getProovedor() {

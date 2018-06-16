@@ -27,7 +27,7 @@ public class ControladorCompraRO extends UnicastRemoteObject implements SistemaC
     }
 
     @Override
-    public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento) throws RemoteException {
-        ControladorCompra.getInstance().cerrarOrdenDeCompra(ocId,fechaVencimiento);
+    public void cerrarOrdenDeCompra(Integer ocId, float precioTotal, Date fechaVencimiento) throws RemoteException {
+        ControladorCompra.getInstance().cerrarOrdenDeCompra(ocId, precioTotal, fechaVencimiento);
     }
 }

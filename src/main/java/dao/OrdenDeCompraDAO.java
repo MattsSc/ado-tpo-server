@@ -50,6 +50,7 @@ public class OrdenDeCompraDAO {
                 ConverterNegocioUtils.articuloToNegocio(ordenDeCompra.getArticulo()),
                 ordenDeCompra.getCantidad(),
                 ordenDeCompra.isResuelto(),
+                ordenDeCompra.getPrecio(),
                 ConverterNegocioUtils.proveedorToNegocio(ordenDeCompra.getProovedor())
         );
     }

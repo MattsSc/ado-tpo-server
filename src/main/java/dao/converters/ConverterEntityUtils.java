@@ -108,6 +108,7 @@ public class ConverterEntityUtils {
                 ConverterEntityUtils.articuloToEntity(ordenDeCompra.getArticulo()),
                 ordenDeCompra.getCantidad(),
                 ordenDeCompra.isResuelto(),
+                ordenDeCompra.getPrecio(),
                 ordenDeCompra.getProovedor() != null ? ConverterEntityUtils.proveedorToEntity(ordenDeCompra.getProovedor()) : null
         );
 

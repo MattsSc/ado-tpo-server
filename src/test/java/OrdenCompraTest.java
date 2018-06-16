@@ -33,7 +33,7 @@ public class OrdenCompraTest extends GenericTest{
         );
 
         pedido.save();
-        pedido.aprobar(aclaracion);
+        pedido.aprobar(null);
         List<Articulo> articulo = OrdenDePedidoDAO.getArticulosFaltantes();
         List<Proveedor> proveedors = OrdenDeCompraDAO.getUltimos3Proveedores(articulo.get(0).getCodigo());
 
