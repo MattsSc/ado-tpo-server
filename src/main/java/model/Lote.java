@@ -23,6 +23,11 @@ public class Lote {
         this.proveedor = proveedor;
     }
 
+    //Logic
+    public void informarRotura(Integer cantidad) {
+        this.setStock(this.getStock() - cantidad);
+    }
+
     public void save(Articulo articulo){
         LoteDAO.save(this, articulo);
     }

@@ -19,6 +19,7 @@ public class Pedido {
     private Date fechaEntrega;
     private String estado;
     private String direccionEntrega;
+    private String aclaracion;
     private List<ItemPedido> items;
 
     //CONVERTER
@@ -31,6 +32,7 @@ public class Pedido {
                 this.getFechaEntrega(),
                 this.getEstado(),
                 this.getDireccionEntrega(),
+                this.getAclaracion(),
                 this.getItems().stream().map(ItemPedido::toDto).collect(Collectors.toList())
         );
     }
@@ -53,7 +55,7 @@ public class Pedido {
         this.direccionEntrega = direccionEntrega;
     }
 
-    public Pedido(Integer id, Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, List<ItemPedido> items) {
+    public Pedido(Integer id, Cliente cliente, Date fechaSolicitudOrden, Date fechaDespacho, Date fechaEntrega, String estado, String direccionEntrega, String aclaracion, List<ItemPedido> items) {
         this.id = id;
         this.cliente = cliente;
         this.fechaSolicitudOrden = fechaSolicitudOrden;
@@ -61,6 +63,7 @@ public class Pedido {
         this.fechaEntrega = fechaEntrega;
         this.estado = estado;
         this.direccionEntrega = direccionEntrega;
+        this.aclaracion = aclaracion;
         this.items = items;
     }
 
@@ -73,12 +76,13 @@ public class Pedido {
         PedidoDAO.update(this);
     }
 
-    public void rechazar(){
+    public void rechazar(String aclaracion){
         this.setEstado(EstadoPedido.RECHAZADO.name());
+        this.setAclaracion(aclaracion);
         this.update();
     }
 
-    public void aprobar(){
+    public void aprobar(String aclaracion){
         Boolean estaCompleto = Boolean.TRUE;
 
         for(ItemPedido item: this.getItems()){
@@ -87,7 +91,7 @@ public class Pedido {
             Integer totalStock = articulo.stockRestante() - getCantidadReservadaDeArticulo(articulo);
             OrdenDeCompra ultimaOC = OrdenDeCompraDAO.getUltimaOrdenDeCompra(articulo.getCodigo());
 
-            if(ultimaOC == null || ultimaOC.isResuelto()){
+            if(totalStock > 0 && ( ultimaOC == null || ultimaOC.isResuelto() ) ){
                 if(totalStock >= item.getCantidad()){
                     generarReservaDeStock(this, item.getCantidad(), articulo, true);
                 }else{
@@ -101,11 +105,21 @@ public class Pedido {
             }
         }
 
-        if(estaCompleto)
-            this.setEstado(EstadoPedido.DESPACHABLE.name());
-        else
-            this.setEstado(EstadoPedido.FALTA_STOCK.name());
+        this.setAclaracion(aclaracion);
 
+        if(estaCompleto)
+            this.aprobarCambiandoEstado();
+        else
+            this.faltaStockCambiandoEstado();
+    }
+
+    public void aprobarCambiandoEstado(){
+        this.setEstado(EstadoPedido.DESPACHABLE.name());
+        this.update();
+    }
+
+    public void faltaStockCambiandoEstado(){
+        this.setEstado(EstadoPedido.FALTA_STOCK.name());
         this.update();
     }
 
@@ -115,7 +129,7 @@ public class Pedido {
         this.update();
     }
 
-    public Map<ItemPedido, List<ItemAProcesar>> despachar(){
+    public Map<ItemPedido, List<ItemAProcesar>> despachar(String tipoFactura){
         this.setFechaDespacho(new Date());
         this.setEstado(EstadoPedido.DESPACHO.name());
         Map<ItemPedido, List<ItemAProcesar>> result = new HashMap<>();
@@ -124,15 +138,24 @@ public class Pedido {
         }
         this.update();
 
+        //Descontar monto al cliente
         float total = 0;
         for(ItemPedido item : this.getItems()){
             total = total + (item.getCantidad() * item.getArticulo().getPrecio());
         }
         this.getCliente().descontarMontoDisponible(total);
 
+        //Borrar Reserva
         List<ReservaArticulo> reservas = ReservaArticuloDAO.getByPedidoId(this.getId());
         reservas.forEach(ReservaArticulo::delete);
 
+        //Crear Remito
+        Remito remito = new Remito(new Date(),this.getCliente());
+        remito.asignarItems(result);
+
+        //Crear Factura
+        Factura factura = new Factura(new Date(), tipoFactura, this.getCliente());
+        factura.asignarItems(this,result);
 
         return result;
     }
@@ -272,6 +295,14 @@ public class Pedido {
 
     public void setDireccionEntrega(String direccionEntrega) {
         this.direccionEntrega = direccionEntrega;
+    }
+
+    public String getAclaracion() {
+        return aclaracion;
+    }
+
+    public void setAclaracion(String aclaracion) {
+        this.aclaracion = aclaracion;
     }
 
     public List<ItemPedido> getItems() {

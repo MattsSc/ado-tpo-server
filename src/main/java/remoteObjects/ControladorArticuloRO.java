@@ -2,6 +2,7 @@ package remoteObjects;
 
 import controlador.ControladorArticulo;
 import dtos.ArticuloDTO;
+import dtos.MovimientoPorEliminacionDTO;
 import interfaces.SistemaArticulo;
 
 import java.rmi.RemoteException;
@@ -13,6 +14,11 @@ public class ControladorArticuloRO extends UnicastRemoteObject implements Sistem
 
     public ControladorArticuloRO() throws RemoteException {
         super();
+    }
+
+    @Override
+    public void crearArticulo(ArticuloDTO articuloDTO) throws RemoteException {
+        ControladorArticulo.getInstance().crearArticulo(articuloDTO);
     }
 
     @Override
@@ -28,5 +34,10 @@ public class ControladorArticuloRO extends UnicastRemoteObject implements Sistem
     @Override
     public List<ArticuloDTO> obtenerArticulos() throws RemoteException {
         return ControladorArticulo.getInstance().obtenerArticulos();
+    }
+
+    @Override
+    public void generarMovimientoPorRotura(Integer loteId, MovimientoPorEliminacionDTO movimientoPorEliminacionDTO) throws RemoteException {
+        ControladorArticulo.getInstance().generarMovimientoPorRotura(loteId,movimientoPorEliminacionDTO);
     }
 }

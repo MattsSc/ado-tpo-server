@@ -22,6 +22,7 @@ public class OrdenDePedidoDAO {
                 .collect(Collectors.toList());
     }
 
+
     public static void save(OrdenDePedido ordenDePedido){
         HibernateUtils.saveTransaction(ordenPedidoToEntity(ordenDePedido));
     }

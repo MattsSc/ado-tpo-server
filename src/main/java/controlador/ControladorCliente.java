@@ -3,7 +3,7 @@ package controlador;
 import dao.ClienteDAO;
 import dao.MovCCDAO;
 import dtos.ClienteDTO;
-import dtos.MovimientoCCDto;
+import dtos.MovimientoCCDTO;
 import interfaces.SistemaCliente;
 import model.Cliente;
 import model.MovimientoCC;
@@ -44,8 +44,8 @@ public class ControladorCliente implements SistemaCliente{
 
     }
 
-    public void agregarMovimiento(Integer dni, MovimientoCCDto movimientoCCDto) {
-        MovCCDAO.save(ClienteDAO.getById(dni), dtoToModel(movimientoCCDto));
+    public void agregarMovimiento(Integer dni, MovimientoCCDTO movimientoCCDTO) {
+        MovCCDAO.save(ClienteDAO.getById(dni), dtoToModel(movimientoCCDTO));
     }
 
     public List<ClienteDTO> listarClientes() {
@@ -57,8 +57,14 @@ public class ControladorCliente implements SistemaCliente{
     }
 
     @Override
-    public List<MovimientoCCDto> obtenerMovDeCliente(Integer dni) throws RemoteException {
+    public List<MovimientoCCDTO> obtenerMovDeCliente(Integer dni) throws RemoteException {
         return ClienteDAO.getMovimientosDeCliente(dni).stream().map(MovimientoCC::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void registrarPago(Integer dni, float cantidad) throws RemoteException {
+        Cliente cliente = ClienteDAO.getById(dni);
+        cliente.pagar(cantidad);
     }
 
     /***************** PRIVATE METHODS **********************/
@@ -68,7 +74,7 @@ public class ControladorCliente implements SistemaCliente{
         return clienteDTO;
     }
 
-    private MovimientoCC dtoToModel(MovimientoCCDto dto){
+    private MovimientoCC dtoToModel(MovimientoCCDTO dto){
         return new MovimientoCC(dto.getFecha(), dto.getImporte(), dto.getTipo());
     }
 }

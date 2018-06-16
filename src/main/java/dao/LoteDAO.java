@@ -17,6 +17,9 @@ public class LoteDAO {
         lote.setId(loteEntity.getId());
     }
 
+    public static Articulo getArticuloByLote(Integer id){
+        return ConverterNegocioUtils.articuloToNegocio(HibernateUtils.getById(LoteEntity.class, id).getArticulo());
+    }
 
     public static Lote getById(Integer id){
         return ConverterNegocioUtils.loteToNegocio(HibernateUtils.getById(LoteEntity.class, id));

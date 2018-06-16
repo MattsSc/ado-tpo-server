@@ -1,6 +1,7 @@
 package model;
 
 import dao.ClienteDAO;
+import dao.MovCCDAO;
 import dtos.ClienteDTO;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class Cliente {
         this.razonSocial = razonSocial;
         this.limiteCredito = limiteCredito;
         this.montoDisponible = montoDisponible;
-        this.movimientosCC = new ArrayList<>();
     }
 
     public Cliente(Integer dni, String nombre, String apellido, String domicilio, String cuit, String razonSocial, float limiteCredito, float montoDisponible, List<MovimientoCC> movimientosCC) {
@@ -56,12 +56,28 @@ public class Cliente {
         );
         movimientoCC.save(this);
         this.update();
+        this.setMovimientosCC(MovCCDAO.getMovsByIdCliente(this.dni));
+    }
+
+    public void pagar(float importe) {
+        MovimientoCC movimientoCC = new MovimientoCC(
+                new Date(),
+                importe,
+                "PAGO"
+        );
+        this.montoDisponible = this.montoDisponible + importe ;
+        movimientoCC.save(this);
+
+        this.update();
+        this.setMovimientosCC(MovCCDAO.getMovsByIdCliente(this.dni));
     }
 
     public void update(){
         ClienteDAO.update(this);
     }
 
+
+    //Getter & Setter
     public int getDni() {
         return dni;
     }
@@ -127,6 +143,8 @@ public class Cliente {
     }
 
     public List<MovimientoCC> getMovimientosCC() {
+        if(movimientosCC == null)
+            this.setMovimientosCC(MovCCDAO.getMovsByIdCliente(this.dni));
         return movimientosCC;
     }
 

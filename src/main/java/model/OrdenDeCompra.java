@@ -8,6 +8,7 @@ public class OrdenDeCompra {
     private Articulo articulo;
     private Integer cantidad;
     private boolean resuelto;
+    private float precio;
     private Proveedor proovedor;
 
     public OrdenDeCompra(Articulo articulo, Integer cantidad, Proveedor proveedor) {
@@ -24,11 +25,12 @@ public class OrdenDeCompra {
         this.proovedor = proveedor;
     }
 
-    public OrdenDeCompra(Integer id, Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proovedor) {
+    public OrdenDeCompra(Integer id, Articulo articulo, Integer cantidad, boolean resuelto, float precio, Proveedor proovedor) {
         this.id = id;
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
+        this.precio = precio;
         this.proovedor = proovedor;
     }
 
@@ -41,8 +43,9 @@ public class OrdenDeCompra {
         OrdenDeCompraDAO.save(this);
     }
 
-    public void resolver(){
+    public void resolver(float precioTotal){
         this.setResuelto(Boolean.TRUE);
+        this.setPrecio(precioTotal);
         this.update();
     }
 
@@ -85,5 +88,13 @@ public class OrdenDeCompra {
 
     public void setProovedor(Proveedor proovedor) {
         this.proovedor = proovedor;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
 }

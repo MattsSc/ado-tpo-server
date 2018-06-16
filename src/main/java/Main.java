@@ -4,8 +4,7 @@ import server.Servidor;
 public class Main {
 
     public static void main(String[] args) {
-        //new Servidor();
-    	System.out.println(ControladorCliente.getInstance().obtenerCliente(1234).getNombre());
+        new Servidor();
         System.out.println("SERVER UP!");
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import dtos.ItemAProcesarDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +31,13 @@ public class ItemAProcesar {
 
     public List<String> getUbicaciones() {
         return ubicaciones;
+    }
+
+    public ItemAProcesarDTO toDto(ItemPedido itemPedido){
+        return new ItemAProcesarDTO(
+                itemPedido.getArticulo().getDescripcion(),
+                this.getUbicaciones(),
+                this.getCantidad()
+        );
     }
 }

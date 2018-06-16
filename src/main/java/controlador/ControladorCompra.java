@@ -6,6 +6,7 @@ import dao.ProovedorDAO;
 import dtos.OrdenDeCompraDTO;
 import dtos.ProveedorDTO;
 import interfaces.SistemaCompra;
+import model.Deposito;
 import model.OrdenDeCompra;
 import model.Proveedor;
 import model.manager.CompraManager;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ControladorCompra implements SistemaCompra {
     private static ControladorCompra ourInstance = new ControladorCompra();
     private CompraManager compraManager;
+    private Deposito deposito;
 
     public static ControladorCompra getInstance() {
         return ourInstance;
@@ -25,6 +27,7 @@ public class ControladorCompra implements SistemaCompra {
 
     private ControladorCompra() {
         this.compraManager = new CompraManager();
+        this.deposito = new Deposito();
     }
 
     @Override
@@ -34,7 +37,6 @@ public class ControladorCompra implements SistemaCompra {
                 ordenDeCompraDTO.getCantidad(),
                 ProovedorDAO.getById(ordenDeCompraDTO.getProovedor().getId())
         );
-       ;
         return this.compraManager.crearOrdenDeCompra(ordenDeCompra);
     }
 
@@ -44,7 +46,8 @@ public class ControladorCompra implements SistemaCompra {
     }
 
     @Override
-    public void cerrarOrdenDeCompra(Integer ocId, Date fechaVencimiento) throws RemoteException {
-        this.compraManager.cerrarOrdenDeCompra(ocId,fechaVencimiento);
+    public void cerrarOrdenDeCompra(Integer ocId, float precioTotal, Date fechaVencimiento) throws RemoteException {
+        OrdenDeCompra ordenDeCompra = this.compraManager.cerrarOrdenDeCompra(ocId, precioTotal);
+        deposito.crearYGuardarLote( ordenDeCompra.getArticulo(), fechaVencimiento, ordenDeCompra.getProovedor());
     }
 }
