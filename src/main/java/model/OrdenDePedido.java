@@ -36,6 +36,11 @@ public class OrdenDePedido {
 
     public void delete(){ OrdenDePedidoDAO.delete(this);}
 
+    public void asignarOC(Integer ocId){
+        this.setIdOrdenCompra(ocId);
+        this.update();
+    }
+
 
     //Getter & setters
     public Integer getId() {

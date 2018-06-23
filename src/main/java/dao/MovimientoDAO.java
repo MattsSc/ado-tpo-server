@@ -39,6 +39,7 @@ public class MovimientoDAO {
                 ConverterEntityUtils.articuloToEntity(articulo),
                 movimientoPorEliminacion.getEncargado(),
                 movimientoPorEliminacion.getDestino(),
-                movimientoPorEliminacion.getAutorizador());
+                movimientoPorEliminacion.getAutorizador(),
+                movimientoPorEliminacion.getUbicacion());
     }
 }

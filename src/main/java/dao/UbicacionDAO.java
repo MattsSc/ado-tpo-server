@@ -26,6 +26,11 @@ public class UbicacionDAO {
         return  ubicacionEntities.stream().map(UbicacionDAO::ubicacionToNegocio).collect(Collectors.toList());
     }
 
+    public static Ubicacion getUbicacionByClave(String clave){
+        UbicacionEntity ubicacionEntity = (UbicacionEntity) HibernateUtils.getOneResult("from UbicacionEntity where  clave = '" + clave + "'");
+        return  ubicacionToNegocio(ubicacionEntity);
+    }
+
     public static List<Ubicacion> getUbicacionesVacias(){
         List<UbicacionEntity> ubicacionEntities = HibernateUtils.getResultList("from UbicacionEntity where ocupado = 0");
         return  ubicacionEntities.stream().map(UbicacionDAO::ubicacionToNegocio).collect(Collectors.toList());

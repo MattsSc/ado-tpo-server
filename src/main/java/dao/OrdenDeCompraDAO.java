@@ -24,6 +24,11 @@ public class OrdenDeCompraDAO {
         return ordenDeCompraToNegocio(HibernateUtils.getById(OrdenDeCompraEntity.class, id));
     }
 
+    public static List<OrdenDeCompra> obtenerOrdenesAbiertas(){
+        List<OrdenDeCompraEntity> result = HibernateUtils.getResultList("from OrdenDeCompraEntity where resuelto = 0");
+       return result.stream().map(OrdenDeCompraDAO::ordenDeCompraToNegocio).collect(Collectors.toList());
+    }
+
     public static void update(OrdenDeCompra or){
         HibernateUtils.updateTransaction(ConverterEntityUtils.ordenDeCompraToEntity(or));
     }
@@ -37,11 +42,11 @@ public class OrdenDeCompraDAO {
             return null;
     }
 
-    public static List<Proveedor> getUltimos3Proveedores(Integer codigoArticulo){
+    public static List<OrdenDeCompra> getUltimos3Proveedores(Integer codigoArticulo){
         List<OrdenDeCompraEntity> result = HibernateUtils.getResultList("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
         if(result.size() > 3)
-            return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList()).subList(0,2);
-        return result.stream().map(OrdenDeCompraEntity::getProovedor).distinct().map(ConverterNegocioUtils::proveedorToNegocio).collect(Collectors.toList());
+            return result.stream().map(OrdenDeCompraDAO::ordenDeCompraToNegocio).collect(Collectors.toList()).subList(0,2);
+        return result.stream().map(OrdenDeCompraDAO::ordenDeCompraToNegocio).collect(Collectors.toList());
     }
 
     private static OrdenDeCompra ordenDeCompraToNegocio(OrdenDeCompraEntity ordenDeCompra) {

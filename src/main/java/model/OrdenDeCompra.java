@@ -1,6 +1,12 @@
 package model;
 
 import dao.OrdenDeCompraDAO;
+import dao.OrdenDePedidoDAO;
+import dao.PedidoDAO;
+import model.enums.TipoMovimiento;
+
+import java.util.Date;
+import java.util.List;
 
 public class OrdenDeCompra {
 
@@ -47,6 +53,66 @@ public class OrdenDeCompra {
         this.setResuelto(Boolean.TRUE);
         this.setPrecio(precioTotal);
         this.update();
+    }
+
+    public void cerrar(float precioTotal){
+        this.resolver(precioTotal);
+        generarMovimientoCompra();
+
+        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(this.getId());
+        ordenes.stream().forEach(ordenDePedido -> {
+            ReservaArticulo reservaArticulo = new ReservaArticulo(
+                    ordenDePedido.getCantidad(),
+                    ordenDePedido.getIdPedido(),
+                    Boolean.TRUE
+            );
+            reservaArticulo.save(ordenDePedido.getArticulo().getCodigo());
+            ordenDePedido.delete();
+
+            if(OrdenDePedidoDAO.obtenerOrdenesDePedidoParaPedido(ordenDePedido.getIdPedido()).isEmpty()){
+                Pedido pedido = PedidoDAO.getById(ordenDePedido.getIdPedido());
+                pedido.aprobarCambiandoEstado();
+            }
+        });
+    }
+
+    public void asignarOrdenesPedidoAbiertas(){
+        List<OrdenDePedido> ordenDePedidos = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(this.getId());
+        if(!ordenDePedidos.isEmpty()){
+            this.asignarOrdenesDePedido(this.getCantidad());
+        }else{
+            Integer totalPedido = ordenDePedidos.stream().mapToInt(OrdenDePedido::getCantidad).sum();
+            if(this.getCantidad() - totalPedido > 0){
+                Integer restante = this.getCantidad() - totalPedido;
+                this.asignarOrdenesDePedido(restante);
+            }
+        }
+    }
+
+    private void asignarOrdenesDePedido(int cantidad){
+        List<OrdenDePedido> ordenes = OrdenDePedidoDAO.obtenerOrdenesDePedidoSinOc(this.getArticulo().getCodigo());
+        if(!ordenes.isEmpty()){
+            int indice = 0;
+            while(cantidad > 0 && indice < ordenes.size()){
+                OrdenDePedido ordenDePedido = ordenes.get(indice);
+                cantidad = cantidad - ordenDePedido.getCantidad();
+                if(cantidad >= 0){
+                    ordenDePedido.asignarOC(this.getId());
+                }
+                indice++;
+            }
+        }
+    }
+
+    private void generarMovimientoCompra() {
+        MovimientoBasico movimientoCompra = new MovimientoBasico(
+                new Date(),
+                this.getCantidad(),
+                TipoMovimiento.COMPRA,
+                "resuelto"
+        );
+
+        movimientoCompra.save(this.getArticulo());
     }
 
     //Getter & Setters

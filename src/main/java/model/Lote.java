@@ -26,6 +26,12 @@ public class Lote {
     //Logic
     public void informarRotura(Integer cantidad) {
         this.setStock(this.getStock() - cantidad);
+        this.update();
+    }
+
+    public void informarAjustePositivo(Integer cantidad) {
+        this.setStock(this.getStock() + cantidad);
+        this.update();
     }
 
     public void save(Articulo articulo){

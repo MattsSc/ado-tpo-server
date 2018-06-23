@@ -53,11 +53,27 @@ public class Ubicacion {
         return 1000;
     }
 
-
     public void update(){
         UbicacionDAO.update(this);
     }
 
+    public void vaciar(){
+        this.cantidad = 0;
+        this.lote = null;
+        this.setOcupado(Boolean.FALSE);
+        this.update();
+    }
+
+    public void removerCantidad(Integer cantidad){
+        if(cantidad >= this.getCantidad())
+            this.vaciar();
+        else{
+            this.setCantidad(this.getCantidad() - cantidad);
+            this.update();
+        }
+    }
+
+    //Getter & Setter
     public Integer getIdUbicacion() {
         return idUbicacion;
     }
@@ -79,10 +95,6 @@ public class Ubicacion {
     }
 
     public void setOcupado(Boolean ocupado) {
-        if(ocupado.equals(Boolean.FALSE)){
-            this.cantidad = 0;
-            this.lote = null;
-        }
         this.ocupado = ocupado;
     }
 

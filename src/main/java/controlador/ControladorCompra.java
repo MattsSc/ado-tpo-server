@@ -5,11 +5,11 @@ import dao.OrdenDeCompraDAO;
 import dao.ProovedorDAO;
 import dtos.OrdenDeCompraDTO;
 import dtos.ProveedorDTO;
+import dtos.ProveedorPrecioDTO;
 import interfaces.SistemaCompra;
 import model.Deposito;
 import model.OrdenDeCompra;
 import model.Proveedor;
-import model.manager.CompraManager;
 
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class ControladorCompra implements SistemaCompra {
     private static ControladorCompra ourInstance = new ControladorCompra();
-    private CompraManager compraManager;
     private Deposito deposito;
 
     public static ControladorCompra getInstance() {
@@ -26,7 +25,6 @@ public class ControladorCompra implements SistemaCompra {
     }
 
     private ControladorCompra() {
-        this.compraManager = new CompraManager();
         this.deposito = new Deposito();
     }
 
@@ -37,17 +35,33 @@ public class ControladorCompra implements SistemaCompra {
                 ordenDeCompraDTO.getCantidad(),
                 ProovedorDAO.getById(ordenDeCompraDTO.getProovedor().getId())
         );
-        return this.compraManager.crearOrdenDeCompra(ordenDeCompra);
+        ordenDeCompra.asignarOrdenesPedidoAbiertas();
+        return ordenDeCompra.getId();
     }
 
     @Override
-    public List<ProveedorDTO> obtenerUltimos3Proveedores(Integer idProducto) throws RemoteException {
-        return OrdenDeCompraDAO.getUltimos3Proveedores(idProducto).stream().map(Proveedor::toDto).collect(Collectors.toList());
+    public List<ProveedorPrecioDTO> obtenerUltimos3Proveedores(Integer idProducto) throws RemoteException {
+        return OrdenDeCompraDAO.getUltimos3Proveedores(idProducto).stream().map(oc -> new ProveedorPrecioDTO(
+                oc.getProovedor().toDto(),
+                oc.getPrecio()
+        )).collect(Collectors.toList());
+    }
+
+    @Override
+    public void asignarOrdenesDePedidoAOrdenesAbiertas() throws RemoteException {
+            List<OrdenDeCompra> ordenesAbierts = OrdenDeCompraDAO.obtenerOrdenesAbiertas();
+            ordenesAbierts.forEach(OrdenDeCompra::asignarOrdenesPedidoAbiertas);
+    }
+
+    @Override
+    public List<ProveedorDTO> obtenerProveedores() throws RemoteException {
+        return ProovedorDAO.getAll().stream().map(Proveedor::toDto).collect(Collectors.toList());
     }
 
     @Override
     public void cerrarOrdenDeCompra(Integer ocId, float precioTotal, Date fechaVencimiento) throws RemoteException {
-        OrdenDeCompra ordenDeCompra = this.compraManager.cerrarOrdenDeCompra(ocId, precioTotal);
+        OrdenDeCompra ordenDeCompra = OrdenDeCompraDAO.getById(ocId);
+        ordenDeCompra.cerrar(precioTotal);
         deposito.crearYGuardarLote( ordenDeCompra.getArticulo(), fechaVencimiento, ordenDeCompra.getProovedor());
     }
 }

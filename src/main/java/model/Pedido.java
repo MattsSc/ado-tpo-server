@@ -188,7 +188,7 @@ public class Pedido {
             if(cantidadTotal - lote.getStock() >= 0){
                 ItemAProcesar itemAProcesar = new ItemAProcesar(lote.getStock(),lote.getProveedor());
                 for(Ubicacion ubicacion : UbicacionDAO.getUbicacionesDeLote(lote.getId())){
-                    vaciarUbicacion(ubicacion);
+                    ubicacion.vaciar();
                     itemAProcesar.addUbicacion(ubicacion.getClave());
                 }
                 itemsAProcesar.add(itemAProcesar);
@@ -203,10 +203,9 @@ public class Pedido {
                     Ubicacion ubicacion = ub.get(j);
                     if(cantidadTotal - ubicacion.getCantidad() >= 0){
                         cantidadTotal = cantidadTotal - ubicacion.getCantidad();
-                        vaciarUbicacion(ubicacion);
+                        ubicacion.vaciar();
                     }else{
-                        ubicacion.setCantidad(ubicacion.getCantidad() - cantidadTotal);
-                        ubicacion.update();
+                        ubicacion.removerCantidad(cantidadTotal);
                         cantidadTotal = 0;
                     }
                     itemAProcesar.addUbicacion(ubicacion.getClave());
@@ -231,11 +230,6 @@ public class Pedido {
                 "Resuelto"
         );
         movimientoBasico.save(item.getArticulo());
-    }
-
-    private void vaciarUbicacion(Ubicacion ubicacion) {
-        ubicacion.setOcupado(false);
-        ubicacion.update();
     }
 
 

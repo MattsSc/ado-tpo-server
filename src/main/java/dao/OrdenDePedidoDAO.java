@@ -23,6 +23,7 @@ public class OrdenDePedidoDAO {
     }
 
 
+
     public static void save(OrdenDePedido ordenDePedido){
         HibernateUtils.saveTransaction(ordenPedidoToEntity(ordenDePedido));
     }
@@ -42,7 +43,6 @@ public class OrdenDePedidoDAO {
     public static List<OrdenDePedido> obtenerOrdenesDePedidoSinOc(Integer articuloId){
         return obtenerPorQuery("from OrdenDePedidoEntity where articuloId = " + articuloId + " and ordenDeCompraId is null");
     }
-
 
     public static List<OrdenDePedido> obtenerOrdenesDePedidoParaPedido(Integer pedidoId){
         return obtenerPorQuery("from OrdenDePedidoEntity where pedidoId = " + pedidoId);

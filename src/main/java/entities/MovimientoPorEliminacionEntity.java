@@ -11,22 +11,25 @@ public class MovimientoPorEliminacionEntity extends MovimientoEntity{
     private String encargado;
     private String destino;
     private String auotorizador;
+    private String ubicacion;
 
     public MovimientoPorEliminacionEntity(){
         super();
     }
 
-    public MovimientoPorEliminacionEntity(String encargado, String destino, String auotorizador) {
+    public MovimientoPorEliminacionEntity(String encargado, String destino, String auotorizador, String ubicacion) {
         this.encargado = encargado;
         this.destino = destino;
         this.auotorizador = auotorizador;
+        this.ubicacion = ubicacion;
     }
 
-    public MovimientoPorEliminacionEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String encargado, String destino, String auotorizador) {
+    public MovimientoPorEliminacionEntity(Date fecha, int cantidad, String tipo, ArticuloEntity articuloEntity, String encargado, String destino, String auotorizador, String ubicacion) {
         super(fecha, cantidad, tipo, articuloEntity);
         this.encargado = encargado;
         this.destino = destino;
         this.auotorizador = auotorizador;
+        this.ubicacion = ubicacion;
     }
 
     public String getEncargado() {
@@ -51,5 +54,13 @@ public class MovimientoPorEliminacionEntity extends MovimientoEntity{
 
     public void setAuotorizador(String auotorizador) {
         this.auotorizador = auotorizador;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 }

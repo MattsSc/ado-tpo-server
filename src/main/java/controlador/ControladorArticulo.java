@@ -1,14 +1,16 @@
 package controlador;
 
 import dao.ArticuloDAO;
-import dao.LoteDAO;
-import dao.OrdenDeCompraDAO;
 import dao.OrdenDePedidoDAO;
 import dtos.ArticuloDTO;
+import dtos.MovimientoPorAjusteDTO;
 import dtos.MovimientoPorEliminacionDTO;
 import interfaces.SistemaArticulo;
 import model.Articulo;
 import model.Deposito;
+import model.MovimientoBasico;
+import model.MovimientoPorEliminacion;
+import model.enums.TipoMovimiento;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -59,6 +61,39 @@ public class ControladorArticulo implements SistemaArticulo {
 
     @Override
     public void generarMovimientoPorRotura(Integer loteId,  MovimientoPorEliminacionDTO movimientoPorEliminacionDTO) throws RemoteException {
-        deposito.generarMovimientoPorRotura(loteId,movimientoPorEliminacionDTO);
+        MovimientoPorEliminacion movimientoPorEliminacion = new MovimientoPorEliminacion(
+                movimientoPorEliminacionDTO.getFecha(),
+                movimientoPorEliminacionDTO.getCantidad(),
+                movimientoPorEliminacionDTO.getEncargado(),
+                movimientoPorEliminacionDTO.getDestino(),
+                movimientoPorEliminacionDTO.getAutorizador(),
+                movimientoPorEliminacionDTO.getUbicacion()
+        );
+
+        deposito.generarMovimientoPorRotura(loteId,movimientoPorEliminacion);
+    }
+
+    @Override
+    public void generarMovimientoPorAjustePositivo(Integer loteId, MovimientoPorAjusteDTO movimientoPorAjusteDTO) throws RemoteException {
+        MovimientoBasico movimientoBasico = new MovimientoBasico(
+                movimientoPorAjusteDTO.getFecha(),
+                movimientoPorAjusteDTO.getCantidad(),
+                TipoMovimiento.AJUSTE_POSITIVO,
+                "resuelto"
+        );
+
+        deposito.generarMOvimientoPorAjustePositivo(loteId, movimientoBasico);
+    }
+
+    @Override
+    public void generarMovimientoPorAjusteNegativo(Integer loteId, MovimientoPorAjusteDTO movimientoPorAjusteDTO) throws RemoteException {
+        MovimientoBasico movimientoBasico = new MovimientoBasico(
+                movimientoPorAjusteDTO.getFecha(),
+                movimientoPorAjusteDTO.getCantidad(),
+                TipoMovimiento.AJUSTE_NEGATIVO,
+                "resuelto"
+        );
+
+        deposito.generarMOvimientoPorAjusteNegativo(loteId, movimientoBasico);
     }
 }
