@@ -4,6 +4,7 @@ import dao.ClienteDAO;
 import dao.MovCCDAO;
 import dtos.ClienteDTO;
 import dtos.MovimientoCCDTO;
+import exceptions.ClienteNotFoundException;
 import interfaces.SistemaCliente;
 import model.Cliente;
 import model.MovimientoCC;
@@ -52,8 +53,11 @@ public class ControladorCliente implements SistemaCliente{
         return ClienteDAO.getClientes().stream().map(this::modelToDto).collect(Collectors.toList());
     }
 
-    public ClienteDTO obtenerCliente(Integer dni) {
-        return modelToDto(ClienteDAO.getById(dni));
+    public ClienteDTO obtenerCliente(Integer dni) throws  ClienteNotFoundException {
+        Cliente cliente = ClienteDAO.getById(dni);
+        if( cliente == null)
+            throw new ClienteNotFoundException(dni);
+        return modelToDto(cliente);
     }
 
     @Override

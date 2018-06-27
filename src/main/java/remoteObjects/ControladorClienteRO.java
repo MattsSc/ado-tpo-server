@@ -46,7 +46,7 @@ public class ControladorClienteRO extends UnicastRemoteObject implements Sistema
     }
 
     @Override
-    public ClienteDTO obtenerCliente(Integer dni)  throws RemoteException{
+    public ClienteDTO obtenerCliente(Integer dni)  throws RemoteException {
         return ControladorCliente.getInstance().obtenerCliente(dni);
     }
 

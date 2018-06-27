@@ -27,7 +27,8 @@ public class ClienteDAO {
     }
 
     public static Cliente getById(Integer dni){
-        return ConverterNegocioUtils.clienteToNegocio(HibernateUtils.getById(ClienteEntity.class, dni));
+        ClienteEntity cliente = HibernateUtils.getById(ClienteEntity.class, dni);
+        return cliente != null ? ConverterNegocioUtils.clienteToNegocio(cliente): null;
     }
 
     public static List<MovimientoCC> getMovimientosDeCliente(Integer dni){

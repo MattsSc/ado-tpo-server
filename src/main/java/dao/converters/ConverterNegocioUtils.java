@@ -72,7 +72,8 @@ public class ConverterNegocioUtils {
                 mov.getCantidad(),
                 mov.getEncargado(),
                 mov.getDestino(),
-                mov.getAuotorizador()
+                mov.getAuotorizador(),
+                mov.getUbicacion()
         );
     }
 
