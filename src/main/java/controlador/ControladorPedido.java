@@ -41,6 +41,11 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
+    public List<PedidoDTO> obtenerPedidosPorCliente(Integer idCliente) throws RemoteException {
+        return PedidoDAO.getByClienteId(idCliente).stream().map(Pedido::toDto).collect(Collectors.toList());
+    }
+
+    @Override
     public void aprobarPedido(Integer id, String aclaracion) throws RemoteException {
         PedidoDAO.getById(id).aprobar(aclaracion);
     }

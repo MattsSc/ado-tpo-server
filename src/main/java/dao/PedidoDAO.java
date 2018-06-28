@@ -30,6 +30,12 @@ public class PedidoDAO {
                 .collect(Collectors.toList());
     }
 
+    public static List<Pedido> getByClienteId(Integer clienteId){
+        return HibernateUtils.getResultList("from PedidoEntity P where P.cliente =  '" + clienteId + "'").stream()
+                .map(pe -> ConverterNegocioUtils.pedidoToNegocio((PedidoEntity)pe))
+                .collect(Collectors.toList());
+    }
+
     public static List<Pedido> getAllByEstado(String estado){
         return HibernateUtils.getResultList("from PedidoEntity P where P.estado =  '" + estado + "'").stream()
                 .map(pe -> ConverterNegocioUtils.pedidoToNegocio((PedidoEntity)pe))

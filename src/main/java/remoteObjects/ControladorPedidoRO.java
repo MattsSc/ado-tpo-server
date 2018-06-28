@@ -27,6 +27,11 @@ public class ControladorPedidoRO extends UnicastRemoteObject implements SistemaP
     }
 
     @Override
+    public List<PedidoDTO> obtenerPedidosPorCliente(Integer idCliente) throws RemoteException {
+        return ControladorPedido.getInstance().obtenerPedidosPorCliente(idCliente);
+    }
+
+    @Override
     public void aprobarPedido(Integer id, String aclaracion) throws RemoteException {
         ControladorPedido.getInstance().aprobarPedido(id,aclaracion);
     }
