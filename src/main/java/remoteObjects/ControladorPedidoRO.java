@@ -1,9 +1,7 @@
 package remoteObjects;
 
 import controlador.ControladorPedido;
-import dtos.ClienteDTO;
 import dtos.ItemAProcesarDTO;
-import dtos.ItemPedidoDTO;
 import dtos.PedidoDTO;
 import interfaces.SistemaPedido;
 
@@ -19,8 +17,8 @@ public class ControladorPedidoRO extends UnicastRemoteObject implements SistemaP
     }
 
     @Override
-    public Integer crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
-        return ControladorPedido.getInstance().crearPedido(cliente,direccionEntrega,items);
+    public Integer crearPedido(PedidoDTO pedidoDTO) throws RemoteException {
+        return ControladorPedido.getInstance().crearPedido(pedidoDTO);
     }
 
     @Override

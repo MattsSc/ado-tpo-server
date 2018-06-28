@@ -24,12 +24,12 @@ public class ControladorPedido implements SistemaPedido {
     private ControladorPedido() {}
 
     @Override
-    public Integer crearPedido(ClienteDTO cliente, String direccionEntrega, List<ItemPedidoDTO> items) throws RemoteException {
+    public Integer crearPedido(PedidoDTO pedidoDTO) throws RemoteException {
         Pedido pedido = new Pedido(
-                dtoToCliente(cliente),
+                dtoToCliente(pedidoDTO.getCliente()),
                 EstadoPedido.RECIBIDO.name(),
-                direccionEntrega,
-                items.stream().map(this::dtoToItemPedido).collect(Collectors.toList())
+                pedidoDTO.getDireccionEntrega(),
+                pedidoDTO.getItems().stream().map(this::dtoToItemPedido).collect(Collectors.toList())
         );
         pedido.save();
         return pedido.getId();
