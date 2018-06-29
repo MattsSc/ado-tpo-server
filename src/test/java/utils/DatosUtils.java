@@ -67,6 +67,7 @@ public class DatosUtils {
 
     public static void crearOC(Articulo articulo, int cantidad, Proveedor proveedor){
         OrdenDeCompra oc = new OrdenDeCompra(
+                new Date(),
                 articulo,
                 cantidad,
                 true,

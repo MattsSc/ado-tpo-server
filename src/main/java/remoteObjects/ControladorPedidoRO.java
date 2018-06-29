@@ -2,6 +2,7 @@ package remoteObjects;
 
 import controlador.ControladorPedido;
 import dtos.ItemAProcesarDTO;
+import dtos.OrdenDePedidoDTO;
 import dtos.PedidoDTO;
 import interfaces.SistemaPedido;
 
@@ -59,5 +60,10 @@ public class ControladorPedidoRO extends UnicastRemoteObject implements SistemaP
     @Override
     public List<PedidoDTO> listarPedidos(String estado) throws RemoteException {
         return ControladorPedido.getInstance().listarPedidos(estado);
+    }
+
+    @Override
+    public List<OrdenDePedidoDTO> listarOrdenesDePedido() throws RemoteException {
+        return ControladorPedido.getInstance().listarOrdenesDePedido();
     }
 }

@@ -105,6 +105,7 @@ public class ConverterEntityUtils {
 
     public static OrdenDeCompraEntity ordenDeCompraToEntity(OrdenDeCompra ordenDeCompra) {
         OrdenDeCompraEntity ordenDeCompraEntity = new OrdenDeCompraEntity(
+                ordenDeCompra.getFechaEmision(),
                 ConverterEntityUtils.articuloToEntity(ordenDeCompra.getArticulo()),
                 ordenDeCompra.getCantidad(),
                 ordenDeCompra.isResuelto(),

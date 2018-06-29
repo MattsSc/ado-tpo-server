@@ -3,6 +3,7 @@ package model;
 import dao.OrdenDeCompraDAO;
 import dao.OrdenDePedidoDAO;
 import dao.PedidoDAO;
+import dtos.OrdenDeCompraDTO;
 import model.enums.TipoMovimiento;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class OrdenDeCompra {
 
+    private Date fechaEmision;
     private Integer id;
     private Articulo articulo;
     private Integer cantidad;
@@ -17,22 +19,25 @@ public class OrdenDeCompra {
     private float precio;
     private Proveedor proovedor;
 
-    public OrdenDeCompra(Articulo articulo, Integer cantidad, Proveedor proveedor) {
+    public OrdenDeCompra(Articulo articulo, Proveedor proveedor) {
         this.articulo = articulo;
-        this.cantidad = cantidad;
+        this.cantidad = articulo.getCantReposicion();
         this.resuelto = Boolean.FALSE;
         this.proovedor = proveedor;
+        this.fechaEmision = new Date();
     }
 
-    public OrdenDeCompra(Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proveedor) {
+    public OrdenDeCompra(Date fechaEmision, Articulo articulo, Integer cantidad, boolean resuelto, Proveedor proveedor) {
+        this.fechaEmision = fechaEmision;
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
         this.proovedor = proveedor;
     }
 
-    public OrdenDeCompra(Integer id, Articulo articulo, Integer cantidad, boolean resuelto, float precio, Proveedor proovedor) {
+    public OrdenDeCompra(Integer id, Date fechaEmision, Articulo articulo, Integer cantidad, boolean resuelto, float precio, Proveedor proovedor) {
         this.id = id;
+        this.fechaEmision = fechaEmision;
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
@@ -76,8 +81,21 @@ public class OrdenDeCompra {
         });
     }
 
+    public OrdenDeCompraDTO toDto(){
+        return new OrdenDeCompraDTO(
+                this.getId(),
+                this.getFechaEmision(),
+                this.getArticulo().toDto(),
+                this.getCantidad(),
+                this.isResuelto(),
+                this.getProovedor().toDto(),
+                this.getPrecio()
+        );
+    }
+
     public void asignarOrdenesPedidoAbiertas(){
         List<OrdenDePedido> ordenDePedidos = OrdenDePedidoDAO.obtenerOrdenesDePedidoParaOC(this.getId());
+
         if(!ordenDePedidos.isEmpty()){
             this.asignarOrdenesDePedido(this.getCantidad());
         }else{
@@ -162,5 +180,13 @@ public class OrdenDeCompra {
 
     public void setPrecio(float precio) {
         this.precio = precio;
+    }
+
+    public Date getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Date fechaEmision) {
+        this.fechaEmision = fechaEmision;
     }
 }

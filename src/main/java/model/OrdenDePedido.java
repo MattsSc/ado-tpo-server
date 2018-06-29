@@ -1,6 +1,7 @@
 package model;
 
 import dao.OrdenDePedidoDAO;
+import dtos.OrdenDePedidoDTO;
 
 public class OrdenDePedido {
     private Integer id;
@@ -39,6 +40,16 @@ public class OrdenDePedido {
     public void asignarOC(Integer ocId){
         this.setIdOrdenCompra(ocId);
         this.update();
+    }
+
+    public OrdenDePedidoDTO toDto(){
+        return new OrdenDePedidoDTO(
+                this.getId(),
+                this.getArticulo().toDto(),
+                this.getCantidad(),
+                this.getIdPedido(),
+                this.getIdOrdenCompra()
+        );
     }
 
 

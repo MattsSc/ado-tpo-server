@@ -32,11 +32,16 @@ public class ControladorCompra implements SistemaCompra {
     public Integer crearOrdenDeCompra(OrdenDeCompraDTO ordenDeCompraDTO) throws RemoteException {
         OrdenDeCompra ordenDeCompra = new OrdenDeCompra(
                 ArticuloDAO.getById(ordenDeCompraDTO.getArticulo().getCodigo()),
-                ordenDeCompraDTO.getCantidad(),
                 ProovedorDAO.getById(ordenDeCompraDTO.getProovedor().getId())
         );
+        ordenDeCompra.save();
         ordenDeCompra.asignarOrdenesPedidoAbiertas();
         return ordenDeCompra.getId();
+    }
+
+    @Override
+    public List<OrdenDeCompraDTO> obtenerTodasLasOrdenes() throws RemoteException {
+        return OrdenDeCompraDAO.getAll().stream().map(OrdenDeCompra::toDto).collect(Collectors.toList());
     }
 
     @Override

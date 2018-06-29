@@ -1,5 +1,6 @@
 package controlador;
 
+import dao.OrdenDePedidoDAO;
 import dao.PedidoDAO;
 import dtos.*;
 import interfaces.SistemaPedido;
@@ -85,6 +86,10 @@ public class ControladorPedido implements SistemaPedido {
         return PedidoDAO.getAllByEstado(estado).stream().map(Pedido::toDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrdenDePedidoDTO> listarOrdenesDePedido() throws RemoteException {
+        return OrdenDePedidoDAO.obtenerOrdenesDePedido().stream().map(OrdenDePedido::toDto).collect(Collectors.toList());
+    }
 
     //Private Methods
 

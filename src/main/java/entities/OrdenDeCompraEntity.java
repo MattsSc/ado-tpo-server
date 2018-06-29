@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="OrdenDeCompra")
@@ -9,6 +10,8 @@ public class OrdenDeCompraEntity {
     @Id
     @GeneratedValue
     private Integer id;
+
+    private Date fechaEmision;
 
     @ManyToOne
     @JoinColumn(name="articuloId")
@@ -24,7 +27,8 @@ public class OrdenDeCompraEntity {
 
     public OrdenDeCompraEntity(){}
 
-    public OrdenDeCompraEntity(ArticuloEntity articulo, Integer cantidad, boolean resuelto, float precio, ProveedorEntity proovedor) {
+    public OrdenDeCompraEntity(Date fechaEmision, ArticuloEntity articulo, Integer cantidad, boolean resuelto, float precio, ProveedorEntity proovedor) {
+        this.fechaEmision = fechaEmision;
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.resuelto = resuelto;
@@ -78,5 +82,13 @@ public class OrdenDeCompraEntity {
 
     public void setProovedor(ProveedorEntity proovedor) {
         this.proovedor = proovedor;
+    }
+
+    public Date getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Date fechaEmision) {
+        this.fechaEmision = fechaEmision;
     }
 }

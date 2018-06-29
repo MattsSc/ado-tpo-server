@@ -2,7 +2,6 @@ package dao;
 
 import dao.converters.ConverterEntityUtils;
 import dao.converters.ConverterNegocioUtils;
-import entities.OrdenDeCompraEntity;
 import entities.OrdenDePedidoEntity;
 import model.Articulo;
 import model.OrdenDePedido;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 public class OrdenDePedidoDAO {
 
     public static List<Articulo> getArticulosFaltantes(){
-        List<OrdenDePedidoEntity> opList = HibernateUtils.getResultList("from OrdenDePedidoEntity");
+        List<OrdenDePedidoEntity> opList = HibernateUtils.getResultList("from OrdenDePedidoEntity where ordenDeCompraId is null ");
         return opList.stream()
                 .map(op -> op.getArticulo())
                 .distinct()
@@ -49,7 +48,7 @@ public class OrdenDePedidoDAO {
     }
 
     public static List<OrdenDePedido> obtenerOrdenesDePedidoParaOC(Integer ordenDeCompraId){
-        return obtenerPorQuery("from OrdenDePedidoEntity where ordenDeCompraId = " + ordenDeCompraId);
+        return obtenerPorQuery("from OrdenDePedidoEntity where ordenDeCompraId = '" + ordenDeCompraId + "'");
     }
 
     private static List<OrdenDePedido> obtenerPorQuery(String query){
