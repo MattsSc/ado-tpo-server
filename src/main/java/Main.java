@@ -94,7 +94,7 @@ public class Main {
                 cliente,
                 EstadoPedido.RECIBIDO.name(),
                 "calle falsa 123",
-                Arrays.asList(new ItemPedido(3000, articulo), new ItemPedido(2000, articulo2))
+                Arrays.asList(new ItemPedido(300, articulo), new ItemPedido(300, articulo2))
         );
         pedido.save();
         pedido.aprobar("no hay porque");
