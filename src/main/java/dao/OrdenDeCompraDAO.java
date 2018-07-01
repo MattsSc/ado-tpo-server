@@ -18,7 +18,8 @@ public class OrdenDeCompraDAO {
     }
 
     public static OrdenDeCompra getById(Integer id){
-        return ordenDeCompraToNegocio(HibernateUtils.getById(OrdenDeCompraEntity.class, id));
+        OrdenDeCompraEntity oc = HibernateUtils.getById(OrdenDeCompraEntity.class, id);
+        return oc != null ? ordenDeCompraToNegocio(oc) : null;
     }
 
     public static List<OrdenDeCompra> getAll(){

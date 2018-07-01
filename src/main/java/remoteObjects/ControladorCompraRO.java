@@ -33,6 +33,11 @@ public class ControladorCompraRO extends UnicastRemoteObject implements SistemaC
     }
 
     @Override
+    public OrdenDeCompraDTO obtenerOc(Integer id) throws RemoteException {
+        return ControladorCompra.getInstance().obtenerOc(id);
+    }
+
+    @Override
     public void asignarOrdenesDePedidoAOrdenesAbiertas() throws RemoteException {
         ControladorCompra.getInstance().asignarOrdenesDePedidoAOrdenesAbiertas();
     }

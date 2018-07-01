@@ -6,6 +6,7 @@ import dao.ProovedorDAO;
 import dtos.OrdenDeCompraDTO;
 import dtos.ProveedorDTO;
 import dtos.ProveedorPrecioDTO;
+import exceptions.OrdenCompraNotFoundException;
 import interfaces.SistemaCompra;
 import model.Deposito;
 import model.OrdenDeCompra;
@@ -42,6 +43,15 @@ public class ControladorCompra implements SistemaCompra {
     @Override
     public List<OrdenDeCompraDTO> obtenerTodasLasOrdenes() throws RemoteException {
         return OrdenDeCompraDAO.getAll().stream().map(OrdenDeCompra::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrdenDeCompraDTO obtenerOc(Integer id) throws OrdenCompraNotFoundException {
+        OrdenDeCompra oc =  OrdenDeCompraDAO.getById(id);
+        if(oc == null)
+            throw new OrdenCompraNotFoundException(id);
+        else
+            return oc.toDto();
     }
 
     @Override
