@@ -25,6 +25,17 @@ public class Main {
                 200000F
         );
 
+        Cliente cliente2 = new Cliente(
+                54321,
+                "Esteban",
+                "Ramirez",
+                "La rioja 878",
+                "23-346567093-2",
+                "Razon Social SA",
+                150000F,
+                250000F
+        );
+
         Articulo articulo = new Articulo(
                 1111,
                 "Coca-cola 1.5L",
@@ -57,13 +68,40 @@ public class Main {
                 1500
         );
 
-        Proveedor proovedor = new Proveedor("proveedor1", 203333);
+        Articulo articulo4 = new Articulo(
+                4444,
+                "Pringles",
+                TipoProducto.BOLSA.name(),
+                2,
+                1,
+                10F,
+                1500
+        );
+
+        Articulo articulo5 = new Articulo(
+                5555,
+                "Manaos",
+                TipoProducto.BOLSA.name(),
+                1,
+                1,
+                20F,
+                1200
+        );
+
+        Proveedor proovedor = new Proveedor("proveedor1", 27335455);
+        Proveedor proovedor2 = new Proveedor("proveedor2", 2756754);
+        Proveedor proovedor3 = new Proveedor("proveedor3", 27445683);
         proovedor.save();
+        proovedor2.save();
+        proovedor3.save();
 
         articulo.save();
         articulo2.save();
         articulo3.save();
+        articulo4.save();
+        articulo5.save();
         cliente.save();
+        cliente2.save();
 
         List<String> letters = Arrays.asList("A","B","C","D","E","F");
 
@@ -86,6 +124,7 @@ public class Main {
         try {
             ControladorCompra.getInstance().cerrarOrdenDeCompra(ordenDeCompra1.getId(), 40000f, new Date());
             ControladorCompra.getInstance().cerrarOrdenDeCompra(ordenDeCompra2.getId(), 20000f, new Date());
+            /*la orden de compra 3 y 4 nos las cerramos para que quede*/
         } catch (RemoteException e) {
             e.printStackTrace();
         }

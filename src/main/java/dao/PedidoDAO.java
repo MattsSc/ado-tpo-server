@@ -6,6 +6,7 @@ import entities.PedidoEntity;
 import model.Cliente;
 import model.ItemPedido;
 import model.Pedido;
+import org.hibernate.Hibernate;
 import utils.HibernateUtils;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class PedidoDAO {
     }
 
     public static Pedido getById(Integer id){
-        return ConverterNegocioUtils.pedidoToNegocio(HibernateUtils.getById(PedidoEntity.class, id));
+        PedidoEntity aux = HibernateUtils.getById(PedidoEntity.class,id);
+        return aux != null ? ConverterNegocioUtils.pedidoToNegocio(aux):null;
     }
 
     public static List<ItemPedido> getItemsPedidos(Pedido pedido){

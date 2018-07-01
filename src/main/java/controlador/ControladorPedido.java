@@ -6,6 +6,7 @@ import dtos.*;
 import interfaces.SistemaPedido;
 import model.*;
 import model.enums.EstadoPedido;
+import exceptions.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -37,7 +38,11 @@ public class ControladorPedido implements SistemaPedido {
     }
 
     @Override
-    public PedidoDTO obtenerPedido(Integer id) throws RemoteException {
+    public PedidoDTO obtenerPedido(Integer id) throws PedidoNotFoundException {
+        Pedido pedido = PedidoDAO.getById(id);
+        if (pedido == null){
+            throw new PedidoNotFoundException (id);
+        }
         return PedidoDAO.getById(id).toDto();
     }
 
