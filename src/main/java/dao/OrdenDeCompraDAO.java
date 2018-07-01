@@ -38,7 +38,7 @@ public class OrdenDeCompraDAO {
 
     public static OrdenDeCompra getUltimaOrdenDeCompra(Integer codigoArticulo){
             List<OrdenDeCompraEntity> result = HibernateUtils.getResultList("from OrdenDeCompraEntity where articuloId = " + codigoArticulo + " ORDER BY id DESC");
-            return ordenDeCompraToNegocio(result.stream().skip(result.size() - 1).findFirst().get());
+            return result.size() > 0 ? ordenDeCompraToNegocio(result.stream().skip(result.size() - 1).findFirst().get()): null ;
     }
 
     public static List<OrdenDeCompra> getUltimos3Proveedores(Integer codigoArticulo){
