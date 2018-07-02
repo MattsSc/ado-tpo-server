@@ -1,11 +1,21 @@
 package model;
 
+import dao.ArticuloDAO;
 import dao.LoteDAO;
 import dao.UbicacionDAO;
 
 import java.util.*;
 
 public class Deposito {
+
+    public  List<Ubicacion> obtenerUbicacionesDeArticulo(Integer id){
+        Articulo articulo = ArticuloDAO.getById(id);
+        List<Ubicacion> ubicaciones = new ArrayList<>();
+       for(Lote lote: articulo.getLotes()){
+           ubicaciones.addAll(UbicacionDAO.getUbicacionesDeLote(lote.getId()));
+       }
+       return ubicaciones;
+    }
 
     public void despacharPedido(Pedido pedido){
         Map<ItemPedido, List<ItemAProcesar>> result = new HashMap<>();
@@ -67,7 +77,6 @@ public class Deposito {
 
     }
 
-
     private List<ItemAProcesar> llenarPedido(ItemPedido item) {
         Integer cantidadTotal = item.getCantidad();
         int i = 0;
@@ -112,7 +121,6 @@ public class Deposito {
         }
         return itemsAProcesar;
     }
-
 
     private void vaciarUbicacion(Ubicacion ubicacion) {
         ubicacion.setOcupado(false);

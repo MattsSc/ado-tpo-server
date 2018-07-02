@@ -1,6 +1,7 @@
 package model;
 
 import dao.LoteDAO;
+import dtos.LoteDTO;
 
 import java.util.Date;
 
@@ -32,6 +33,15 @@ public class Lote {
     public void informarAjustePositivo(Integer cantidad) {
         this.setStock(this.getStock() + cantidad);
         this.update();
+    }
+
+    public LoteDTO toDto(){
+        return new LoteDTO(
+                this.getId(),
+                this.getFechaVencimiento(),
+                this.getStock(),
+                this.getProveedor().toDto()
+        );
     }
 
     public void save(Articulo articulo){

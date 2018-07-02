@@ -5,11 +5,9 @@ import dao.OrdenDePedidoDAO;
 import dtos.ArticuloDTO;
 import dtos.MovimientoPorAjusteDTO;
 import dtos.MovimientoPorEliminacionDTO;
+import dtos.UbicacionDTO;
 import interfaces.SistemaArticulo;
-import model.Articulo;
-import model.Deposito;
-import model.MovimientoBasico;
-import model.MovimientoPorEliminacion;
+import model.*;
 import model.enums.TipoMovimiento;
 
 import java.rmi.RemoteException;
@@ -47,6 +45,11 @@ public class ControladorArticulo implements SistemaArticulo {
     @Override
     public ArticuloDTO obtenerArticulo(Integer id) throws RemoteException {
         return ArticuloDAO.getById(id).toDto();
+    }
+
+    @Override
+    public List<UbicacionDTO> obtenerUbicaciones(Integer id) throws RemoteException {
+        return deposito.obtenerUbicacionesDeArticulo(id).stream().map(Ubicacion::toDto).collect(Collectors.toList());
     }
 
     @Override

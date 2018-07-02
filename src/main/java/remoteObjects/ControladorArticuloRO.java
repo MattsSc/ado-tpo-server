@@ -4,6 +4,7 @@ import controlador.ControladorArticulo;
 import dtos.ArticuloDTO;
 import dtos.MovimientoPorAjusteDTO;
 import dtos.MovimientoPorEliminacionDTO;
+import dtos.UbicacionDTO;
 import interfaces.SistemaArticulo;
 
 import java.rmi.RemoteException;
@@ -20,6 +21,11 @@ public class ControladorArticuloRO extends UnicastRemoteObject implements Sistem
     @Override
     public void crearArticulo(ArticuloDTO articuloDTO) throws RemoteException {
         ControladorArticulo.getInstance().crearArticulo(articuloDTO);
+    }
+
+    @Override
+    public List<UbicacionDTO> obtenerUbicaciones(Integer id) throws RemoteException {
+        return ControladorArticulo.getInstance().obtenerUbicaciones(id);
     }
 
     @Override

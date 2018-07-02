@@ -1,6 +1,7 @@
 package model;
 
 import dao.UbicacionDAO;
+import dtos.UbicacionDTO;
 import model.enums.TipoProducto;
 
 public class Ubicacion {
@@ -114,4 +115,13 @@ public class Ubicacion {
         this.cantidad = cantidad;
     }
 
+    public UbicacionDTO toDto() {
+        return new UbicacionDTO(
+                this.getIdUbicacion(),
+                this.getClave(),
+                this.isOcupado(),
+                this.getLote().toDto(),
+                this.getCantidad()
+        );
+    }
 }
